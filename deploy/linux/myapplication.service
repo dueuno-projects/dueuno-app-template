@@ -1,0 +1,15 @@
+# Copy to: /etc/systemd/system
+
+[Unit]
+Description=myapplication
+After=syslog.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/myapplication
+ExecStart=/usr/local/myapplication/start
+ExecStop=/usr/local/myapplication/stop
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

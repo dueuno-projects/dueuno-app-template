@@ -1,0 +1,4 @@
+server:
+  port: 8080  // <1>
+  servlet: // <2>
+    context-path: / // <3>

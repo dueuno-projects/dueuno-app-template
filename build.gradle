@@ -1,0 +1,201 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+plugins {
+    id "groovy"
+    id "application"
+    id "org.grails.grails-gsp"
+    id "org.grails.grails-web"
+    id "com.bertramlabs.asset-pipeline"
+    id "com.github.erdi.webdriver-binaries" version "3.0"
+    id "com.bmuschko.docker-remote-api" version "9.4.0"
+    id "com.avast.gradle.docker-compose" version "0.17.6"
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id "org.asciidoctor.jvm.pdf" version "3.3.2"
+    id "org.grails.plugins.views-json" version "3.0.0"
+    id "eclipse"
+    id "idea"
+    id "war"
+}
+
+version "1.0"
+group = "org.dueuno"
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+configurations {
+    all {
+        resolutionStrategy.force 'org.codehaus.groovy:groovy-xml:3.0.13'
+        resolutionStrategy.eachDependency { DependencyResolveDetails details->
+            if (details.requested.group == 'org.seleniumhq.selenium') {
+                details.useVersion('4.10.0')
+            }
+        }
+
+        // Fetches dependences as soon as they are released on the server
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
+dependencies {
+    implementation("org.grails:grails-core")
+    implementation("org.grails:grails-logging")
+    implementation("org.grails:grails-plugin-databinding")
+    implementation("org.grails:grails-plugin-i18n")
+    implementation("org.grails:grails-plugin-interceptors")
+    implementation("org.grails:grails-plugin-rest")
+    implementation("org.grails:grails-plugin-services")
+    implementation("org.grails:grails-plugin-url-mappings")
+    implementation("org.grails:grails-web-boot")
+    implementation("org.grails.plugins:gsp")
+    implementation("org.grails.plugins:hibernate5")
+    implementation("org.grails.plugins:scaffolding")
+    implementation("org.hibernate:hibernate-core:5.6.15.Final")
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework.boot:spring-boot-starter-tomcat")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    compileOnly("io.micronaut:micronaut-inject-groovy")
+    console("org.grails:grails-console")
+    runtimeOnly("com.bertramlabs.plugins:asset-pipeline-grails:4.3.0")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("javax.xml.bind:jaxb-api:2.3.1")
+    runtimeOnly("org.apache.tomcat:tomcat-jdbc")
+    runtimeOnly("org.fusesource.jansi:jansi:1.18")
+    runtimeOnly("org.glassfish.web:el-impl:2.2.1-b05")
+    testImplementation("io.micronaut:micronaut-inject-groovy")
+    testImplementation("org.grails:grails-gorm-testing-support")
+    testImplementation("org.grails:grails-web-testing-support")
+    testImplementation("org.grails.plugins:geb")
+    testImplementation("org.seleniumhq.selenium:selenium-api:4.10.0")
+    testImplementation("org.seleniumhq.selenium:selenium-remote-driver:4.10.0")
+    testImplementation("org.seleniumhq.selenium:selenium-support:4.10.0")
+    testImplementation("org.spockframework:spock-core")
+    testRuntimeOnly("org.seleniumhq.selenium:selenium-chrome-driver:4.10.0")
+    testRuntimeOnly("org.seleniumhq.selenium:selenium-firefox-driver:4.10.0")
+    testRuntimeOnly("org.seleniumhq.selenium:selenium-safari-driver:4.10.0")
+    testImplementation("io.micronaut:micronaut-http-client")
+
+    // SPRING DEV TOOLS
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // DUEUNO
+    def dueunoVersion = '2.0-SNAPSHOT'
+    implementation "org.dueuno:elements-core:${dueunoVersion}"
+
+    // DB DRIVERS
+    runtimeOnly 'mysql:mysql-connector-java:8.0.32'
+}
+
+application {
+    mainClass.set("myapplication.Application")
+}
+
+bootRun {
+    jvmArgs("-Xms1g", "-Xmx1g")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+    systemProperty "geb.env", System.getProperty('geb.env')
+    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+    systemProperty 'webdriver.chrome.driver', "${System.getenv('CHROMEWEBDRIVER')}/chromedriver"
+    systemProperty 'webdriver.gecko.driver', "${System.getenv('GECKOWEBDRIVER')}/geckodriver"
+}
+
+tasks.withType(War).configureEach { War war ->
+    war.dependsOn compileGroovyPages
+}
+
+webdriverBinaries {
+    chromedriver '110.0.5481.77'
+    geckodriver '0.32.2'
+    edgedriver '110.0.1587.57'
+}
+
+assets {
+    minifyCss = true
+    minifyJs = true
+    minifyOptions = [
+            languageMode     : 'ES6',
+            targetLanguage   : 'ES6',
+            optimizationLevel: 'SIMPLE', // SIMPLE (default) or ADVANCED or WHITESPACE_ONLY
+    ]
+}
+
+// DOCUMENTATION
+compileGroovy.finalizedBy(asciidoctor)
+asciidoctor {
+    baseDirFollowsSourceDir()
+    attributes = [
+            'revnumber'         : project.version,
+            'application-name'  : project.name,
+            'grails-version'    : grailsVersion,
+            'source-highlighter': 'coderay',
+            'icons'             : 'font',
+            'toc'               : 'left',
+            'toclevels'         : 3,
+    ]
+    outputOptions {
+        backends = ['html5'] // or ['html5', 'pdf']
+    }
+    doLast {
+        copy {
+            from('build/docs/asciidoc/')
+            into "${projectDir}/docs/"
+        }
+    }
+}
+
+ext {
+    dockerTag = "${project.group}/${project.name}:${project.version}".toLowerCase()
+    dockerBuildDir = mkdir("${buildDir}/docker")
+}
+
+task prepareDocker(type: Copy, dependsOn: bootJar) {
+    description = 'Copy files from src/main/docker and application jar to Docker temporal build directory'
+    group = 'Docker'
+
+    from 'src/main/docker'
+    from project.bootJar
+
+    into dockerBuildDir
+}
+
+task createDockerfile(type: Dockerfile, dependsOn: prepareDocker) {
+    description = 'Create a Dockerfile file'
+    group = 'Docker'
+
+    destFile = project.file("${dockerBuildDir}/Dockerfile")
+
+    from 'eclipse-temurin:17'
+    workingDir '/app'
+    def filename = bootJar.archiveFileName.get()
+    copyFile filename, filename
+    entryPoint "java", "-jar", "/app/${filename}"
+    exposePort 8080
+}
+
+task dockerBuildImage(type: DockerBuildImage, dependsOn: createDockerfile) {
+    description = 'Create Docker image to run the Grails application'
+    group = 'Docker'
+
+    inputDir = file(dockerBuildDir)
+    images.add(dockerTag)
+}
+
+composeUp.dependsOn(dockerBuildImage)
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+}

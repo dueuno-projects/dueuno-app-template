@@ -1,0 +1,11 @@
+#!/bin/bash
+
+JAVA="/usr/bin/java"
+APP_DIR="/usr/local/myapplication"
+APP_NAME="myapplication-1.0"
+DOMAIN="my.domain.com"
+
+cd ${APP_DIR}
+certbot renew
+openssl pkcs12 -export -in /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -inkey /etc/letsencrypt/live/${DOMAIN}/privkey.pem -out /etc/letsencrypt/live/${DOMAIN}/keystore.p12 -passout pass:TheDueunoAppPassword -name grails -CAfile /etc/letsencrypt/live/${DOMAIN}/chain.pem -caname root
+$JAVA -jar ${APP_DIR}/${APP_NAME}.jar

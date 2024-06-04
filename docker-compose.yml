@@ -1,0 +1,9 @@
+services:
+  myapplication:
+    image: com.dueuno/myapplication:1.0
+    ports:
+      - 8080:8080
+#    environment:
+#      - DATASOURCE_URL=
+#      - DATASOURCE_USERNAME=
+#      - DATASOURCE_PASSWORD=
