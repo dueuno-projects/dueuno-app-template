@@ -1,5 +1,5 @@
 # See: https://github.com/grails/grails-core/issues/12874
-info.app.name: myapplication
+info.app.name: dueunoapp
 
 # CREATE DEV CERTIFICATE
 #
@@ -37,7 +37,7 @@ environments:
 #        context-path: /
 #        session:
 #          persistent: true
-#          store-dir: myapplication
+#          store-dir: dueunoapp
 #      ssl:
 #        enabled: true
 #        key-store-type: PKCS12
@@ -47,11 +47,11 @@ environments:
 
 server:
   tomcat:
-    basedir: myapplication/tomcat
+    basedir: dueunoapp/tomcat
   servlet:
     session:
       persistent: true
-      store-dir: myapplication
+      store-dir: dueunoapp
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
@@ -178,7 +178,7 @@ dataSource:
   driverClassName: org.h2.Driver
   username: sa
   password: ''
-  url: jdbc:h2:file:./myapplication/myapplication;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+  url: jdbc:h2:file:./dueunoapp/dueunoapp;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
 
   properties:
     jmxEnabled: true

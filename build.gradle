@@ -18,8 +18,8 @@ plugins {
     id "war"
 }
 
-version = "2.0-SNAPSHOT"
-group = "org.dueuno"
+version = "1.0-SNAPSHOT"
+group = "dueunoapp"
 
 repositories {
     mavenCentral()
@@ -94,7 +94,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("myapplication.Application")
+    mainClass = "dueunoapp.Application"
 }
 
 bootRun {
@@ -102,7 +102,9 @@ bootRun {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("17")
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 tasks.withType(Test) {

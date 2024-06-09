@@ -1,8 +1,8 @@
 #!/bin/bash
 
 JAVA="/usr/bin/java"
-APP_DIR="/usr/local/myapplication"
-APP_NAME="myapplication-1.0"
+APP_DIR="/usr/local/dueunoapp"
+APP_NAME="dueunoapp-1.0"
 DOMAIN="my.domain.com"
 
 cd ${APP_DIR}

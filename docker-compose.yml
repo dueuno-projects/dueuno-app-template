@@ -1,6 +1,6 @@
 services:
-  myapplication:
-    image: com.dueuno/myapplication:1.0
+  dueunoapp:
+    image: com.dueuno/dueunoapp:1.0
     ports:
       - 8080:8080
 #    environment:

@@ -1,14 +1,14 @@
 # Copy to: /etc/systemd/system
 
 [Unit]
-Description=myapplication
+Description=dueunoapp
 After=syslog.target
 
 [Service]
 User=root
-WorkingDirectory=/usr/local/myapplication
-ExecStart=/usr/local/myapplication/start
-ExecStop=/usr/local/myapplication/stop
+WorkingDirectory=/usr/local/dueunoapp
+ExecStart=/usr/local/dueunoapp/start
+ExecStop=/usr/local/dueunoapp/stop
 SuccessExitStatus=143
 
 [Install]
