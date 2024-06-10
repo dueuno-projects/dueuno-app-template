@@ -9,9 +9,10 @@
 
 You need Java Development Kit (JDK) 17 installed. We support only LTS Java releases.
 
-1. Run the application with `gradlew bootRun`
-2. Visit http://localhost:8080
-3. Login with `admin/admin` to manage the default tenant or with `super/super` to manage the whole application
+1. Download the [Dueuno Application Template](https://github.com/dueuno-projects/dueuno-app-template.git) project
+2. Run the application with `gradlew bootRun`
+3. Visit http://localhost:8080
+4. Login with `admin/admin` to manage the default tenant or with `super/super` to manage the whole application
 
 ## Create a new app
 
