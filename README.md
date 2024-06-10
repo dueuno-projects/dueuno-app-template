@@ -3,7 +3,7 @@
 
 # Dueuno Application Template
 
-[Dueuno Elements](https://github.com/dueuno-projects/dueuno-elements) is a framework built on top of the [Grails Framework](https://grails.org) to build Backoffice web applications (aka Internal Tools) with a single programming language: the amazing [Apache Groovy](https://groovy-lang.org).
+[Dueuno Elements](https://dueuno.com) lets you build backoffice web applications in days instead of months with a single programming language: [Apache Groovy](https://groovy-lang.org).
 
 ## Getting Started
 
