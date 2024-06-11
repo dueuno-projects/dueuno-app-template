@@ -9,6 +9,7 @@ import dueuno.elements.controls.QuantityField
 import dueuno.elements.controls.Select
 import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
+import dueuno.elements.style.TextDefault
 import dueuno.elements.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -37,7 +38,7 @@ class OrderItemController implements ElementsController {
                 addField(
                         class: TextField,
                         id: 'find',
-                        label: 'default.filters.text',
+                        label: TextDefault.FIND,
                         cols: 12,
                 )
             }

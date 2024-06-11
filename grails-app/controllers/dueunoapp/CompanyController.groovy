@@ -7,6 +7,7 @@ import dueuno.elements.contents.ContentList
 import dueuno.elements.controls.Checkbox
 import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
+import dueuno.elements.style.TextDefault
 import grails.plugin.springsecurity.annotation.Secured
 
 import javax.annotation.PostConstruct
@@ -34,7 +35,7 @@ class CompanyController implements ElementsController {
                 addField(
                         class: TextField,
                         id: 'find',
-                        label: 'default.filters.text',
+                        label: TextDefault.FIND,
                         cols: 12,
                 )
             }

@@ -6,6 +6,7 @@ import dueuno.elements.contents.ContentEdit
 import dueuno.elements.contents.ContentList
 import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
+import dueuno.elements.style.TextDefault
 import grails.plugin.springsecurity.annotation.Secured
 
 import javax.annotation.PostConstruct
@@ -33,7 +34,7 @@ class ProductController implements ElementsController {
                 addField(
                         class: TextField,
                         id: 'find',
-                        label: 'default.filters.text',
+                        label: TextDefault.FIND,
                         cols: 12,
                 )
             }
