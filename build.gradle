@@ -13,9 +13,9 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
     id "org.asciidoctor.jvm.pdf" version "3.3.2"
     id "org.grails.plugins.views-json" version "3.0.0"
+    id "codenarc"
     id "eclipse"
     id "idea"
-    id "war"
 }
 
 version = "1.0-SNAPSHOT"
@@ -133,6 +133,14 @@ assets {
             targetLanguage   : 'ES6',
             optimizationLevel: 'SIMPLE', // SIMPLE (default) or ADVANCED or WHITESPACE_ONLY
     ]
+}
+
+// CODE ANALISYS
+codenarc {
+    toolVersion = '3.4.0'
+    ignoreFailures = true
+    configFile = file("${rootDir}/codenarc/config.groovy")
+    reportsDir = file("$rootDir/codenarc/${project.name}")
 }
 
 // DOCUMENTATION
