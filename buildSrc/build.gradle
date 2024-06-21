@@ -1,0 +1,12 @@
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.grails.org/grails/core/' }
+}
+
+dependencies {
+    // See: https://github.com/zyro23/grails-spring-websocket/issues/73
+    implementation 'com.google.javascript:closure-compiler-unshaded:v20240317'
+    implementation 'com.bertramlabs.plugins:asset-pipeline-gradle:4.3.0'
+    implementation 'org.grails:grails-gradle-plugin:6.2.0'
+    implementation 'org.grails.plugins:hibernate5:8.1.0'
+}
