@@ -57,6 +57,12 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
 
 ---
+javamelody:
+  init-parameters:
+    log: true
+    storage-directory: dueunoapp
+
+---
 grails:
   profile: web
   codegen:
