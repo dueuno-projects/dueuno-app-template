@@ -60,7 +60,7 @@ server:
 javamelody:
   init-parameters:
     log: true
-    storage-directory: dueunoapp
+    storage-directory: ${user.dir}/dueunoapp/java-melody
 
 ---
 grails:
