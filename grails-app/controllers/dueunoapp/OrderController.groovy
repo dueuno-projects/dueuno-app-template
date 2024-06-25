@@ -78,7 +78,6 @@ class OrderController implements ElementsController {
 
         c.form.with {
             validate = TOrder
-            grid = true
             addField(
                     class: Select,
                     id: 'supplier',
@@ -107,7 +106,6 @@ class OrderController implements ElementsController {
             def itemForm = c.addComponent(Form, 'itemForm')
             itemForm.with {
                 validate = TOrderItem
-                grid = true
                 addKeyField('order', obj.id)
                 addField(
                         class: Separator,

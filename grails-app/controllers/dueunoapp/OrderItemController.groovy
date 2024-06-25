@@ -79,7 +79,6 @@ class OrderItemController implements ElementsController {
 
         c.form.with {
             validate = TOrderItem
-            grid = true
             addKeyField('embeddedController', 'TEXT')
             addKeyField('embeddedAction', 'TEXT')
             addKeyField('embeddedId')
