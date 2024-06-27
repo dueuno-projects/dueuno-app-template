@@ -21,8 +21,8 @@ class ProductService {
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
-            query = query.where {
-                name =~ "%${search}%"
+            query = query.where { 1 == 1
+                || name =~ "%${search}%"
             }
         }
 
