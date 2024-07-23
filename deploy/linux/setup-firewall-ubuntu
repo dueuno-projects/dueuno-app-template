@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Used in Jenkins after uploading the '/deploy/linux' directory on server
+
+# We use ONLY iptables
+echo "Setting Debian/Ubuntu to use only iptables..."
+systemctl disable ufw
+ufw disable
+apt install iptables-persistent -y
+
+echo "Setting Debian/Ubuntu firewall rules..."
+
+# Reset
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -t nat -F
+iptables -t mangle -F
+iptables -F
+iptables -X
+
+# Block all by default
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+# Accept on localhost
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
+# Allow established sessions to receive traffic
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# Allow SSH
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 22 -m state --state ESTABLISHED -j ACCEPT
+
+# Allow web services (HTTP and HTTPS)
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+# Redirect HTTP and HTTPS traffic to custom ports
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
+
+# Persist configuration
+iptables-save > /etc/iptables/rules.v4

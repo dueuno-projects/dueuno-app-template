@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Used in Jenkins after uploading the '/deploy/linux' directory on server
+
+APPNAME="dueunoapp"
+
+# Install as service
+echo "Installing '${APPNAME}' service..."
+mv $APPNAME/$APPNAME.service /etc/systemd/system
+systemctl daemon-reload
+systemctl enable $APPNAME

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Used in Jenkins after uploading the '/build/libs' directory on server
+
+APPNAME="dueunoapp"
+
+echo "Installing '${APPNAME}' application..."
+mv $APPNAME/* /home/$APPNAME
+chown -R $APPNAME /home/$APPNAME
+chgrp -R $APPNAME /home/$APPNAME
+chmod +x /home/$APPNAME/start
+chmod +x /home/$APPNAME/stop
+
+echo "Restarting '${APPNAME}' application..."
+systemctl stop $APPNAME && systemctl start $APPNAME
