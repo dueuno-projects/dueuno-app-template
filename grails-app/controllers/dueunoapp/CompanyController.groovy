@@ -31,7 +31,6 @@ class CompanyController implements ElementsController {
         def c = createContent(ContentList)
         c.table.with {
             filters.with {
-                fold = false
                 addField(
                         class: TextField,
                         id: 'find',
