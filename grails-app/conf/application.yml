@@ -28,6 +28,7 @@ environments:
 
 # CREATE PRODUCTION CERTIFICATE
 # See: https://certbot.eff.org/instructions
+# Then: https://medium.com/@tayeblagha/create-free-ssl-certificate-and-configure-it-for-spring-boot-web-applications-a2106d97b733
 #
 #  production:
 #    server:
