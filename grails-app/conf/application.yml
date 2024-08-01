@@ -28,7 +28,8 @@ environments:
 
 # CREATE PRODUCTION CERTIFICATE
 # See: https://certbot.eff.org/instructions
-# Then: https://medium.com/@tayeblagha/create-free-ssl-certificate-and-configure-it-for-spring-boot-web-applications-a2106d97b733
+# Then:
+# openssl pkcs12 -export -in /etc/letsencrypt/live/domain.com/fullchain.pem -inkey /etc/letsencrypt/live/domain.com/privkey.pem -out /home/dueunoapp/keystore.p12 -passout pass:dueunoapp -name dueunoapp -CAfile /etc/letsencrypt/live/domain.com/chain.pem -caname root
 #
 #  production:
 #    server:
@@ -42,9 +43,9 @@ environments:
 #      ssl:
 #        enabled: true
 #        key-store-type: PKCS12
-#        key-store: /etc/letsencrypt/live/my.domain.com/keystore.p12
-#        key-store-password: KeyStorePassword
-#        key-alias: grails
+#        key-store: /home/dueunoapp/keystore.p12
+#        key-store-password: dueunoapp
+#        key-alias: dueunoapp
 
 server:
   tomcat:

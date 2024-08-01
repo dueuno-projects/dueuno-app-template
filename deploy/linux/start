@@ -6,8 +6,8 @@ APP_NAME="dueunoapp"
 APP_VERSION="1.0"
 DOMAIN="my.domain.com"
 
-certbot renew
-openssl pkcs12 -export -in /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -inkey /etc/letsencrypt/live/${DOMAIN}/privkey.pem -out /etc/letsencrypt/live/${DOMAIN}/keystore.p12 -passout pass:TheDueunoAppPassword -name grails -CAfile /etc/letsencrypt/live/${DOMAIN}/chain.pem -caname root
+#certbot renew
+#openssl pkcs12 -export -in /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -inkey /etc/letsencrypt/live/${DOMAIN}/privkey.pem -out /home/${APP_NAME}/keystore.p12 -passout pass:${APP_NAME} -name ${APP_NAME} -CAfile /etc/letsencrypt/live/${DOMAIN}/chain.pem -caname root
 
 cd ${APP_DIR}
 $JAVA -jar ${APP_NAME}-${APP_VERSION}.jar
