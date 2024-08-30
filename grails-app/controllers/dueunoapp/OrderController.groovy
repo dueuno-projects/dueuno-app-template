@@ -1,5 +1,6 @@
 package dueunoapp
 
+import dueuno.commons.utils.LogUtils
 import dueuno.elements.components.*
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
@@ -12,9 +13,11 @@ import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
 import dueuno.elements.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
+import groovy.util.logging.Slf4j
 
 import javax.annotation.PostConstruct
 
+@Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
 class OrderController implements ElementsController {
 
@@ -28,10 +31,11 @@ class OrderController implements ElementsController {
         // Executes only once when the application starts
     }
 
-//    def handleException(Exception e) {
-//        // Display a message instead of the "Error" screen
-//        display exception: e
-//    }
+    def handleException(Exception e) {
+        // Display a popup message instead of the "Error" screen
+        log.error LogUtils.logStackTrace(e)
+        display exception: e
+    }
 
     def index() {
         def c = createContent(ContentList)
