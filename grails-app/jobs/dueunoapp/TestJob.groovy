@@ -16,6 +16,9 @@ class TestJob {
     void execute(JobExecutionContext context) {
         Map params = context.mergedJobDataMap
         String tenantId = params.tenantId
+        if (!tenantId) {
+            return
+        }
 
         tenantService.withTenant(tenantId) {
             // Transactional database operations here
