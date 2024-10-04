@@ -20,7 +20,7 @@ To create a new app from this template:
 1. Find/replace the string `dueunoapp` in all project files with a name of your choice
 2. Rename the `dueunoapp` package with a name of your choice
 
-## Create executable jar
+## Create an executable .jar
 
 1. Run `gradlew bootJar`
 2. The application executable file will be generated under the `/biuld/libs` directory
@@ -34,7 +34,7 @@ You can find the latest documentation here: https://dueuno.com/docs/
 
 Dueuno Elements is an Open Source software released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
 
-## Please remember...
+## Remember...
 
 ```
 It's not what you do,
