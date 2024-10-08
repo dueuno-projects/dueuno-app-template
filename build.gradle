@@ -82,7 +82,8 @@ dependencies {
     implementation 'org.dueuno:elements-core:2.0-SNAPSHOT'
 
     // DB DRIVERS
-    runtimeOnly 'mysql:mysql-connector-java:8.0.32'
+    runtimeOnly 'mysql:mysql-connector-java'
+
 }
 
 application {
