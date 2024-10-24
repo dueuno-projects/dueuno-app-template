@@ -60,7 +60,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'io.micronaut:micronaut-inject-groovy'
     console 'org.grails:grails-console'
-    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails:4.3.0'
+    runtimeOnly 'com.bertramlabs.plugins:asset-pipeline-grails:4.5.1'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.apache.tomcat:tomcat-jdbc'
     runtimeOnly 'org.fusesource.jansi:jansi:1.18'
