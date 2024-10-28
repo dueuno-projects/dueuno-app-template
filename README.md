@@ -39,7 +39,6 @@ Dueuno Elements is an Open Source software released under the [Apache License, V
 ```
 It's not what you do,
 but how you do it.
-That makes the difference.
 
 Happy coding :)
 ```
