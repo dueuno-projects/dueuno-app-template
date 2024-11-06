@@ -26,13 +26,13 @@ To execute the application run the following command:
 .Windows
 [subs="attributes"]
 ----
-cmd /C "set JAVA_OPTS="-Dmicronaut.config.files=C:/path/to/config.yml" && C:/path/to/bin/{application-name}.bat"
+cmd /C "set JAVA_OPTS="-Dspring.config.location=C:/path/to/config.yml" && C:/path/to/bin/{application-name}.bat"
 ----
 
 .Unix
 [subs="attributes"]
 ----
-JAVA_OPTS="-Dmicronaut.config.files=/path/to/config.yml" /path/to/bin/{application-name}
+JAVA_OPTS="-Dspring.config.location=/path/to/config.yml" /path/to/bin/{application-name}
 ----
 
 == User Guide
