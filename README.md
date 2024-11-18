@@ -30,7 +30,12 @@ The project documentation is under the `/src/docs` directory.
 2. The html documentation will be generated under the `/docs` directory
 
 ## Dueuno Elements
-You can find the latest documentation here: https://dueuno.com/docs/
+You can find the latest documentation here: https://dueuno.com
+
+Community
+---
+Join us on Discord: https://discord.gg/6yWnmT2hBj
+
 
 ## License
 Dueuno Elements is an Open Source software released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
