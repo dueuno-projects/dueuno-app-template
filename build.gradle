@@ -78,7 +78,7 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 
     // DUEUNO
-    implementation "org.dueuno:elements-core:2.0-SNAPSHOT"
+    implementation "org.dueuno:elements-core:2.x-SNAPSHOT"
 
     // DB DRIVERS
     runtimeOnly "mysql:mysql-connector-java"
