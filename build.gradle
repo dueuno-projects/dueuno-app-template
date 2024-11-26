@@ -33,7 +33,7 @@ configurations {
             }
         }
 
-        // Fetches dependences as soon as they are released on the server
+        // Fetches dependencies as soon as they are released on the server
         resolutionStrategy.cacheChangingModulesFor 0, "seconds"
     }
 }
@@ -94,7 +94,7 @@ bootRun {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(javaVersion)
     }
 }
 
