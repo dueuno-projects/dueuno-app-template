@@ -78,7 +78,7 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 
     // DUEUNO
-    implementation "org.dueuno:elements-core:2.x-SNAPSHOT"
+    implementation "org.dueuno:elements-core:${dueunoElementsVersion}"
 
     // DB DRIVERS
     runtimeOnly "mysql:mysql-connector-java"
@@ -117,6 +117,7 @@ webdriverBinaries {
 }
 
 assets {
+    skipNonDigests = true
     minifyCss = true
     minifyJs = true
     minifyOptions = [
