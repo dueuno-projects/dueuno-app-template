@@ -30,7 +30,7 @@ The project documentation is under the `/src/docs` directory.
 2. The html documentation will be generated under the `/docs` directory
 
 ## Dueuno Elements
-You can find the latest documentation here: https://dueuno.com
+You can find the latest documentation here: https://dueuno.com/docs
 
 Community
 ---
