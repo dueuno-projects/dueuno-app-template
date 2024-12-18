@@ -35,12 +35,6 @@
     <logger name="dueuno" level="INFO" />
     <logger name="dueunoapp" level="DEBUG" />
 
-<!-- GRAILS-->
-<!--    <logger name="grails.app.domain" level="DEBUG" />-->
-<!--    <logger name="grails.app.services" level="DEBUG" />-->
-<!--    <logger name="grails.app.controllers" level="DEBUG" />-->
-<!--    <logger name="grails.app.taglib" level="DEBUG" />-->
-
 <!-- GORM-->
 <!--    <logger name="org.grails.datastore" level="DEBUG" />-->
 <!--    <logger name="org.hibernate.SQL" level="DEBUG" />-->
