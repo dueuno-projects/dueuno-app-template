@@ -39,7 +39,6 @@ class CompanyController implements ElementsController {
                         class: TextField,
                         id: 'find',
                         label: TextDefault.FIND,
-                        cols: 12,
                 )
             }
             sortable = [
