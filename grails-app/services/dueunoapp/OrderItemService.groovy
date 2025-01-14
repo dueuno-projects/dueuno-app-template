@@ -35,7 +35,7 @@ class OrderItemService {
     }
 
     TOrderItem get(Serializable id) {
-        // Add any relationships here (Eg. references to other DomainObjects or hasMany)
+        // Add any relationship here (Eg. references to other DomainObjects or hasMany)
         Map fetch = [
                 relationshipName: 'join',
         ]
@@ -46,7 +46,7 @@ class OrderItemService {
     List<TOrderItem> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
 
-        // Add single-sided relationships here (Eg. references to other Domain Objects)
+        // Add only single-sided relationships here (Eg. references to other Domain Objects)
         // DO NOT add hasMany relationships, you are going to have troubles with pagination
         fetchParams.fetch = [
                 relationshipName: 'join',
