@@ -7,6 +7,7 @@ import org.grails.datastore.gorm.GormEntity
 import java.time.LocalDateTime
 
 class TOrder implements GormEntity, MultiTenant<TOrder> {
+
     LocalDateTime dateCreated
 
     TCompany supplier
@@ -19,6 +20,7 @@ class TOrder implements GormEntity, MultiTenant<TOrder> {
             'total',
     ]
 
+    Set<TOrderItem> items
     static hasMany = [
             items: TOrderItem
     ]
@@ -26,4 +28,5 @@ class TOrder implements GormEntity, MultiTenant<TOrder> {
     static constraints = {
         total nullable: true
     }
+
 }
