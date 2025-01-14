@@ -22,7 +22,7 @@ class TOrder implements GormEntity, MultiTenant<TOrder> {
 
     Set<TOrderItem> items
     static hasMany = [
-            items: TOrderItem
+            items: TOrderItem,
     ]
 
     static constraints = {
