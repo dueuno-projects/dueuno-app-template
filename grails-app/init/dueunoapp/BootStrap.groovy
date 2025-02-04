@@ -7,7 +7,11 @@ import dueuno.elements.types.QuantityService
 import dueuno.elements.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
 
+import javax.servlet.ServletContext
+
 class BootStrap {
+
+    ServletContext servletContext
 
     TenantPropertyService tenantPropertyService
     ApplicationService applicationService
@@ -17,7 +21,7 @@ class BootStrap {
     ProductService productService
     QuantityService quantityService
 
-    def init = { servletContext ->
+    def init = {
 
         applicationService.onSystemInstall {
         }
@@ -79,4 +83,5 @@ class BootStrap {
 
     def destroy = {
     }
+
 }
