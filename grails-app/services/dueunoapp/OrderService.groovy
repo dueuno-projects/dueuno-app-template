@@ -21,7 +21,8 @@ class OrderService {
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
-            query = query.where { 1 == 1
+            query = query.where {
+                true
 //            || name =~ "%${search}%"
             }
         }
