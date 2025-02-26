@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 
 class TCompany implements GormEntity, MultiTenant<TCompany> {
 
+    Long id
     LocalDateTime dateCreated
 
     String name

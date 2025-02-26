@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 
 class TOrderItem implements GormEntity, MultiTenant<TOrderItem> {
 
+    Long id
     LocalDateTime dateCreated
 
     TProduct product
