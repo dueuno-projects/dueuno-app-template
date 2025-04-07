@@ -139,7 +139,6 @@ class OrderItemController implements ElementsController {
 
     def onEdit() {
         def obj = orderItemService.update(params)
-
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -155,7 +154,6 @@ class OrderItemController implements ElementsController {
     def onDelete() {
         try {
             orderItemService.delete(params.id)
-
             if (params.embeddedController) {
                 display controller: params.embeddedController, action: params.embeddedAction, params: [id: params.embeddedId], modal: true
             } else {
