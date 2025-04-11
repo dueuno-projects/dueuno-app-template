@@ -35,23 +35,28 @@ class OrderItemService {
         return query
     }
 
-    TOrderItem get(Serializable id) {
+    private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
-        Map fetch = [
+        return [
                 relationshipName: 'join',
         ]
+    }
 
-        return buildQuery(id: id).get(fetch: fetch)
+    private Map getFetch() {
+        // Add only single-sided relationships here (Eg. references to other Domain Objects)
+        // DO NOT add hasMany relationships, you are going to have troubles with pagination
+        return [
+                relationshipName: 'join',
+        ]
+    }
+
+    TOrderItem get(Serializable id) {
+        return buildQuery(id: id).get(fetch: fetchAll)
     }
 
     List<TOrderItem> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
-
-        // Add only single-sided relationships here (Eg. references to other Domain Objects)
-        // DO NOT add hasMany relationships, you are going to have troubles with pagination
-        fetchParams.fetch = [
-                relationshipName: 'join',
-        ]
+        fetchParams.fetch = fetch
 
         def query = buildQuery(filterParams)
         return query.list(fetchParams)
