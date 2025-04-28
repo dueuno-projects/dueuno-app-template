@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-/usr/bin/pkill -f dueunoapp
+APP_NAME="dueunoapp"
+
+/usr/bin/pkill -f ${APP_NAME}

@@ -2,14 +2,21 @@
 
 # Used in Jenkins after uploading the '/build/libs' directory on server
 
-APPNAME="dueunoapp"
+ROOT_USER="root"
+APP_USER="dueunoapp"
+APP_NAME="dueunoapp"
 
-echo "Installing '${APPNAME}' application..."
-mv $APPNAME/* /home/$APPNAME
-chown -R $APPNAME /home/$APPNAME
-chgrp -R $APPNAME /home/$APPNAME
-chmod +x /home/$APPNAME/start
-chmod +x /home/$APPNAME/stop
+if id "${APP_NAME}" >/dev/null 2>&1; then
+  echo "User '${APP_NAME}' found."
+else
+  echo "Creating user '${APP_NAME}'..."
+  sudo useradd -m ${APP_NAME}
+fi
 
-echo "Restarting '${APPNAME}' application..."
-systemctl stop $APPNAME && systemctl start $APPNAME
+echo "Installing '${APP_NAME}' application..."
+sudo mv /home/${ROOT_USER}/${APP_NAME}/* /home/${APP_USER}
+sudo chown -R ${APP_USER} /home/${APP_USER}
+sudo chgrp -R ${ROOT_USER} /home/${APP_USER}
+sudo chmod 770 /home/${APP_USER}
+sudo chmod +x /home/${APP_USER}/start
+sudo chmod +x /home/${APP_USER}/stop

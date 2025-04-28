@@ -2,10 +2,17 @@
 
 # Used in Jenkins after uploading the '/deploy/linux' directory on server
 
-APPNAME="dueunoapp"
+ROOT_USER="root"
+APP_USER="dueunoapp"
+APP_NAME="dueunoapp"
 
 # Install as service
-echo "Installing '${APPNAME}' service..."
-mv $APPNAME/$APPNAME.service /etc/systemd/system
-systemctl daemon-reload
-systemctl enable $APPNAME
+echo "Installing '${APP_NAME}' service..."
+sudo mv /home/${ROOT_USER}/${APP_NAME}/*.jar /home/${APP_USER}
+sudo mv /home/${APP_USER}/${APP_NAME}.service /etc/systemd/system
+sudo /sbin/restorecon -v /etc/systemd/system/${APP_USER}.service
+sudo systemctl daemon-reload
+sudo systemctl enable ${APP_NAME}
+
+echo "Restarting '${APP_NAME}' application..."
+sudo systemctl stop ${APP_NAME} && sudo systemctl start ${APP_NAME}
