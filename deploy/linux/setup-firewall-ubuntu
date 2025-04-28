@@ -2,6 +2,9 @@
 
 # Used in Jenkins after uploading the '/deploy/linux' directory on server
 
+echo "Installing Java..."
+sudo apt -y install openjdk-17-jre
+
 # We use ONLY iptables
 echo "Setting Debian/Ubuntu to use only iptables..."
 systemctl disable ufw

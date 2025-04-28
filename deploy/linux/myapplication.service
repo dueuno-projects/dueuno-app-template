@@ -7,8 +7,8 @@ After=syslog.target
 [Service]
 User=dueunoapp
 WorkingDirectory=/home/dueunoapp
-ExecStart=/home/dueunoapp/start
-ExecStop=/home/dueunoapp/stop
+ExecStart=/bin/bash /home/dueunoapp/start
+ExecStop=/bin/bash /home/dueunoapp/stop
 SuccessExitStatus=143
 
 [Install]

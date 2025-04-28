@@ -2,6 +2,9 @@
 
 # Used in Jenkins after uploading the '/deploy/linux' directory on server
 
+echo "Installing Java..."
+sudo dnf -y install java-17-openjdk
+
 # Firewall rules
 echo "Setting Fedora/RHEL/CentOS firewall rules..."
 
