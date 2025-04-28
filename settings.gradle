@@ -5,8 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id "org.grails.grails-web" version groovyVersion
-        id "org.grails.grails-gsp" version groovyVersion
+        id "org.grails.grails-web" version grailsVersion
+        id "org.grails.grails-gsp" version grailsVersion
         id "com.bertramlabs.asset-pipeline" version grailsAssetPipelineVersion
         id "com.github.erdi.webdriver-binaries" version webdriverBinariesVersion
     }
