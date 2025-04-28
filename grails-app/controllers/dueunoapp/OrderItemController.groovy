@@ -12,6 +12,7 @@ import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
 import dueuno.elements.types.QuantityUnit
+import dueuno.elements.types.Type
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
 
@@ -74,7 +75,7 @@ class OrderItemController implements ElementsController {
                 : createContent(ContentCreate)
 
         if (params.embeddedController) {
-            c.header.addBackButton(
+            c.header.addCancelButton(
                     controller: params.embeddedController ?: controllerName,
                     action: params.embeddedAction ?: 'index',
                     params: [id: params.embeddedId],
@@ -83,8 +84,8 @@ class OrderItemController implements ElementsController {
 
         c.form.with {
             validate = TOrderItem
-            addKeyField('embeddedController', 'TEXT')
-            addKeyField('embeddedAction', 'TEXT')
+            addKeyField('embeddedController', Type.TEXT)
+            addKeyField('embeddedAction', Type.TEXT)
             addKeyField('embeddedId')
             addField(
                     class: Select,
@@ -134,7 +135,7 @@ class OrderItemController implements ElementsController {
     def edit() {
         def obj = orderItemService.get(params.id)
         def c = buildForm(obj)
-        display content: c, modal: true
+        display content: c, modal: true, closeButton: false
     }
 
     def onEdit() {
