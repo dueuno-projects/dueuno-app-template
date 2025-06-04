@@ -81,10 +81,6 @@ dependencies {
 
     // DUEUNO
     implementation "org.dueuno:elements-core:${dueunoElementsVersion}"
-
-    // DB DRIVERS
-    runtimeOnly "mysql:mysql-connector-java"
-
 }
 
 bootRun {
