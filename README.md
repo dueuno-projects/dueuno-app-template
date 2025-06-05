@@ -15,7 +15,9 @@ $ cd dueuno-app-template
 $ ./gradlew bootRun
 ```
 
-You will see something like this:
+> The first run will take some time since Gradle has to download all the needed dependencies.
+
+You should see something like this:
 
 ```
 >                                                                            <
@@ -32,9 +34,7 @@ You will see something like this:
 Grails application running at http://localhost:8080 in environment: development
 ```
 
-> The first run will take some time since Gradle has to download all the needed dependencies.
-
-Navigate to [https://localhost:8080](https://localhost:8080), you should see the login screen:
+Point your web browser to [https://localhost:8080](https://localhost:8080) to display the login screen:
 
 ![Dueuno Elements Login Screen](./README.PNG)
 
