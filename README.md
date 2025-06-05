@@ -14,9 +14,31 @@ $ git clone https://github.com/dueuno-projects/dueuno-app-template
 $ cd dueuno-app-template
 $ ./gradlew bootRun
 ```
+
+You will see something like this:
+
+```
+>                                                                            <
+>                         _                                                  <
+>                        | |  ELEMENTS                                       <
+>                      __| |_   _  ___ _   _ _ __   ___                      <
+>                     / _` | | | |/ _ \ | | | '_ \ / _ \                     <
+>                    | (_| | |_| |  __/ |_| | | | | (_) |                    <
+>                     \__,_|\__,_|\___|\__,_|_| |_|\___/                     <
+>                         2025 (c) https://dueuno.com                        <
+>                                                                            <
+>                                                                            <
+
+Grails application running at http://localhost:8080 in environment: development
+```
+
+> The first run will take some time since Gradle has to download all the needed dependencies.
+
+Navigate to [https://localhost:8080](https://localhost:8080), you should see the login screen:
+
 ![Dueuno Elements Login Screen](./README.PNG)
 
-Login with `admin/admin` to manage the default tenant or with `super/super` to manage the whole application
+Login with `super/super` to manage the whole application or with `admin/admin` to manage the `DEFAULT` tenant.
 
 ## Start your project
 To create a new application from the template:
