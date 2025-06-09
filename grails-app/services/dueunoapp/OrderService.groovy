@@ -23,7 +23,10 @@ class OrderService {
             String search = filterParams.find.replaceAll('\\*', '%')
             query = query.where {
                 true
-//            || name =~ "%${search}%"
+            || ref =~ "%${search}%"
+            || subject =~ "%${search}%"
+            || supplier.name =~ "%${search}%"
+            || client.name =~ "%${search}%"
             }
         }
 
