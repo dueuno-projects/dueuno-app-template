@@ -4,7 +4,7 @@ import dueuno.commons.utils.LogUtils
 import dueuno.elements.components.*
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
-import dueuno.elements.contents.ContentList
+import dueuno.elements.contents.ContentTable
 import dueuno.elements.controls.MoneyField
 import dueuno.elements.controls.QuantityField
 import dueuno.elements.controls.Select
@@ -38,7 +38,7 @@ class OrderController implements ElementsController {
     }
 
     def index() {
-        def c = createContent(ContentList)
+        def c = createContent(ContentTable)
         c.table.with {
             filters.with {
                 addField(
