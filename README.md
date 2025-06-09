@@ -7,7 +7,7 @@ With [Dueuno Elements](https://dueuno.com) you can build Back-Office Web Applica
 ## Getting Started
 You need to install [Git](https://git-scm.com) and the [JDK 17](https://www.oracle.com/java/technologies/downloads/?er=221886#java17).
 
-> With the upcoming release of Apache Grails 7 we will support all the LTS Java releases.
+> With the upcoming release of Apache Grails 7 we will support the latest LTS Java releases.
 
 ```
 $ git clone https://github.com/dueuno-projects/dueuno-app-template
@@ -34,7 +34,7 @@ You should see something like this:
 Grails application running at http://localhost:8080 in environment: development
 ```
 
-Point your web browser to [https://localhost:8080](https://localhost:8080) to display the login screen:
+Point your web browser to [https://localhost:8080](https://localhost:8080):
 
 ![Dueuno Elements Login Screen](./README.PNG)
 
