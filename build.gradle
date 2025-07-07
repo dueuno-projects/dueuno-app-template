@@ -22,9 +22,8 @@ group = "dueunoapp"
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://repo.grails.org/grails/core" }
-    maven { url "https://s01.oss.sonatype.org/content/repositories/releases/" }
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url = "https://repo.grails.org/grails/core" }
+    maven { url = "https://ossrh-staging-api.central.sonatype.com/service/local/" }
 }
 
 configurations {
