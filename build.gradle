@@ -76,6 +76,8 @@ dependencies {
     testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.19.1"
     testRuntimeOnly "org.seleniumhq.selenium:selenium-safari-driver:4.19.1"
     testImplementation "io.micronaut:micronaut-http-client"
+
+    // Comment this if you need to create tenants at runtime in dev environment
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 
     // DUEUNO
