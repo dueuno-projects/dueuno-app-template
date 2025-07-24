@@ -35,7 +35,7 @@ class ProductService {
     private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
         return [
-                relationshipName: 'join',
+                'relationshipName': 'join',
         ]
     }
 
@@ -43,7 +43,7 @@ class ProductService {
         // Add only single-sided relationships here (Eg. references to other Domain Objects)
         // DO NOT add hasMany relationships, you are going to have troubles with pagination
         return [
-                relationshipName: 'join',
+                'relationshipName': 'join',
         ]
     }
 
