@@ -24,6 +24,7 @@ class BootStrap {
     def init = {
 
         applicationService.onSystemInstall {
+
         }
 
         applicationService.onInstall { String tenantId ->
@@ -45,6 +46,7 @@ class BootStrap {
         }
 
         applicationService.beforeInit {
+
         }
 
         applicationService.init {
@@ -72,12 +74,15 @@ class BootStrap {
         }
 
         applicationService.afterInit {
+
         }
 
         securityService.afterLogin { GrailsHttpSession session ->
+
         }
 
         securityService.afterLogout {
+
         }
     }
 
