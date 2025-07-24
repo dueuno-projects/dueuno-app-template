@@ -39,6 +39,9 @@ class OrderService {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
         return [
                 'relationshipName': 'join',
+
+                // hasMany relationships
+                'hasManyRelationship': 'join',
         ]
     }
 
