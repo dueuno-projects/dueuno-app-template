@@ -27,7 +27,7 @@ You should see something like this:
 >                     / _` | | | |/ _ \ | | | '_ \ / _ \                     <
 >                    | (_| | |_| |  __/ |_| | | | | (_) |                    <
 >                     \__,_|\__,_|\___|\__,_|_| |_|\___/                     <
->                         20XX (c) https://dueuno.com                        <
+>                              http://dueuno.org                             <
 >                                                                            <
 >                                                                            <
 
