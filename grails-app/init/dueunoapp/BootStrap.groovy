@@ -23,7 +23,7 @@ class BootStrap {
 
     def init = {
 
-        applicationService.onSystemInstall {
+        applicationService.onApplicationInstall {
 
         }
 
