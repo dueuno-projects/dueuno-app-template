@@ -36,7 +36,7 @@ Grails application running at http://localhost:8080 in environment: development
 
 Point your web browser to [https://localhost:8080](https://localhost:8080):
 
-![Dueuno Elements Login Screen](./README.PNG)
+![Dueuno Elements Login Screen](./README.png)
 
 Login with `super/super` to manage the whole application or with `admin/admin` to manage the `DEFAULT` tenant.
 
