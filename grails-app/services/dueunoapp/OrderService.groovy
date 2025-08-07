@@ -1,13 +1,19 @@
 package dueunoapp
 
+import dueuno.elements.audit.AuditOperation
+import dueuno.elements.audit.AuditService
 import dueuno.elements.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import groovy.util.logging.Slf4j
 
 import javax.annotation.PostConstruct
 
+@Slf4j
 @CurrentTenant
 class OrderService {
+
+    AuditService auditService
 
     @PostConstruct
     void init() {
@@ -91,5 +97,6 @@ class OrderService {
     void delete(Serializable id) {
         TOrder obj = get(id)
         obj.delete(flush: true, failOnError: true)
+        auditService.log(AuditOperation.DELETE, obj)
     }
 }
