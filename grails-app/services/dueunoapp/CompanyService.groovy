@@ -64,7 +64,7 @@ class CompanyService {
 
     List<TCompany> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
-        fetchParams.fetch = fetch
+        if (!fetchParams.fetch) fetchParams.fetch = fetch
 
         def query = buildQuery(filterParams)
         return query.list(fetchParams)
