@@ -62,10 +62,15 @@ class CompanyController implements ElementsController {
         display content: c
     }
 
-    private buildForm(TCompany obj = null) {
+    private buildForm(TCompany obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
+
+        if (readonly) {
+            c.header.removeNextButton()
+            c.form.readonly = true
+        }
 
         c.form.with {
             validate = TCompany

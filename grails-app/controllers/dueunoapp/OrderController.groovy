@@ -70,13 +70,18 @@ class OrderController implements ElementsController {
         display content: c
     }
 
-    private buildForm(TOrder obj = null) {
+    private buildForm(TOrder obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
 
         if (obj) {
             c.header.addBackButton(action: 'index', icon: 'fa-times', text: '')
+        }
+
+        if (readonly) {
+            c.header.removeNextButton()
+            c.form.readonly = true
         }
 
         c.form.with {

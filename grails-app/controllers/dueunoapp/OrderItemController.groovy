@@ -69,7 +69,7 @@ class OrderItemController implements ElementsController {
         display content: c
     }
 
-    private buildForm(TOrderItem obj = null) {
+    private buildForm(TOrderItem obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -80,6 +80,11 @@ class OrderItemController implements ElementsController {
                     action: params.embeddedAction ?: 'index',
                     params: [id: params.embeddedId],
             )
+        }
+
+        if (readonly) {
+            c.header.removeNextButton()
+            c.form.readonly = true
         }
 
         c.form.with {

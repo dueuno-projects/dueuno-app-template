@@ -60,10 +60,15 @@ class ProductController implements ElementsController {
         display content: c
     }
 
-    private buildForm(TProduct obj = null) {
+    private buildForm(TProduct obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
+
+        if (readonly) {
+            c.header.removeNextButton()
+            c.form.readonly = true
+        }
 
         c.form.with {
             validate = TProduct
