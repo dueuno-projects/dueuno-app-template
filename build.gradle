@@ -91,7 +91,11 @@ dependencies {
     implementation "org.dueuno:elements-core:${dueunoElementsVersion}"
 }
 
-compileJava.options.release = javaVersion.toInteger()
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersion)
+    }
+}
 
 bootRun {
     jvmArgs(
