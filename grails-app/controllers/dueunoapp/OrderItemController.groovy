@@ -12,11 +12,9 @@ import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
 import dueuno.elements.types.QuantityUnit
-import dueuno.elements.types.Type
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])

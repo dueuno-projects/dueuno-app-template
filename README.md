@@ -1,6 +1,6 @@
 [![Dueuno on X](https://img.shields.io/twitter/follow/dueunoframework?style=social)](https://x.com/dueunoframework)
 
-# Dueuno Application Template
+# Application Template
 
 With [Dueuno Elements](https://dueuno.com) you can build Back-Office Web Applications with a single programming language: [Apache Groovy](https://groovy-lang.org).
 
@@ -22,13 +22,12 @@ You should see something like this:
 ```
 >                                                                            <
 >                         _                                                  <
->                        | |  ELEMENTS                                       <
+>                        | |                                                 <
 >                      __| |_   _  ___ _   _ _ __   ___                      <
 >                     / _` | | | |/ _ \ | | | '_ \ / _ \                     <
 >                    | (_| | |_| |  __/ |_| | | | | (_) |                    <
 >                     \__,_|\__,_|\___|\__,_|_| |_|\___/                     <
->                              http://dueuno.org                             <
->                                                                            <
+>                               E L E M E N T S                              <
 >                                                                            <
 
 Grails application running at http://localhost:8080 in environment: development

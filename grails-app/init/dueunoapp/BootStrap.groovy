@@ -7,7 +7,7 @@ import dueuno.elements.types.QuantityService
 import dueuno.elements.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 
 class BootStrap {
 

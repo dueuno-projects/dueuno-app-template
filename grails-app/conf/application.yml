@@ -1,5 +1,8 @@
-# See: https://github.com/grails/grails-core/issues/12874
-info.app.name: dueunoapp
+info:
+  app:
+    name: '@info.app.name@'
+    version: '@info.app.version@'
+    grailsVersion: '@info.app.grailsVersion@'
 
 # CREATE DEV CERTIFICATE
 #
@@ -17,8 +20,8 @@ environments:
     server:
       port: 8086
 #      port-http: 8080
-#      servlet:
-#        context-path: /
+      servlet:
+        context-path: /
 #        ssl:
 #          enabled: true
 #          key-store-type: PKCS12
@@ -46,7 +49,6 @@ environments:
 #        key-store: /home/dueunoapp/keystore.p12
 #        key-store-password: dueunoapp
 #        key-alias: dueunoapp
-
 server:
   tomcat:
     basedir: dueunoapp/tomcat
@@ -66,45 +68,31 @@ javamelody:
 
 ---
 grails:
-  profile: web
-  codegen:
-    defaultPackage: dueuno
-  gorm:
-    reactor:
-      # Whether to translate GORM events into Reactor events
-      # Disabled by default for performance reasons
-      events: false
-info:
-  app:
-    name: '@info.app.name@'
-    version: '@info.app.version@'
-    grailsVersion: '@info.app.grailsVersion@'
-spring:
-  threads:
-    virtual:
-      enabled: true
-  jmx:
-    unique-names: true
-  main:
-    banner-mode: "log"
-  groovy:
-    template:
-      check-template-location: false
-  devtools:
-    restart:
-      additional-exclude:
-        - '*.gsp'
-        - '**/*.gsp'
-        - '*.gson'
-        - '**/*.gson'
-        - 'logback.groovy'
-        - '*.properties'
-management:
-  endpoints:
-    enabled-by-default: false
+  plugin:
+    springsecurity:
+      debug:
+        useFilter: true
+  controllers:
+    upload:
+      maxFileSize: 20000000
+      maxRequestSize: 20000000
 
 ---
 grails:
+  views:
+    default:
+      codec: html
+    gsp:
+      encoding: UTF-8
+      htmlcodec: xml
+      codecs:
+        expression: html
+        scriptlet: html
+        taglib: none
+        staticparts: none
+  codegen:
+    defaultPackage: dueunoapp
+  profile: web
   mime:
     disable:
       accept:
@@ -137,40 +125,23 @@ grails:
       xml:
         - text/xml
         - application/xml
-  urlmapping:
-    cache:
-      maxsize: 1000
-  controllers:
-    defaultScope: singleton
-  converters:
-    encoding: UTF-8
-  views:
-    default:
-      codec: html
-    gsp:
-      encoding: UTF-8
-      htmlcodec: xml
-      codecs:
-        expression: html
-        scriptlet: html
-        taglib: none
-        staticparts: none
-management:
-  endpoints:
-    jmx:
-      unique-names: true
-
 ---
 spring:
+  threads:
+    virtual:
+      enabled: true
   h2:
     console:
       enabled: true
-
-grails:
-  controllers:
-    upload:
-      maxFileSize: 20000000
-      maxRequestSize: 20000000
+  devtools:
+    restart:
+      additional-exclude:
+        - '*.gsp'
+        - '**/*.gsp'
+        - '*.gson'
+        - '**/*.gson'
+        - 'logback.groovy'
+        - '*.properties'
 
 ---
 hibernate:
@@ -208,8 +179,6 @@ dataSource:
 
 environments:
   development:
-    grails.logging.jul.usebridge: true
-    grails.plugin.springsecurity.debug.useFilter: true
     dataSource:
       dbCreate: update
 
