@@ -43,17 +43,21 @@ To create a new application from this template:
 
 1. Find and replace the string `dueunoapp` across all project files with your chosen name
 2. Rename the `dueunoapp` package accordingly
+3. Customize the application banner `/src/main/resources/banner.txt`
 
-## Create a `.jar` Executable
+## Create the `.jar` Executable
 1. Run `./gradlew bootJar`
 2. The application `.jar` file will be generated under `/biuld/libs`
 3. Run the application with `java -jar dueunoapp-1.0-SNAPSHOT.jar`
 
 ## Project Documentation
-You can edit the project documentation under `/src/docs`
+Documentation sources are under `/src/docs`.
+1. Write the content using [Asciidoc](https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/)
+2. Generate the documentation with `./gradlew asciidoctor`
+3. The generated HTML files will be available in the `/docs` directory.
 
-1. Run `./gradlew asciidoctor`
-2. The `html` documentation will be generated under the `/docs` directory
+Edit this README:
+- Write the content using [Markdown](https://www.markdownguide.org/cheat-sheet/)
 
 ## Learn More
 - Documentation: https://dueuno.com/docs

@@ -104,12 +104,6 @@ bootRun {
     )
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(javaVersion)
-    }
-}
-
 tasks.withType(Test) {
     useJUnitPlatform()
 }
