@@ -5,17 +5,14 @@
 With [Dueuno Elements](https://dueuno.com) you can build Back-Office Web Applications with a single programming language: [Apache Groovy](https://groovy-lang.org).
 
 ## Getting Started
-You need to install [Git](https://git-scm.com) and the [JDK 17](https://www.oracle.com/java/technologies/downloads/?er=221886#java17).
-
-> With the upcoming release of Apache Grails 7 we will support the latest LTS Java releases.
-
+Make sure you have [Git](https://git-scm.com) and a [JDK](https://www.oracle.com/java/technologies/downloads/) installed. The minimum requirement is Java 17.
 ```
 $ git clone https://github.com/dueuno-projects/dueuno-app-template
 $ cd dueuno-app-template
 $ ./gradlew bootRun
 ```
 
-> The first run will take some time since Gradle has to download all the needed dependencies.
+> The first run may take a while, as all required dependencies will be downloaded.
 
 You should see something like this:
 
@@ -33,42 +30,43 @@ You should see something like this:
 Grails application running at http://localhost:8080 in environment: development
 ```
 
-Point your web browser to [https://localhost:8080](https://localhost:8080):
+Open your browser at [https://localhost:8080](https://localhost:8080):
 
 ![Dueuno Elements Login Screen](./README.png)
 
-Login with `super/super` to manage the whole application or with `admin/admin` to manage the `DEFAULT` tenant.
+At the login screen:
+- Login with `super`/`super` to manage the whole application
+- Login with `admin`/`admin` to manage the `DEFAULT` tenant
 
 ## Start your project
-To create a new application from the template:
+To create a new application from this template:
 
-1. Find/replace the string `dueunoapp` in all project files with a name of your choice
-2. Rename the `dueunoapp` package with a name of your choice
+1. Find and replace the string `dueunoapp` across all project files with your chosen name
+2. Rename the `dueunoapp` package accordingly
 
 ## Create a `.jar` executable
 1. Run `./gradlew bootJar`
 2. The application `.jar` file will be generated under `/biuld/libs`
 3. Run the application with `java -jar dueunoapp-1.0-SNAPSHOT.jar`
 
-## Documentation
-You can write the project documentation editing the files under `/src/docs`
+## Project Documentation
+You can edit the project documentation under `/src/docs`
 
 1. Run `./gradlew asciidoctor`
 2. The `html` documentation will be generated under the `/docs` directory
 
-## Dueuno Elements
-You can find the latest Dueuno Elements documentation here: https://dueuno.com/docs
-
-## Community
-Join us on Discord: https://discord.gg/6yWnmT2hBj
+## Learn More
+- Documentation: https://dueuno.com/docs
+- Community: https://discord.gg/6yWnmT2hBj
 
 ## License
-Dueuno Elements is an Open Source software released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
+Dueuno Elements is Open Source software released under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
 
-## Remember...
+---
+
 ```
-It's not what you do,
-it's how you do it.
+It is not what you do,
+it is how you do it.
 
 Happy coding :)
 ```
