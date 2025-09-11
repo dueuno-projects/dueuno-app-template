@@ -38,13 +38,13 @@ At the login screen:
 - Login with `super`/`super` to manage the whole application
 - Login with `admin`/`admin` to manage the `DEFAULT` tenant
 
-## Start your project
+## Start Your Project
 To create a new application from this template:
 
 1. Find and replace the string `dueunoapp` across all project files with your chosen name
 2. Rename the `dueunoapp` package accordingly
 
-## Create a `.jar` executable
+## Create a `.jar` Executable
 1. Run `./gradlew bootJar`
 2. The application `.jar` file will be generated under `/biuld/libs`
 3. Run the application with `java -jar dueunoapp-1.0-SNAPSHOT.jar`
