@@ -58,7 +58,6 @@ dependencies {
     implementation "org.apache.grails:grails-databinding"
     implementation "org.apache.grails:grails-events"
     implementation "org.apache.grails:grails-gsp"
-    implementation "org.apache.grails:grails-i18n"
     implementation "org.apache.grails:grails-interceptors"
     implementation "org.apache.grails:grails-layout"
     implementation "org.apache.grails:grails-logging"

@@ -11,6 +11,7 @@ import dueuno.elements.controls.Select
 import dueuno.elements.controls.TextField
 import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
+import dueuno.elements.style.TextStyle
 import dueuno.elements.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
@@ -168,6 +169,10 @@ class OrderController implements ElementsController {
                 actions.tailAction.params = [embeddedController: 'order', embeddedAction: 'edit', embeddedId: obj.id]
 
                 body.eachRow { TableRow row, Map values ->
+                }
+
+                footer.eachRow { TableRow row, Map values ->
+                    row.textStyle = TextStyle.BOLD
                 }
 
                 def filters = filters.values

@@ -88,7 +88,7 @@ class OrderItemService {
 
         orderService.update(
                 id: obj.order.id,
-                total: obj.order.items*.price.sum(),
+                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
         )
 
         return obj
@@ -109,7 +109,7 @@ class OrderItemService {
 
         orderService.update(
                 id: obj.order.id,
-                total: obj.order.items*.price.sum(),
+                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
         )
 
         return obj
