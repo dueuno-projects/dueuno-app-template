@@ -5,12 +5,15 @@ import dueuno.elements.audit.AuditService
 import dueuno.elements.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
 import javax.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
+@CompileStatic
 class ProductService {
 
     AuditService auditService
@@ -20,6 +23,7 @@ class ProductService {
         // Executes only once when the application starts
     }
 
+    @CompileDynamic
     private DetachedCriteria<TProduct> buildQuery(Map filterParams) {
         def query = TProduct.where {}
 
@@ -68,11 +72,12 @@ class ProductService {
         return query.list(fetchParams)
     }
 
-    Integer count(Map filterParams = [:]) {
+    Number count(Map filterParams = [:]) {
         def query = buildQuery(filterParams)
         return query.count()
     }
 
+    @CompileDynamic
     TProduct create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
@@ -81,6 +86,7 @@ class ProductService {
         return obj
     }
 
+    @CompileDynamic
     TProduct update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
@@ -91,9 +97,11 @@ class ProductService {
         return obj
     }
 
+    @CompileDynamic
     void delete(Serializable id) {
         TProduct obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
+
 }
