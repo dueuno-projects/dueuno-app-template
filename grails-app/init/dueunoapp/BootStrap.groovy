@@ -71,6 +71,10 @@ class BootStrap {
             )
         }
 
+        applicationService.onTenantInit { String tenantId ->
+            // no-op
+        }
+
         applicationService.afterInit {
             // no-op
         }
