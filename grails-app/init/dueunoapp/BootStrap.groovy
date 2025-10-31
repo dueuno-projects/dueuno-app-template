@@ -11,8 +11,6 @@ import javax.servlet.ServletContext
 
 class BootStrap {
 
-    ServletContext servletContext
-
     TenantPropertyService tenantPropertyService
     ApplicationService applicationService
     SecurityService securityService
@@ -23,11 +21,11 @@ class BootStrap {
 
     def init = {
 
-        applicationService.onApplicationInstall {
-
+        applicationService.onInstall {
+            // no-op
         }
 
-        applicationService.onInstall { String tenantId ->
+        applicationService.onTenantInstall { String tenantId ->
             tenantPropertyService.setString('PRIMARY_BACKGROUND_COLOR', '#cc0000')
             tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; 2023')
 
@@ -46,10 +44,10 @@ class BootStrap {
         }
 
         applicationService.beforeInit {
-
+            // no-op
         }
 
-        applicationService.init {
+        applicationService.onInit {
             applicationService.registerPrettyPrinter(TCompany, '${it.name}')
             applicationService.registerPrettyPrinter(TProduct, '${it.ref} - ${it.name}')
 
@@ -74,16 +72,17 @@ class BootStrap {
         }
 
         applicationService.afterInit {
-
+            // no-op
         }
 
-        securityService.afterLogin { GrailsHttpSession session ->
-
+        securityService.afterLogin { String tenantId, GrailsHttpSession session ->
+            // no-op
         }
 
-        securityService.afterLogout {
-
+        securityService.afterLogout { String tenantId ->
+            // no-op
         }
+
     }
 
     def destroy = {
