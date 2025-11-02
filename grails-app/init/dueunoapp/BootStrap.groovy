@@ -27,11 +27,11 @@ class BootStrap {
 
     def init = {
 
-        applicationService.onApplicationInstall {
+        applicationService.onInstall {
 
         }
 
-        applicationService.onInstall { String tenantId ->
+        applicationService.onTenantInstall { String tenantId ->
             tenantPropertyService.setString('PRIMARY_BACKGROUND_COLOR', '#cc0000')
             tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; 2023')
             quantityService.enableUnit(QuantityUnit.PCS)
@@ -67,7 +67,7 @@ class BootStrap {
 
         }
 
-        applicationService.init {
+        applicationService.onInit {
             applicationService.registerPrettyPrinter(TCompany, '${it.name}')
             applicationService.registerPrettyPrinter(TProduct, '${it.ref} - ${it.name}')
 
@@ -91,15 +91,19 @@ class BootStrap {
             )
         }
 
-        applicationService.afterInit {
+        applicationService.onTenantInit {
 
         }
 
-        securityService.afterLogin { GrailsHttpSession session ->
+        applicationService.afterInit { String tenantId ->
 
         }
 
-        securityService.afterLogout {
+        securityService.afterLogin { String tenantId, GrailsHttpSession session ->
+
+        }
+
+        securityService.afterLogout { String tenantId ->
 
         }
     }
