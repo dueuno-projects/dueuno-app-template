@@ -1,11 +1,26 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url = 'https://repo.grails.org/grails/restricted'
+        }
+    }
+    dependencies { // Not Published to Gradle Plugin Portal
+        classpath "cloud.wondrify:asset-pipeline-gradle"
+        classpath platform("org.apache.grails:grails-bom:$grailsVersion")
+        classpath "org.apache.grails:grails-data-hibernate5"
+        classpath "org.apache.grails:grails-gradle-plugins"
+    }
+}
+
 plugins {
     id "groovy"
     id "com.bmuschko.docker-remote-api" version "9.4.0"
     id "com.avast.gradle.docker-compose" version "0.17.12"
-    id "org.asciidoctor.jvm.convert"
+    id "org.asciidoctor.jvm.convert" version "4.0.5"
     id "codenarc"
     id "eclipse"
     id "idea"
@@ -26,7 +41,7 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
+//    mavenLocal()
     mavenCentral()
     maven { url = "https://repo.grails.org/grails/restricted" }
     maven { url = "https://ossrh-staging-api.central.sonatype.com/service/local/" }
