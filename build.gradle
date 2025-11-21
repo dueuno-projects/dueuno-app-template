@@ -83,8 +83,16 @@ java {
 
 bootRun {
     jvmArgs(
-            "-Xms1g",
-            "-Xmx1g",
+            "-XX:+UseG1GC",
+            "-XX:+UseStringDeduplication",
+            "-XX:+HeapDumpOnOutOfMemoryError",
+            "-XX:InitialRAMPercentage=25",
+            "-XX:MinRAMPercentage=25",
+            "-XX:MaxRAMPercentage=70",
+            "-XX:MaxMetaspaceSize=256m",
+            "-XX:InitiatingHeapOccupancyPercent=40",
+            "-XX:ConcGCThreads=2",
+            "-XX:ParallelGCThreads=2",
     )
 }
 
