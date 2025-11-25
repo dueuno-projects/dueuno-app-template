@@ -5,12 +5,14 @@ import dueuno.elements.audit.AuditService
 import dueuno.elements.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 
 import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
+@Transactional
 class OrderItemService {
 
     AuditService auditService
