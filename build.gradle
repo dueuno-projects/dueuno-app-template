@@ -4,9 +4,7 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url = 'https://repo.grails.org/grails/restricted'
-        }
+        maven { url = "https://repo.grails.org/grails/restricted" }
     }
     dependencies { // Not Published to Gradle Plugin Portal
         classpath "cloud.wondrify:asset-pipeline-gradle"
