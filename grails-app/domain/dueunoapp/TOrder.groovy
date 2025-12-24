@@ -1,6 +1,6 @@
 package dueunoapp
 
-import dueuno.elements.types.Money
+import dueuno.types.Money
 import grails.gorm.MultiTenant
 import org.grails.datastore.gorm.GormEntity
 

@@ -3,17 +3,14 @@ package dueunoapp
 import dueuno.elements.core.ApplicationService
 import dueuno.elements.security.SecurityService
 import dueuno.elements.tenants.TenantPropertyService
-import dueuno.elements.types.Money
-import dueuno.elements.types.Quantity
 import dueuno.elements.types.QuantityService
-import dueuno.elements.types.QuantityUnit
+import dueuno.types.Money
+import dueuno.types.Quantity
+import dueuno.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
-
 import jakarta.servlet.ServletContext
 
 class BootStrap {
-
-    ServletContext servletContext
 
     TenantPropertyService tenantPropertyService
     ApplicationService applicationService

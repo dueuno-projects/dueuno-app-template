@@ -1,18 +1,16 @@
 package dueunoapp
 
-import dueuno.elements.audit.AuditOperation
+import dueuno.audit.AuditOperation
 import dueuno.elements.audit.AuditService
-import dueuno.elements.exceptions.ArgsException
+import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
-
 import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
-@Transactional
 class OrderItemService {
 
     AuditService auditService
@@ -77,6 +75,7 @@ class OrderItemService {
         return query.count()
     }
 
+    @Transactional
     TOrderItem create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
@@ -96,6 +95,7 @@ class OrderItemService {
         return obj
     }
 
+    @Transactional
     TOrderItem update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
@@ -117,6 +117,7 @@ class OrderItemService {
         return obj
     }
 
+    @Transactional
     void delete(Serializable id) {
         TOrderItem obj = get(id)
         obj.delete(flush: true, failOnError: true)

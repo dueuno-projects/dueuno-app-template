@@ -1,6 +1,7 @@
 package dueunoapp
 
 import dueuno.commons.utils.LogUtils
+import dueuno.elements.ElementsController
 import dueuno.elements.components.TableRow
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
@@ -9,9 +10,8 @@ import dueuno.elements.controls.MoneyField
 import dueuno.elements.controls.QuantityField
 import dueuno.elements.controls.Select
 import dueuno.elements.controls.TextField
-import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
-import dueuno.elements.types.QuantityUnit
+import dueuno.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
 import jakarta.annotation.PostConstruct
