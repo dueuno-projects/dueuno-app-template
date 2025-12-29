@@ -39,10 +39,17 @@ configurations {
 }
 
 repositories {
-//    mavenLocal()
+    mavenLocal()
     mavenCentral()
     maven { url = "https://repo.grails.org/grails/restricted" }
     maven { url = "https://ossrh-staging-api.central.sonatype.com/service/local/" }
+//    maven {
+//        url = "https://maven.pkg.github.com/dueuno-projects/dueuno-solutions"
+//        credentials {
+//            username = localGradlePropertiesGitHubDueunoUsername
+//            password = localGradlePropertiesGitHubDueunoPassword
+//        }
+//    }
 }
 
 dependencies {
@@ -86,6 +93,7 @@ dependencies {
 
     // DUEUNO
     implementation "org.dueuno:elements-core:${dueunoElementsVersion}"
+//    implementation "com.dueuno:elements-printing:${dueunoSolutionsVersion}"
 }
 
 java {
