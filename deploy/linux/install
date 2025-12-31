@@ -20,3 +20,15 @@ sudo chgrp -R ${ROOT_USER} /home/${APP_USER}
 sudo chmod 770 /home/${APP_USER}
 sudo chmod +x /home/${APP_USER}/start
 sudo chmod +x /home/${APP_USER}/stop
+
+echo "Installing '${APP_NAME}' service..."
+sudo mv /home/${ROOT_USER}/${APP_NAME}/*.jar /home/${APP_USER}
+sudo mv /home/${APP_USER}/${APP_NAME}.service /etc/systemd/system
+sudo /sbin/restorecon -v /etc/systemd/system/${APP_USER}.service
+sudo systemctl daemon-reload
+sudo systemctl enable ${APP_NAME}
+
+echo "Starting '${APP_NAME}' service..."
+sudo systemctl stop ${APP_NAME} && sudo systemctl start ${APP_NAME}
+
+echo "'${APP_NAME}' installed and started successfully."
