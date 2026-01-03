@@ -46,8 +46,8 @@ repositories {
 //    maven {
 //        url = "https://maven.pkg.github.com/dueuno-projects/dueuno-solutions"
 //        credentials {
-//            username = localGradlePropertiesGitHubDueunoUsername
-//            password = localGradlePropertiesGitHubDueunoPassword
+//            username = findProperty("localGradlePropertiesGitHubDueunoUsername") ?: System.getenv("GITHUB_DUEUNO_USERNAME")
+//            password = findProperty("localGradlePropertiesGitHubDueunoPassword") ?: System.getenv("GITHUB_DUEUNO_TOKEN")
 //        }
 //    }
 }
