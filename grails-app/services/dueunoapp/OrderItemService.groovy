@@ -1,16 +1,20 @@
 package dueunoapp
 
 import dueuno.audit.AuditOperation
-import dueuno.elements.audit.AuditService
+import dueuno.audit.AuditService
 import dueuno.exceptions.ArgsException
+import dueuno.types.Money
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
+@CompileStatic
 class OrderItemService {
 
     AuditService auditService
@@ -21,6 +25,7 @@ class OrderItemService {
         // Executes only once when the application starts
     }
 
+    @CompileDynamic
     private DetachedCriteria<TOrderItem> buildQuery(Map filterParams) {
         def query = TOrderItem.where {}
 
@@ -70,7 +75,7 @@ class OrderItemService {
         return query.list(fetchParams)
     }
 
-    Integer count(Map filterParams = [:]) {
+    Number count(Map filterParams = [:]) {
         def query = buildQuery(filterParams)
         return query.count()
     }
@@ -83,7 +88,7 @@ class OrderItemService {
         obj.save(flush: true, failOnError: args.failOnError)
 
         if (!obj.hasErrors()) {
-            obj.price = obj.unitPrice * obj.quantity
+            obj.price = new Money(obj.unitPrice * obj.quantity)
             obj.save(flush: true, failOnError: args.failOnError)
         }
 
@@ -96,6 +101,7 @@ class OrderItemService {
     }
 
     @Transactional
+    @CompileDynamic
     TOrderItem update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false

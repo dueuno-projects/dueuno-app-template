@@ -1,16 +1,19 @@
 package dueunoapp
 
 import dueuno.audit.AuditOperation
-import dueuno.elements.audit.AuditService
+import dueuno.audit.AuditService
 import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
+@CompileStatic
 class OrderService {
 
     AuditService auditService
@@ -20,6 +23,7 @@ class OrderService {
         // Executes only once when the application starts
     }
 
+    @CompileDynamic
     private DetachedCriteria<TOrder> buildQuery(Map filterParams) {
         def query = TOrder.where {}
 
@@ -71,7 +75,7 @@ class OrderService {
         return query.list(fetchParams)
     }
 
-    Integer count(Map filterParams = [:]) {
+    Number count(Map filterParams = [:]) {
         def query = buildQuery(filterParams)
         return query.count()
     }
@@ -86,6 +90,7 @@ class OrderService {
     }
 
     @Transactional
+    @CompileDynamic
     TOrder update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
