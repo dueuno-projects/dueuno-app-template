@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import dueuno.tenants.TenantService
 import groovy.transform.CompileStatic
@@ -11,7 +11,7 @@ class TestJob {
     TenantService tenantService
 
     static triggers = {
-        cron name: 't1', cronExpression: '0 */5 * * * ?' // Ogni 5 minuti
+        cron name: 't1', cronExpression: '0 */5 * * * ?' // Every 5 minutes
     }
 
     @CompileStatic

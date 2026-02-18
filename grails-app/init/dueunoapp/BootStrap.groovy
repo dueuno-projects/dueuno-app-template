@@ -1,13 +1,16 @@
 package dueunoapp
 
 import dueuno.core.ApplicationService
-import dueuno.security.SecurityService
 import dueuno.properties.TenantPropertyService
-import dueuno.types.QuantityService
+import dueuno.security.SecurityService
 import dueuno.types.Money
 import dueuno.types.Quantity
+import dueuno.types.QuantityService
 import dueuno.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
+import template.*
+
+import java.time.LocalDate
 
 class BootStrap {
 
@@ -29,7 +32,7 @@ class BootStrap {
 
         applicationService.onTenantInstall { String tenantId ->
             tenantPropertyService.setString('PRIMARY_BACKGROUND_COLOR', '#cc0000')
-            tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; 2023')
+            tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; ' + LocalDate.now().year)
             quantityService.enableUnit(QuantityUnit.PCS)
         }
 
@@ -68,20 +71,21 @@ class BootStrap {
             applicationService.registerPrettyPrinter(TProduct, '${it.ref} - ${it.name}')
 
             applicationService.registerFeature(
+                    controller: 'template',
+            )
+            applicationService.registerFeature(
+                    parent: 'template',
                     controller: 'order',
                     icon: 'fa-flag',
                     favourite: true,
             )
             applicationService.registerFeature(
-                    controller: 'config',
-            )
-            applicationService.registerFeature(
-                    parent: 'config',
+                    parent: 'template',
                     controller: 'company',
                     icon: 'fa-house-flag',
             )
             applicationService.registerFeature(
-                    parent: 'config',
+                    parent: 'template',
                     controller: 'product',
                     icon: 'fa-heart',
             )

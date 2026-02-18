@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import dueuno.audit.AuditOperation
 import dueuno.audit.AuditService

@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
 import dueuno.elements.ElementsController
@@ -6,6 +6,7 @@ import dueuno.elements.components.TableRow
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
 import dueuno.elements.contents.ContentTable
+import dueuno.elements.controls.Checkbox
 import dueuno.elements.controls.TextField
 import dueuno.elements.style.TextDefault
 import grails.plugin.springsecurity.annotation.Secured
@@ -14,9 +15,9 @@ import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
-class ProductController implements ElementsController {
+class CompanyController implements ElementsController {
 
-    ProductService productService
+    CompanyService companyService
 
     @PostConstruct
     void init() {
@@ -37,15 +38,16 @@ class ProductController implements ElementsController {
                         class: TextField,
                         id: 'find',
                         label: TextDefault.FIND,
-                        cols: 12,
                 )
             }
             sortable = [
                     name: 'asc',
             ]
             columns = [
-                    'ref',
                     'name',
+                    'isOwned',
+                    'isClient',
+                    'isSupplier',
             ]
 
             body.eachRow { TableRow row, Map values ->
@@ -53,13 +55,13 @@ class ProductController implements ElementsController {
             }
         }
 
-        c.table.body = productService.list(c.table.filterParams, c.table.fetchParams)
-        c.table.paginate = productService.count(c.table.filterParams)
+        c.table.body = companyService.list(c.table.filterParams, c.table.fetchParams)
+        c.table.paginate = companyService.count(c.table.filterParams)
 
         display content: c
     }
 
-    private buildForm(TProduct obj = null, Boolean readonly = false) {
+    private buildForm(TCompany obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -70,14 +72,29 @@ class ProductController implements ElementsController {
         }
 
         c.form.with {
-            validate = TProduct
-            addField(
-                    class: TextField,
-                    id: 'ref',
-            )
+            validate = TCompany
             addField(
                     class: TextField,
                     id: 'name',
+                    cols: 12,
+            )
+            addField(
+                    class: Checkbox,
+                    id: 'isOwned',
+                    label: '',
+                    cols: 4,
+            )
+            addField(
+                    class: Checkbox,
+                    id: 'isClient',
+                    label: '',
+                    cols: 4,
+            )
+            addField(
+                    class: Checkbox,
+                    id: 'isSupplier',
+                    label: '',
+                    cols: 4,
             )
         }
 
@@ -94,7 +111,7 @@ class ProductController implements ElementsController {
     }
 
     def onCreate() {
-        def obj = productService.create(params)
+        def obj = companyService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -104,13 +121,13 @@ class ProductController implements ElementsController {
     }
 
     def edit() {
-        def obj = productService.get(params.id)
+        def obj = companyService.get(params.id)
         def c = buildForm(obj)
         display content: c, modal: true
     }
 
     def onEdit() {
-        def obj = productService.update(params)
+        def obj = companyService.update(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -121,7 +138,7 @@ class ProductController implements ElementsController {
 
     def onDelete() {
         try {
-            productService.delete(params.id)
+            companyService.delete(params.id)
             display action: 'index'
 
         } catch (e) {

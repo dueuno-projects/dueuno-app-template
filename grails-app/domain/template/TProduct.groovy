@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import grails.gorm.MultiTenant
 import org.grails.datastore.gorm.GormEntity

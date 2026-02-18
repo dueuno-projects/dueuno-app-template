@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
 import dueuno.elements.ElementsController

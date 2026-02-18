@@ -1,4 +1,4 @@
-package dueunoapp
+package template
 
 import dueuno.types.Money
 import grails.gorm.MultiTenant
