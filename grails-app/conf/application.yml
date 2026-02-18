@@ -15,7 +15,7 @@ info.app.name: dueunoapp
 environments:
   development:
     server:
-      port: 8086
+      port: 8080
 #      port-http: 8080
 #      servlet:
 #        context-path: /

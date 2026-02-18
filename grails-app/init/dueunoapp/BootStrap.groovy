@@ -8,6 +8,7 @@ import dueuno.types.Quantity
 import dueuno.types.QuantityService
 import dueuno.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
+import myappname.TPerson
 import template.*
 
 import java.time.LocalDate
@@ -70,14 +71,16 @@ class BootStrap {
             applicationService.registerPrettyPrinter(TCompany, '${it.name}')
             applicationService.registerPrettyPrinter(TProduct, '${it.ref} - ${it.name}')
 
+            // Main application features
             applicationService.registerFeature(
-                    controller: 'template',
-            )
-            applicationService.registerFeature(
-                    parent: 'template',
                     controller: 'order',
                     icon: 'fa-flag',
                     favourite: true,
+            )
+
+            // Template features as an example
+            applicationService.registerFeature(
+                    controller: 'template',
             )
             applicationService.registerFeature(
                     parent: 'template',
