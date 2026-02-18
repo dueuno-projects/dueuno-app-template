@@ -8,7 +8,6 @@ import dueuno.types.Quantity
 import dueuno.types.QuantityService
 import dueuno.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
-import myappname.TPerson
 import template.*
 
 import java.time.LocalDate
