@@ -75,13 +75,13 @@ grails:
     upload:
       maxFileSize: 20000000
       maxRequestSize: 20000000
+
+---
 info:
   app:
     name: '@info.app.name@'
     version: '@info.app.version@'
     grailsVersion: '@info.app.grailsVersion@'
-
----
 grails:
   views:
     default:
