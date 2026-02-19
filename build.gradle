@@ -31,13 +31,6 @@ apply plugin: "cloud.wondrify.asset-pipeline"
 
 group = "dueunoapp"
 
-configurations {
-    all {
-        // Fetches dependencies as soon as they are released on the server
-        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
-    }
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -50,6 +43,13 @@ repositories {
 //            password = findProperty("localGradlePropertiesGitHubDueunoPassword") ?: System.getenv("GITHUB_DUEUNO_TOKEN")
 //        }
 //    }
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        // Fetch dependencies as soon as they are released
+        cacheChangingModulesFor(0, "seconds")
+    }
 }
 
 dependencies {
@@ -106,23 +106,18 @@ tasks.withType(GroovyCompile).configureEach {
     groovyOptions.optimizationOptions.indy = false
 }
 
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
 bootRun {
     jvmArgs(
             "-XX:+UseG1GC",
             "-XX:+UseStringDeduplication",
-            "-XX:+HeapDumpOnOutOfMemoryError",
             "-XX:InitialRAMPercentage=25",
-            "-XX:MinRAMPercentage=25",
             "-XX:MaxRAMPercentage=70",
-            "-XX:MaxMetaspaceSize=256m",
             "-XX:InitiatingHeapOccupancyPercent=40",
-            "-XX:ConcGCThreads=2",
-            "-XX:ParallelGCThreads=2",
     )
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }
 
 assets {
@@ -171,38 +166,63 @@ asciidoctor {
 
 ext {
     dockerTag = "${project.group}/${project.name}:${project.version}".toLowerCase()
-    dockerBuildDir = mkdir("${buildDir}/docker")
+    dockerBuildDir = layout.buildDirectory.dir("docker")
 }
 
-task prepareDocker(type: Copy, dependsOn: bootJar) {
+/**
+ * Copy files + bootJar into docker build dir
+ */
+tasks.register('prepareDocker', Copy) {
     description = "Copy files from src/main/docker and application jar to Docker temporal build directory"
     group = "Docker"
 
-    from "src/main/docker"
-    from project.bootJar
+    dependsOn(tasks.named('bootJar'))
 
-    into dockerBuildDir
+    from("src/main/docker")
+
+    from(
+            tasks.named('bootJar').flatMap { it.archiveFile }
+    )
+
+    into(dockerBuildDir)
 }
 
-task createDockerfile(type: Dockerfile, dependsOn: prepareDocker) {
+/**
+ * Create Dockerfile
+ */
+tasks.register('createDockerfile', Dockerfile) {
     description = "Create a Dockerfile file"
     group = "Docker"
 
-    destFile = project.file("${dockerBuildDir}/Dockerfile")
+    dependsOn(tasks.named('prepareDocker'))
 
-    from "eclipse-temurin:17"
-    workingDir "/app"
-    def filename = bootJar.archiveFileName.get()
-    copyFile filename, filename
-    entryPoint "java", "-jar", "/app/${filename}"
-    exposePort 8080
+    destFile.set(dockerBuildDir.map { it.file("Dockerfile") })
+
+    from("eclipse-temurin:${javaVersion}")
+    workingDir("/app")
+
+    def bootJarTask = tasks.named('bootJar')
+    def filenameProvider = bootJarTask.flatMap { it.archiveFileName }
+    def jarName = filenameProvider.get()
+
+    copyFile(jarName, "/app/${jarName}")
+
+    entryPoint("java", "-jar", "/app/${jarName}")
+
+    exposePort(8080)
 }
 
-task dockerBuildImage(type: DockerBuildImage, dependsOn: createDockerfile) {
+/**
+ * Build Docker image
+ */
+tasks.register('dockerBuildImage', DockerBuildImage) {
     description = "Create Docker image to run the Grails application"
     group = "Docker"
 
-    inputDir = file(dockerBuildDir)
+    dependsOn(tasks.named('createDockerfile'))
+
+    inputDir.set(dockerBuildDir)
+
     images.add(dockerTag)
 }
 
