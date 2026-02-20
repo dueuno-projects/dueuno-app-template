@@ -92,8 +92,8 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 
     // DUEUNO
-    implementation "org.dueuno:elements-core:${dueunoElementsVersion}"
-//    implementation "com.dueuno:elements-printing:${dueunoSolutionsVersion}"
+    implementation "org.dueuno:dueuno-core:${dueunoVersion}"
+//    implementation "com.dueuno:dueuno-printing:${dueunoSolutionsVersion}"
 }
 
 java {
