@@ -14,7 +14,7 @@ import jakarta.annotation.PostConstruct
 @Slf4j
 @CurrentTenant
 @CompileStatic
-class ProductService {
+class TplCompanyService {
 
     AuditService auditService
 
@@ -24,10 +24,12 @@ class ProductService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TProduct> buildQuery(Map filterParams) {
-        def query = TProduct.where {}
+    private DetachedCriteria<TTplCompany> buildQuery(Map filterParams) {
+        def query = TTplCompany.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
+        if (filterParams.containsKey('isOwned')) query = query.where { isOwned == filterParams.isOwned }
+        if (filterParams.containsKey('isClient')) query = query.where { isClient == filterParams.isClient }
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
@@ -60,11 +62,11 @@ class ProductService {
         ]
     }
 
-    TProduct get(Serializable id) {
+    TTplCompany get(Serializable id) {
         return buildQuery(id: id).get(fetch: fetchAll)
     }
 
-    List<TProduct> list(Map filterParams = [:], Map fetchParams = [:]) {
+    List<TTplCompany> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
         if (!fetchParams.fetch) fetchParams.fetch = fetch
 
@@ -78,21 +80,21 @@ class ProductService {
     }
 
     @Transactional
-    TProduct create(Map args = [:]) {
+    TTplCompany create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
-        TProduct obj = new TProduct(args)
+        TTplCompany obj = new TTplCompany(args)
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
     }
 
     @Transactional
     @CompileDynamic
-    TProduct update(Map args = [:]) {
+    TTplCompany update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TProduct obj = get(id)
+        TTplCompany obj = get(id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
@@ -100,7 +102,7 @@ class ProductService {
 
     @Transactional
     void delete(Serializable id) {
-        TProduct obj = get(id)
+        TTplCompany obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }

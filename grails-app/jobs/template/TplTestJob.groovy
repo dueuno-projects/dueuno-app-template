@@ -6,7 +6,7 @@ import groovy.util.logging.Slf4j
 import org.quartz.JobExecutionContext
 
 @Slf4j
-class TestJob {
+class TplTestJob {
 
     TenantService tenantService
 

@@ -112,10 +112,17 @@ tasks.withType(Test).configureEach {
 
 bootRun {
     jvmArgs(
+            // Fixed RAM size
+            // "-Xms4g",
+            // "-Xmx4g",
+
+            // Safe proportional RAM size
+            // "-XX:InitialRAMPercentage=25",
+            // "-XX:MaxRAMPercentage=70",
+
+            // Defaults
             "-XX:+UseG1GC",
             "-XX:+UseStringDeduplication",
-            "-XX:InitialRAMPercentage=25",
-            "-XX:MaxRAMPercentage=70",
             "-XX:InitiatingHeapOccupancyPercent=40",
     )
 }

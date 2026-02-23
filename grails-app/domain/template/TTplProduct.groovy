@@ -5,14 +5,12 @@ import org.grails.datastore.gorm.GormEntity
 
 import java.time.LocalDateTime
 
-class TCompany implements GormEntity, MultiTenant<TCompany> {
+class TTplProduct implements GormEntity, MultiTenant<TTplProduct> {
 
     Long id
     LocalDateTime dateCreated
 
+    String ref
     String name
-    Boolean isOwned
-    Boolean isSupplier
-    Boolean isClient
 
 }
