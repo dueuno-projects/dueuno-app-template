@@ -1,24 +1,22 @@
-package dueunoapp
+package template
 
-import dueuno.elements.audit.AuditOperation
-import dueuno.elements.audit.AuditService
-import dueuno.elements.exceptions.ArgsException
-import dueuno.elements.types.Money
+import dueuno.audit.AuditOperation
+import dueuno.audit.AuditService
+import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.transactions.Transactional
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
 @CompileStatic
-class OrderItemService {
+class TplCompanyService {
 
     AuditService auditService
-    OrderService orderService
 
     @PostConstruct
     void init() {
@@ -26,17 +24,18 @@ class OrderItemService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TOrderItem> buildQuery(Map filterParams) {
-        def query = TOrderItem.where {}
+    private DetachedCriteria<TTplCompany> buildQuery(Map filterParams) {
+        def query = TTplCompany.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
-        if (filterParams.containsKey('order')) query = query.where { order.id == filterParams.order }
+        if (filterParams.containsKey('isOwned')) query = query.where { isOwned == filterParams.isOwned }
+        if (filterParams.containsKey('isClient')) query = query.where { isClient == filterParams.isClient }
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
             query = query.where {
                 true
-                        || product.name =~ "%${search}%"
+                        || name =~ "%${search}%"
             }
         }
 
@@ -63,11 +62,11 @@ class OrderItemService {
         ]
     }
 
-    TOrderItem get(Serializable id) {
+    TTplCompany get(Serializable id) {
         return buildQuery(id: id).get(fetch: fetchAll)
     }
 
-    List<TOrderItem> list(Map filterParams = [:], Map fetchParams = [:]) {
+    List<TTplCompany> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
         if (!fetchParams.fetch) fetchParams.fetch = fetch
 
@@ -80,53 +79,31 @@ class OrderItemService {
         return query.count()
     }
 
-    @CompileDynamic
-    TOrderItem create(Map args = [:]) {
+    @Transactional
+    TTplCompany create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
-        TOrderItem obj = new TOrderItem(args)
+        TTplCompany obj = new TTplCompany(args)
         obj.save(flush: true, failOnError: args.failOnError)
-
-        if (!obj.hasErrors()) {
-            obj.price = obj.unitPrice * obj.quantity
-            obj.save(flush: true, failOnError: args.failOnError)
-        }
-
-        orderService.update(
-                id: obj.order.id,
-                total: obj.order.items*.price.sum(),
-        )
-
         return obj
     }
 
+    @Transactional
     @CompileDynamic
-    TOrderItem update(Map args = [:]) {
+    TTplCompany update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TOrderItem obj = get(id)
+        TTplCompany obj = get(id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
-
-        if (!obj.hasErrors()) {
-            obj.price = obj.unitPrice * obj.quantity
-            obj.save(flush: true, failOnError: args.failOnError)
-        }
-
-        orderService.update(
-                id: obj.order.id,
-                total: obj.order.items*.price.sum(),
-        )
-
         return obj
     }
 
-    @CompileDynamic
+    @Transactional
     void delete(Serializable id) {
-        TOrderItem obj = get(id)
+        TTplCompany obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
-
 }

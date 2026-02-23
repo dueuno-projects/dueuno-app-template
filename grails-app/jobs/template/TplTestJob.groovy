@@ -1,17 +1,17 @@
-package dueunoapp
+package template
 
-import dueuno.elements.tenants.TenantService
+import dueuno.tenants.TenantService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.quartz.JobExecutionContext
 
 @Slf4j
-class TestJob {
+class TplTestJob {
 
     TenantService tenantService
 
     static triggers = {
-        cron name: 't1', cronExpression: '0 */5 * * * ?' // Ogni 5 minuti
+        cron name: 't1', cronExpression: '0 */5 * * * ?' // Every 5 minutes
     }
 
     @CompileStatic

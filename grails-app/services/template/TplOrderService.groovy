@@ -1,20 +1,20 @@
-package dueunoapp
+package template
 
-import dueuno.elements.audit.AuditOperation
-import dueuno.elements.audit.AuditService
-import dueuno.elements.exceptions.ArgsException
+import dueuno.audit.AuditOperation
+import dueuno.audit.AuditService
+import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.transactions.Transactional
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
 @CompileStatic
-class OrderService {
+class TplOrderService {
 
     AuditService auditService
 
@@ -24,8 +24,8 @@ class OrderService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TOrder> buildQuery(Map filterParams) {
-        def query = TOrder.where {}
+    private DetachedCriteria<TTplOrder> buildQuery(Map filterParams) {
+        def query = TTplOrder.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
 
@@ -63,11 +63,11 @@ class OrderService {
         ]
     }
 
-    TOrder get(Serializable id) {
+    TTplOrder get(Serializable id) {
         return buildQuery(id: id).get(fetch: fetchAll)
     }
 
-    List<TOrder> list(Map filterParams = [:], Map fetchParams = [:]) {
+    List<TTplOrder> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
         if (!fetchParams.fetch) fetchParams.fetch = fetch
 
@@ -80,31 +80,31 @@ class OrderService {
         return query.count()
     }
 
-    @CompileDynamic
-    TOrder create(Map args = [:]) {
+    @Transactional
+    TTplOrder create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
-        TOrder obj = new TOrder(args)
+        TTplOrder obj = new TTplOrder(args)
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
     }
 
+    @Transactional
     @CompileDynamic
-    TOrder update(Map args = [:]) {
+    TTplOrder update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TOrder obj = get(id)
+        TTplOrder obj = get(id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
     }
 
-    @CompileDynamic
+    @Transactional
     void delete(Serializable id) {
-        TOrder obj = get(id)
+        TTplOrder obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
-
 }

@@ -37,9 +37,9 @@ out/
 .vscode/
 
 ### Other ###
-Thumbs.db
-.DS_Store
-target/
+**/Thumbs.db
+**/.DS_Store
+**/target/
 
 ### Application Specific
 /dueunoapp/

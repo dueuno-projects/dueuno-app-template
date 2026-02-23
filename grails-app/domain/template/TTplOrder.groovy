@@ -1,18 +1,18 @@
-package dueunoapp
+package template
 
-import dueuno.elements.types.Money
+import dueuno.types.Money
 import grails.gorm.MultiTenant
 import org.grails.datastore.gorm.GormEntity
 
 import java.time.LocalDateTime
 
-class TOrder implements GormEntity, MultiTenant<TOrder> {
+class TTplOrder implements GormEntity, MultiTenant<TTplOrder> {
 
     Long id
     LocalDateTime dateCreated
 
-    TCompany supplier
-    TCompany client
+    TTplCompany supplier
+    TTplCompany client
     String ref
     String subject
     Money total
@@ -21,9 +21,9 @@ class TOrder implements GormEntity, MultiTenant<TOrder> {
             'total',
     ]
 
-    Set<TOrderItem> items
+    Set<TTplOrderItem> items
     static hasMany = [
-            items: TOrderItem,
+            items: TTplOrderItem,
     ]
 
     static constraints = {

@@ -1,92 +1,113 @@
 package dueunoapp
 
-import dueuno.elements.core.ApplicationService
-import dueuno.elements.security.SecurityService
-import dueuno.elements.tenants.TenantPropertyService
-import dueuno.elements.types.QuantityService
-import dueuno.elements.types.QuantityUnit
+import dueuno.core.ApplicationService
+import dueuno.properties.TenantPropertyService
+import dueuno.security.SecurityService
+import dueuno.types.Money
+import dueuno.types.Quantity
+import dueuno.types.QuantityService
+import dueuno.types.QuantityUnit
 import grails.web.servlet.mvc.GrailsHttpSession
+import template.*
 
-import javax.servlet.ServletContext
+import java.time.LocalDate
 
 class BootStrap {
 
     TenantPropertyService tenantPropertyService
     ApplicationService applicationService
     SecurityService securityService
-
-    CompanyService companyService
-    ProductService productService
     QuantityService quantityService
+
+    TplCompanyService tplCompanyService
+    TplProductService tplProductService
+    TplOrderService tplOrderService
+    TplOrderItemService tplOrderItemService
 
     def init = {
 
         applicationService.onInstall {
-            // no-op
+
         }
 
         applicationService.onTenantInstall { String tenantId ->
             tenantPropertyService.setString('PRIMARY_BACKGROUND_COLOR', '#cc0000')
-            tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; 2023')
-
+            tenantPropertyService.setString('LOGIN_COPY', '<a href="https://dueuno.com" target="_blank">Dueuno</a> &copy; ' + LocalDate.now().year)
             quantityService.enableUnit(QuantityUnit.PCS)
         }
 
         applicationService.onDevInstall { String tenantId ->
-            companyService.create(failOnError: true, name: 'My Company Inc.', isOwned: true, isClient: false, isSupplier: false)
-            companyService.create(failOnError: true, name: 'Shower World Inc.', isOwned: false, isClient: true, isSupplier: false)
-            companyService.create(failOnError: true, name: 'Shower Land Inc.', isOwned: false, isClient: true, isSupplier: false)
-            companyService.create(failOnError: true, name: 'Shower Tower Inc.', isOwned: false, isClient: true, isSupplier: false)
+            securityService.updateGroup(tenantId: tenantId, name: 'USERS', landingPage: 'tplOrder')
 
-            productService.create(failOnError: true, ref: 'P123', name: 'PARMENIDE Shower Kit')
-            productService.create(failOnError: true, ref: 'A456', name: 'ARISTOTELE Shower Kit')
-            productService.create(failOnError: true, ref: 'L789', name: 'PLATONE Shower Kit')
+            def myCompany = tplCompanyService.create(failOnError: true, name: 'My Company Inc.', isOwned: true, isClient: false, isSupplier: false)
+            def showerWorld = tplCompanyService.create(failOnError: true, name: 'Shower World Inc.', isOwned: false, isClient: true, isSupplier: false)
+            def showerLand = tplCompanyService.create(failOnError: true, name: 'Shower Land Inc.', isOwned: false, isClient: true, isSupplier: false)
+            def showerTower = tplCompanyService.create(failOnError: true, name: 'Shower Tower Inc.', isOwned: false, isClient: true, isSupplier: false)
+
+            def parmenide = tplProductService.create(failOnError: true, ref: 'P123', name: 'PARMENIDE Shower Kit')
+            def aristotele = tplProductService.create(failOnError: true, ref: 'A456', name: 'ARISTOTELE Shower Kit')
+            def platone = tplProductService.create(failOnError: true, ref: 'L789', name: 'PLATONE Shower Kit')
+
+            def o1 = tplOrderService.create(failOnError: true, supplier: myCompany, client: showerLand, ref: '0001', subject: 'The ROSSI house')
+            def o2 = tplOrderService.create(failOnError: true, supplier: myCompany, client: showerWorld, ref: '0002', subject: 'The BIANCHI house')
+            def o3 = tplOrderService.create(failOnError: true, supplier: myCompany, client: showerTower, ref: '0003', subject: 'The SARTORI house')
+
+            tplOrderItemService.create(failOnError: true, order: o1, product: parmenide, unitPrice: new Money(100), quantity: new Quantity(12))
+            tplOrderItemService.create(failOnError: true, order: o1, product: aristotele, unitPrice: new Money(200), quantity: new Quantity(3))
+            tplOrderItemService.create(failOnError: true, order: o2, product: parmenide, unitPrice: new Money(100), quantity: new Quantity(6))
+            tplOrderItemService.create(failOnError: true, order: o2, product: aristotele, unitPrice: new Money(200), quantity: new Quantity(6))
+            tplOrderItemService.create(failOnError: true, order: o2, product: platone, unitPrice: new Money(300), quantity: new Quantity(6))
+            tplOrderItemService.create(failOnError: true, order: o3, product: parmenide, unitPrice: new Money(100), quantity: new Quantity(1))
+            tplOrderItemService.create(failOnError: true, order: o3, product: aristotele, unitPrice: new Money(200), quantity: new Quantity(2))
+            tplOrderItemService.create(failOnError: true, order: o3, product: platone, unitPrice: new Money(300), quantity: new Quantity(3))
         }
 
         applicationService.beforeInit {
-            // no-op
+
         }
 
         applicationService.onInit {
-            applicationService.registerPrettyPrinter(TCompany, '${it.name}')
-            applicationService.registerPrettyPrinter(TProduct, '${it.ref} - ${it.name}')
+            applicationService.registerPrettyPrinter(TTplCompany, '${it.name}')
+            applicationService.registerPrettyPrinter(TTplProduct, '${it.ref} - ${it.name}')
 
+            // Main application features
             applicationService.registerFeature(
-                    controller: 'order',
+                    controller: 'tplOrder',
                     icon: 'fa-flag',
                     favourite: true,
             )
+
+            // Template features as an example
             applicationService.registerFeature(
-                    controller: 'config',
+                    controller: 'tplTemplate',
             )
             applicationService.registerFeature(
-                    parent: 'config',
-                    controller: 'company',
+                    parent: 'tplTemplate',
+                    controller: 'tplCompany',
                     icon: 'fa-house-flag',
             )
             applicationService.registerFeature(
-                    parent: 'config',
-                    controller: 'product',
+                    parent: 'tplTemplate',
+                    controller: 'tplProduct',
                     icon: 'fa-heart',
             )
         }
 
-        applicationService.onTenantInit { String tenantId ->
-            // no-op
+        applicationService.onTenantInit {
+
         }
 
-        applicationService.afterInit {
-            // no-op
+        applicationService.afterInit { String tenantId ->
+
         }
 
         securityService.afterLogin { String tenantId, GrailsHttpSession session ->
-            // no-op
+
         }
 
         securityService.afterLogout { String tenantId ->
-            // no-op
-        }
 
+        }
     }
 
     def destroy = {

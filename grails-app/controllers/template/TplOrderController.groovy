@@ -1,6 +1,7 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
+import dueuno.elements.ElementsController
 import dueuno.elements.components.*
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
@@ -9,22 +10,21 @@ import dueuno.elements.controls.MoneyField
 import dueuno.elements.controls.QuantityField
 import dueuno.elements.controls.Select
 import dueuno.elements.controls.TextField
-import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
-import dueuno.elements.types.QuantityUnit
+import dueuno.elements.style.TextStyle
+import dueuno.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
-class OrderController implements ElementsController {
+class TplOrderController implements ElementsController {
 
-    CompanyService companyService
-    ProductService productService
-    OrderService orderService
-    OrderItemService orderItemService
+    TplCompanyService tplCompanyService
+    TplProductService tplProductService
+    TplOrderService tplOrderService
+    TplOrderItemService tplOrderItemService
 
     @PostConstruct
     void init() {
@@ -64,13 +64,13 @@ class OrderController implements ElementsController {
             }
         }
 
-        c.table.body = orderService.list(c.table.filterParams, c.table.fetchParams)
-        c.table.paginate = orderService.count(c.table.filterParams)
+        c.table.body = tplOrderService.list(c.table.filterParams, c.table.fetchParams)
+        c.table.paginate = tplOrderService.count(c.table.filterParams)
 
         display content: c
     }
 
-    private buildForm(TOrder obj = null, Boolean readonly = false) {
+    private buildForm(TTplOrder obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -85,17 +85,17 @@ class OrderController implements ElementsController {
         }
 
         c.form.with {
-            validate = TOrder
+            validate = TTplOrder
             addField(
                     class: Select,
                     id: 'supplier',
-                    optionsFromRecordset: companyService.list(isOwned: true),
+                    optionsFromRecordset: tplCompanyService.list(isOwned: true),
                     cols: 6,
             )
             addField(
                     class: Select,
                     id: 'client',
-                    optionsFromRecordset: companyService.list(isClient: true),
+                    optionsFromRecordset: tplCompanyService.list(isClient: true),
                     cols: 6,
             )
             addField(
@@ -113,7 +113,7 @@ class OrderController implements ElementsController {
         if (obj) {
             def itemForm = c.addComponent(Form, 'itemForm')
             itemForm.with {
-                validate = TOrderItem
+                validate = TTplOrderItem
                 addKeyField('order', obj.id)
                 addField(
                         class: Separator,
@@ -125,7 +125,7 @@ class OrderController implements ElementsController {
                 addField(
                         class: Select,
                         id: 'product',
-                        optionsFromRecordset: productService.list(),
+                        optionsFromRecordset: tplProductService.list(),
                         cols: 6,
                 )
                 addField(
@@ -162,21 +162,25 @@ class OrderController implements ElementsController {
                         'price',
                 ]
 
-                actions.defaultAction.controller = 'orderItem'
-                actions.defaultAction.params = [embeddedController: 'order', embeddedAction: 'edit', embeddedId: obj.id]
-                actions.tailAction.controller = 'orderItem'
-                actions.tailAction.params = [embeddedController: 'order', embeddedAction: 'edit', embeddedId: obj.id]
+                actions.defaultAction.controller = 'tplOrderItem'
+                actions.defaultAction.params = [embeddedController: 'tplOrder', embeddedAction: 'edit', embeddedId: obj.id]
+                actions.tailAction.controller = 'tplOrderItem'
+                actions.tailAction.params = [embeddedController: 'tplOrder', embeddedAction: 'edit', embeddedId: obj.id]
 
                 body.eachRow { TableRow row, Map values ->
                 }
 
+                footer.eachRow { TableRow row, Map values ->
+                    row.textStyle = TextStyle.BOLD
+                }
+
                 def filters = filters.values
                 filters.order = obj.id
-                body = orderItemService.list(filters)
+                body = tplOrderItemService.list(filters)
                 footer = [
                         [price: obj.total],
                 ]
-                paginate = orderItemService.count(filters)
+                paginate = tplOrderItemService.count(filters)
             }
 
             c.form.values = obj
@@ -186,7 +190,7 @@ class OrderController implements ElementsController {
     }
 
     def onAddItem() {
-        def obj = orderItemService.create(params)
+        def obj = tplOrderItemService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -201,7 +205,7 @@ class OrderController implements ElementsController {
     }
 
     def onCreate() {
-        def obj = orderService.create(params)
+        def obj = tplOrderService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -211,13 +215,13 @@ class OrderController implements ElementsController {
     }
 
     def edit() {
-        def obj = orderService.get(params.id)
+        def obj = tplOrderService.get(params.id)
         def c = buildForm(obj)
         display content: c, modal: true, wide: true, closeButton: false
     }
 
     def onEdit() {
-        def obj = orderService.update(params)
+        def obj = tplOrderService.update(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -228,7 +232,7 @@ class OrderController implements ElementsController {
 
     def onDelete() {
         try {
-            orderService.delete(params.id)
+            tplOrderService.delete(params.id)
             display action: 'index'
 
         } catch (e) {

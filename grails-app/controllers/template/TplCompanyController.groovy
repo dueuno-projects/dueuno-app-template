@@ -1,24 +1,23 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
+import dueuno.elements.ElementsController
 import dueuno.elements.components.TableRow
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
 import dueuno.elements.contents.ContentTable
 import dueuno.elements.controls.Checkbox
 import dueuno.elements.controls.TextField
-import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
-class CompanyController implements ElementsController {
+class TplCompanyController implements ElementsController {
 
-    CompanyService companyService
+    TplCompanyService tplCompanyService
 
     @PostConstruct
     void init() {
@@ -56,13 +55,13 @@ class CompanyController implements ElementsController {
             }
         }
 
-        c.table.body = companyService.list(c.table.filterParams, c.table.fetchParams)
-        c.table.paginate = companyService.count(c.table.filterParams)
+        c.table.body = tplCompanyService.list(c.table.filterParams, c.table.fetchParams)
+        c.table.paginate = tplCompanyService.count(c.table.filterParams)
 
         display content: c
     }
 
-    private buildForm(TCompany obj = null, Boolean readonly = false) {
+    private buildForm(TTplCompany obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -73,7 +72,7 @@ class CompanyController implements ElementsController {
         }
 
         c.form.with {
-            validate = TCompany
+            validate = TTplCompany
             addField(
                     class: TextField,
                     id: 'name',
@@ -112,7 +111,7 @@ class CompanyController implements ElementsController {
     }
 
     def onCreate() {
-        def obj = companyService.create(params)
+        def obj = tplCompanyService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -122,13 +121,13 @@ class CompanyController implements ElementsController {
     }
 
     def edit() {
-        def obj = companyService.get(params.id)
+        def obj = tplCompanyService.get(params.id)
         def c = buildForm(obj)
         display content: c, modal: true
     }
 
     def onEdit() {
-        def obj = companyService.update(params)
+        def obj = tplCompanyService.update(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -139,7 +138,7 @@ class CompanyController implements ElementsController {
 
     def onDelete() {
         try {
-            companyService.delete(params.id)
+            tplCompanyService.delete(params.id)
             display action: 'index'
 
         } catch (e) {

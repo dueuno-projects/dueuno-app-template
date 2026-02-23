@@ -1,23 +1,22 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
+import dueuno.elements.ElementsController
 import dueuno.elements.components.TableRow
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
 import dueuno.elements.contents.ContentTable
 import dueuno.elements.controls.TextField
-import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
-class ProductController implements ElementsController {
+class TplProductController implements ElementsController {
 
-    ProductService productService
+    TplProductService tplProductService
 
     @PostConstruct
     void init() {
@@ -54,13 +53,13 @@ class ProductController implements ElementsController {
             }
         }
 
-        c.table.body = productService.list(c.table.filterParams, c.table.fetchParams)
-        c.table.paginate = productService.count(c.table.filterParams)
+        c.table.body = tplProductService.list(c.table.filterParams, c.table.fetchParams)
+        c.table.paginate = tplProductService.count(c.table.filterParams)
 
         display content: c
     }
 
-    private buildForm(TProduct obj = null, Boolean readonly = false) {
+    private buildForm(TTplProduct obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -71,7 +70,7 @@ class ProductController implements ElementsController {
         }
 
         c.form.with {
-            validate = TProduct
+            validate = TTplProduct
             addField(
                     class: TextField,
                     id: 'ref',
@@ -95,7 +94,7 @@ class ProductController implements ElementsController {
     }
 
     def onCreate() {
-        def obj = productService.create(params)
+        def obj = tplProductService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -105,13 +104,13 @@ class ProductController implements ElementsController {
     }
 
     def edit() {
-        def obj = productService.get(params.id)
+        def obj = tplProductService.get(params.id)
         def c = buildForm(obj)
         display content: c, modal: true
     }
 
     def onEdit() {
-        def obj = productService.update(params)
+        def obj = tplProductService.update(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -122,7 +121,7 @@ class ProductController implements ElementsController {
 
     def onDelete() {
         try {
-            productService.delete(params.id)
+            tplProductService.delete(params.id)
             display action: 'index'
 
         } catch (e) {

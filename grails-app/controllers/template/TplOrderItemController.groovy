@@ -1,6 +1,7 @@
-package dueunoapp
+package template
 
 import dueuno.commons.utils.LogUtils
+import dueuno.elements.ElementsController
 import dueuno.elements.components.TableRow
 import dueuno.elements.contents.ContentCreate
 import dueuno.elements.contents.ContentEdit
@@ -9,21 +10,18 @@ import dueuno.elements.controls.MoneyField
 import dueuno.elements.controls.QuantityField
 import dueuno.elements.controls.Select
 import dueuno.elements.controls.TextField
-import dueuno.elements.core.ElementsController
 import dueuno.elements.style.TextDefault
-import dueuno.elements.types.QuantityUnit
-import dueuno.elements.types.Type
+import dueuno.types.QuantityUnit
 import grails.plugin.springsecurity.annotation.Secured
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @Secured(['ROLE_USER', /* other ROLE_... */])
-class OrderItemController implements ElementsController {
+class TplOrderItemController implements ElementsController {
 
-    ProductService productService
-    OrderItemService orderItemService
+    TplProductService tplProductService
+    TplOrderItemService tplOrderItemService
 
     @PostConstruct
     void init() {
@@ -63,13 +61,13 @@ class OrderItemController implements ElementsController {
             }
         }
 
-        c.table.body = orderItemService.list(c.table.filterParams, c.table.fetchParams)
-        c.table.paginate = orderItemService.count(c.table.filterParams)
+        c.table.body = tplOrderItemService.list(c.table.filterParams, c.table.fetchParams)
+        c.table.paginate = tplOrderItemService.count(c.table.filterParams)
 
         display content: c
     }
 
-    private buildForm(TOrderItem obj = null, Boolean readonly = false) {
+    private buildForm(TTplOrderItem obj = null, Boolean readonly = false) {
         def c = obj
                 ? createContent(ContentEdit)
                 : createContent(ContentCreate)
@@ -88,14 +86,14 @@ class OrderItemController implements ElementsController {
         }
 
         c.form.with {
-            validate = TOrderItem
+            validate = TTplOrderItem
             addKeyField('embeddedController')
             addKeyField('embeddedAction')
             addKeyField('embeddedId')
             addField(
                     class: Select,
                     id: 'product',
-                    optionsFromRecordset: productService.list(),
+                    optionsFromRecordset: tplProductService.list(),
                     cols: 6,
             )
             addField(
@@ -124,7 +122,7 @@ class OrderItemController implements ElementsController {
     }
 
     def onCreate() {
-        def obj = orderItemService.create(params)
+        def obj = tplOrderItemService.create(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -138,13 +136,13 @@ class OrderItemController implements ElementsController {
     }
 
     def edit() {
-        def obj = orderItemService.get(params.id)
+        def obj = tplOrderItemService.get(params.id)
         def c = buildForm(obj)
         display content: c, modal: true, closeButton: false
     }
 
     def onEdit() {
-        def obj = orderItemService.update(params)
+        def obj = tplOrderItemService.update(params)
         if (obj.hasErrors()) {
             display errors: obj
             return
@@ -159,7 +157,7 @@ class OrderItemController implements ElementsController {
 
     def onDelete() {
         try {
-            orderItemService.delete(params.id)
+            tplOrderItemService.delete(params.id)
             if (params.embeddedController) {
                 display controller: params.embeddedController, action: params.embeddedAction, params: [id: params.embeddedId], modal: true
             } else {

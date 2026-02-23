@@ -15,7 +15,7 @@ info.app.name: dueunoapp
 environments:
   development:
     server:
-      port: 8086
+      port: 8080
 #      port-http: 8080
 #      servlet:
 #        context-path: /
@@ -47,6 +47,7 @@ environments:
 #        key-store-password: dueunoapp
 #        key-alias: dueunoapp
 
+---
 server:
   tomcat:
     basedir: dueunoapp/tomcat
@@ -66,45 +67,36 @@ javamelody:
 
 ---
 grails:
-  profile: web
-  codegen:
-    defaultPackage: dueuno
-  gorm:
-    reactor:
-      # Whether to translate GORM events into Reactor events
-      # Disabled by default for performance reasons
-      events: false
+  plugin:
+    springsecurity:
+      debug:
+        useFilter: true
+  controllers:
+    upload:
+      maxFileSize: 20000000
+      maxRequestSize: 20000000
+
+---
 info:
   app:
     name: '@info.app.name@'
     version: '@info.app.version@'
     grailsVersion: '@info.app.grailsVersion@'
-spring:
-  threads:
-    virtual:
-      enabled: true
-  jmx:
-    unique-names: true
-  main:
-    banner-mode: "log"
-  groovy:
-    template:
-      check-template-location: false
-  devtools:
-    restart:
-      additional-exclude:
-        - '*.gsp'
-        - '**/*.gsp'
-        - '*.gson'
-        - '**/*.gson'
-        - 'logback.groovy'
-        - '*.properties'
-management:
-  endpoints:
-    enabled-by-default: false
-
----
 grails:
+  views:
+    default:
+      codec: html
+    gsp:
+      encoding: UTF-8
+      htmlcodec: xml
+      codecs:
+        expression: html
+        scriptlet: html
+        taglib: none
+        staticparts: none
+  codegen:
+    defaultPackage: dueunoapp
+  profile: web
   mime:
     disable:
       accept:
@@ -137,40 +129,23 @@ grails:
       xml:
         - text/xml
         - application/xml
-  urlmapping:
-    cache:
-      maxsize: 1000
-  controllers:
-    defaultScope: singleton
-  converters:
-    encoding: UTF-8
-  views:
-    default:
-      codec: html
-    gsp:
-      encoding: UTF-8
-      htmlcodec: xml
-      codecs:
-        expression: html
-        scriptlet: html
-        taglib: none
-        staticparts: none
-management:
-  endpoints:
-    jmx:
-      unique-names: true
-
 ---
 spring:
+  threads:
+    virtual:
+      enabled: true
   h2:
     console:
       enabled: true
-
-grails:
-  controllers:
-    upload:
-      maxFileSize: 20000000
-      maxRequestSize: 20000000
+  devtools:
+    restart:
+      additional-exclude:
+        - '*.gsp'
+        - '**/*.gsp'
+        - '*.gson'
+        - '**/*.gson'
+        - 'logback.groovy'
+        - '*.properties'
 
 ---
 hibernate:
@@ -183,9 +158,9 @@ dataSource:
   pooled: true
   jmxExport: true
   driverClassName: org.h2.Driver
+  url: jdbc:h2:file:./dueunoapp/dueunoapp;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
   username: sa
   password: ''
-  url: jdbc:h2:file:./dueunoapp/dueunoapp;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
 
   properties:
     jmxEnabled: true
@@ -208,8 +183,6 @@ dataSource:
 
 environments:
   development:
-    grails.logging.jul.usebridge: true
-    grails.plugin.springsecurity.debug.useFilter: true
     dataSource:
       dbCreate: update
 

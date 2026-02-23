@@ -1,15 +1,1 @@
-pluginManagement {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core/" }
-        gradlePluginPortal()
-    }
-    plugins {
-        id "org.grails.grails-web" version grailsVersion
-        id "org.grails.grails-gsp" version grailsVersion
-        id "com.bertramlabs.asset-pipeline" version grailsAssetPipelineVersion
-        id "com.github.erdi.webdriver-binaries" version webdriverBinariesVersion
-    }
-}
-
 rootProject.name = "dueunoapp"

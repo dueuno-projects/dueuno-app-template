@@ -1,22 +1,24 @@
-package dueunoapp
+package template
 
-import dueuno.elements.audit.AuditOperation
-import dueuno.elements.audit.AuditService
-import dueuno.elements.exceptions.ArgsException
+import dueuno.audit.AuditOperation
+import dueuno.audit.AuditService
+import dueuno.exceptions.ArgsException
+import dueuno.types.Money
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.transactions.Transactional
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
 @CompileStatic
-class ProductService {
+class TplOrderItemService {
 
     AuditService auditService
+    TplOrderService tplOrderService
 
     @PostConstruct
     void init() {
@@ -24,16 +26,17 @@ class ProductService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TProduct> buildQuery(Map filterParams) {
-        def query = TProduct.where {}
+    private DetachedCriteria<TTplOrderItem> buildQuery(Map filterParams) {
+        def query = TTplOrderItem.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
+        if (filterParams.containsKey('order')) query = query.where { order.id == filterParams.order }
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
             query = query.where {
                 true
-                        || name =~ "%${search}%"
+                        || product.name =~ "%${search}%"
             }
         }
 
@@ -60,11 +63,11 @@ class ProductService {
         ]
     }
 
-    TProduct get(Serializable id) {
+    TTplOrderItem get(Serializable id) {
         return buildQuery(id: id).get(fetch: fetchAll)
     }
 
-    List<TProduct> list(Map filterParams = [:], Map fetchParams = [:]) {
+    List<TTplOrderItem> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
         if (!fetchParams.fetch) fetchParams.fetch = fetch
 
@@ -77,31 +80,53 @@ class ProductService {
         return query.count()
     }
 
-    @CompileDynamic
-    TProduct create(Map args = [:]) {
+    @Transactional
+    TTplOrderItem create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
-        TProduct obj = new TProduct(args)
+        TTplOrderItem obj = new TTplOrderItem(args)
         obj.save(flush: true, failOnError: args.failOnError)
+
+        if (!obj.hasErrors()) {
+            obj.price = new Money(obj.unitPrice * obj.quantity)
+            obj.save(flush: true, failOnError: args.failOnError)
+        }
+
+        tplOrderService.update(
+                id: obj.order.id,
+                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
+        )
+
         return obj
     }
 
+    @Transactional
     @CompileDynamic
-    TProduct update(Map args = [:]) {
+    TTplOrderItem update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TProduct obj = get(id)
+        TTplOrderItem obj = get(id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
+
+        if (!obj.hasErrors()) {
+            obj.price = obj.unitPrice * obj.quantity
+            obj.save(flush: true, failOnError: args.failOnError)
+        }
+
+        tplOrderService.update(
+                id: obj.order.id,
+                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
+        )
+
         return obj
     }
 
-    @CompileDynamic
+    @Transactional
     void delete(Serializable id) {
-        TProduct obj = get(id)
+        TTplOrderItem obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
-
 }

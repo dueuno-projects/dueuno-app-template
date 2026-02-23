@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 
 # Used in Jenkins after uploading the '/deploy/linux' directory on server
+echo "Preparing Debian/Ubuntu host..."
 
 echo "Installing Java..."
-sudo dnf -y install java-17-openjdk
+sudo apt -y install openjdk-17-jre
 
-# Firewall rules
-echo "Setting Fedora/RHEL/CentOS firewall rules..."
+echo "Configuring iptables..."
+sudo systemctl disable ufw
+sudo ufw disable
+sudo apt install iptables-persistent -y
 
-# We use ONLY iptables
-sudo systemctl disable firewalld
-sudo systemctl stop firewalld
-sudo dnf -y install iptables-services
-sudo systemctl enable iptables
-sudo systemctl start iptables
+echo "Configuring firewall rules..."
 
 # Reset
 sudo iptables -P INPUT ACCEPT
@@ -50,5 +48,5 @@ sudo iptables -A INPUT -p tcp --dport 8443 -j ACCEPT
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
 
-# Persist configuration
-sudo bash -c "iptables-save > /etc/sysconfig/iptables"
+echo "Saving firewall rules..."
+sudo bash -c "iptables-save > /etc/iptables/rules.v4"

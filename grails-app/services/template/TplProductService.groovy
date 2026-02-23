@@ -1,20 +1,20 @@
-package dueunoapp
+package template
 
-import dueuno.elements.audit.AuditOperation
-import dueuno.elements.audit.AuditService
-import dueuno.elements.exceptions.ArgsException
+import dueuno.audit.AuditOperation
+import dueuno.audit.AuditService
+import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.transactions.Transactional
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Slf4j
 @CurrentTenant
 @CompileStatic
-class CompanyService {
+class TplProductService {
 
     AuditService auditService
 
@@ -24,12 +24,10 @@ class CompanyService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TCompany> buildQuery(Map filterParams) {
-        def query = TCompany.where {}
+    private DetachedCriteria<TTplProduct> buildQuery(Map filterParams) {
+        def query = TTplProduct.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
-        if (filterParams.containsKey('isOwned')) query = query.where { isOwned == filterParams.isOwned }
-        if (filterParams.containsKey('isClient')) query = query.where { isClient == filterParams.isClient }
 
         if (filterParams.find) {
             String search = filterParams.find.replaceAll('\\*', '%')
@@ -62,11 +60,11 @@ class CompanyService {
         ]
     }
 
-    TCompany get(Serializable id) {
+    TTplProduct get(Serializable id) {
         return buildQuery(id: id).get(fetch: fetchAll)
     }
 
-    List<TCompany> list(Map filterParams = [:], Map fetchParams = [:]) {
+    List<TTplProduct> list(Map filterParams = [:], Map fetchParams = [:]) {
         if (!fetchParams.sort) fetchParams.sort = [dateCreated: 'asc']
         if (!fetchParams.fetch) fetchParams.fetch = fetch
 
@@ -79,31 +77,31 @@ class CompanyService {
         return query.count()
     }
 
-    @CompileDynamic
-    TCompany create(Map args = [:]) {
+    @Transactional
+    TTplProduct create(Map args = [:]) {
         if (args.failOnError == null) args.failOnError = false
 
-        TCompany obj = new TCompany(args)
+        TTplProduct obj = new TTplProduct(args)
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
     }
 
+    @Transactional
     @CompileDynamic
-    TCompany update(Map args = [:]) {
+    TTplProduct update(Map args = [:]) {
         Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TCompany obj = get(id)
+        TTplProduct obj = get(id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
     }
 
-    @CompileDynamic
+    @Transactional
     void delete(Serializable id) {
-        TCompany obj = get(id)
+        TTplProduct obj = get(id)
         obj.delete(flush: true, failOnError: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
-
 }
