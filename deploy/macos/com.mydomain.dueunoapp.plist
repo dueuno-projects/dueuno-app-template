@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Identificatore del servizio -->
+    <key>Label</key>
+    <string>com.mydomain.dueunoapp</string>
+
+    <!-- Comando da eseguire all'avvio -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/dueunoapp/start</string>
+    </array>
+
+    <!-- Utente con cui eseguire il servizio -->
+    <key>UserName</key>
+    <string>dueunoapp</string>
+
+    <!-- Cartella di lavoro -->
+    <key>WorkingDirectory</key>
+    <string>/Users/dueunoapp</string>
+
+    <!-- Avvia all'avvio del sistema -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Mantieni vivo il servizio se termina -->
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>

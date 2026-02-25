@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+JAVA="$(/usr/libexec/java_home)/bin/java"
+APP_DIR="/Users/dueunoapp"
+APP_NAME="dueunoapp"
+APP_VERSION="1.0"
+
+cd ${APP_DIR}
+$JAVA -jar ${APP_NAME}-${APP_VERSION}.jar
