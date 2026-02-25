@@ -82,6 +82,7 @@ info:
     name: '@info.app.name@'
     version: '@info.app.version@'
     grailsVersion: '@info.app.grailsVersion@'
+
 grails:
   views:
     default:
@@ -129,6 +130,7 @@ grails:
       xml:
         - text/xml
         - application/xml
+
 ---
 spring:
   threads:
