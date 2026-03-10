@@ -2,7 +2,7 @@
 
 JAVA="$(/usr/libexec/java_home)/bin/java"
 JAVA_OPTS="-Xms2g -Xmx2g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:InitiatingHeapOccupancyPercent=40"
-APP_DIR="/home/dueunoapp"
+APP_DIR="/Users/dueunoapp"
 APP_NAME="dueunoapp"
 APP_VERSION="1.0"
 
