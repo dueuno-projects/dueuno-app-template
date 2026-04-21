@@ -2,10 +2,10 @@ package template
 
 import dueuno.audit.AuditOperation
 import dueuno.audit.AuditService
-import dueuno.exceptions.ArgsException
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
+import groovy.contracts.Requires
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -90,11 +90,11 @@ class TplCompanyService {
 
     @Transactional
     @CompileDynamic
+    @Requires({ args.id })
     TTplCompany update(Map args = [:]) {
-        Serializable id = ArgsException.requireArgument(args, 'id')
         if (args.failOnError == null) args.failOnError = false
 
-        TTplCompany obj = get(id)
+        TTplCompany obj = get(args.id)
         obj.properties = args
         obj.save(flush: true, failOnError: args.failOnError)
         return obj
