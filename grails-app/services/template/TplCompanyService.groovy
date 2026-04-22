@@ -63,7 +63,11 @@ class TplCompanyService {
     }
 
     TTplCompany get(Serializable id) {
-        return buildQuery(id: id).get(fetch: fetchAll)
+        return find(id: id)
+    }
+
+    TTplCompany find(Map filterParams) {
+        return buildQuery(filterParams).get(fetch: fetchAll)
     }
 
     List<TTplCompany> list(Map filterParams = [:], Map fetchParams = [:]) {

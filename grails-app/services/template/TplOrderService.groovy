@@ -64,7 +64,11 @@ class TplOrderService {
     }
 
     TTplOrder get(Serializable id) {
-        return buildQuery(id: id).get(fetch: fetchAll)
+        return find(id: id)
+    }
+
+    TTplOrder find(Map filterParams) {
+        return buildQuery(filterParams).get(fetch: fetchAll)
     }
 
     List<TTplOrder> list(Map filterParams = [:], Map fetchParams = [:]) {

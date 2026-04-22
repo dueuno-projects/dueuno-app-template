@@ -61,7 +61,11 @@ class TplProductService {
     }
 
     TTplProduct get(Serializable id) {
-        return buildQuery(id: id).get(fetch: fetchAll)
+        return find(id: id)
+    }
+
+    TTplProduct find(Map filterParams) {
+        return buildQuery(filterParams).get(fetch: fetchAll)
     }
 
     List<TTplProduct> list(Map filterParams = [:], Map fetchParams = [:]) {
