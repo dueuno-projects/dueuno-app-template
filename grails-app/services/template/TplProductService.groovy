@@ -60,6 +60,7 @@ class TplProductService {
         ]
     }
 
+    @Requires({ id })
     TTplProduct get(Serializable id) {
         return find(id: id)
     }
@@ -103,6 +104,7 @@ class TplProductService {
     }
 
     @Transactional
+    @Requires({ id })
     void delete(Serializable id) {
         TTplProduct obj = get(id)
         obj.delete(flush: true, failOnError: true)

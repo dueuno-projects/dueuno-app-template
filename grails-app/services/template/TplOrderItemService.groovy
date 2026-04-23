@@ -63,6 +63,7 @@ class TplOrderItemService {
         ]
     }
 
+    @Requires({ id })
     TTplOrderItem get(Serializable id) {
         return find(id: id)
     }
@@ -128,6 +129,7 @@ class TplOrderItemService {
     }
 
     @Transactional
+    @Requires({ id })
     void delete(Serializable id) {
         TTplOrderItem obj = get(id)
         obj.delete(flush: true, failOnError: true)
