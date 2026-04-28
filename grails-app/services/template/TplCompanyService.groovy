@@ -109,7 +109,7 @@ class TplCompanyService {
     @Requires({ id })
     void delete(Serializable id) {
         TTplCompany obj = get(id)
-        obj.delete(flush: true, failOnError: true)
+        obj.delete(flush: true)
         auditService.log(AuditOperation.DELETE, obj)
     }
 }
