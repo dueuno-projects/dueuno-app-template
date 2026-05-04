@@ -24,7 +24,6 @@ You should see something like this:
 >                     / _` | | | |/ _ \ | | | '_ \ / _ \                     <
 >                    | (_| | |_| |  __/ |_| | | | | (_) |                    <
 >                     \__,_|\__,_|\___|\__,_|_| |_|\___/                     <
->                               E L E M E N T S                              <
 >                                                                            <
 
 Grails application running at http://localhost:8080 in environment: development
