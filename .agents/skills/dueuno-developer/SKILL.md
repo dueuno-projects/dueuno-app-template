@@ -198,7 +198,6 @@ def create() {
 ```groovy
 def onCreate() {
     def obj = companyService.create(params)
-
     if (obj.hasErrors()) {
         display errors: obj
         return
@@ -224,7 +223,6 @@ def edit() {
 ```groovy
 def onEdit() {
     def obj = companyService.update(params)
-
     if (obj.hasErrors()) {
         display errors: obj
         return
