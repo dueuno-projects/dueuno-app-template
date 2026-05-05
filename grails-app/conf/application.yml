@@ -1,6 +1,3 @@
-# See: https://github.com/grails/grails-core/issues/12874
-info.app.name: dueunoapp
-
 # CREATE DEV CERTIFICATE
 #
 # NOTE: When asked for password just type "password"
