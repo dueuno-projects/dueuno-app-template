@@ -11,23 +11,22 @@
         </encoder>
     </appender>
 
-    <springProperty scope="local" name="appName" source="info.app.name">
-        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${appName}/logs/${appName}.log</file>
+    <springProperty scope="local" name="appName" source="info.app.name"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${appName}/logs/${appName}.log</file>
 
-            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${appName}/logs/archive/${appName}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-                <cleanHistoryOnStart>true</cleanHistoryOnStart>
-                <maxHistory>10</maxHistory>
-                <maxFileSize>10MB</maxFileSize>
-                <totalSizeCap>100GB</totalSizeCap>
-            </rollingPolicy>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${appName}/logs/archive/${appName}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxHistory>10</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>100GB</totalSizeCap>
+        </rollingPolicy>
 
-            <encoder>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %-40.40logger{36} : %msg%n</pattern>
-            </encoder>
-        </appender>
-    </springProperty>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %-40.40logger{36} : %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>
