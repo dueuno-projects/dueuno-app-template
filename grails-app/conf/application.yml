@@ -80,7 +80,6 @@ logs:
   maxFileSize: 100MB
   totalSizeCap: 1GB
 
-
 ---
 info:
   app:
