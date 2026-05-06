@@ -15,15 +15,19 @@
     </appender>
 
     <springProperty scope="local" name="appName" source="info.app.name"/>
+    <springProperty scope="local" name="cleanHistoryOnStart" source="logs.cleanHistoryOnStart"/>
+    <springProperty scope="local" name="maxHistory" source="logs.maxHistory"/>
+    <springProperty scope="local" name="maxFileSize" source="logs.maxFileSize"/>
+    <springProperty scope="local" name="totalSizeCap" source="logs.totalSizeCap"/>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${appName}/logs/${appName}.log</file>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${appName}/logs/archive/${appName}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-            <maxHistory>10</maxHistory>
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>100GB</totalSizeCap>
+            <cleanHistoryOnStart>${cleanHistoryOnStart:-true}</cleanHistoryOnStart>
+            <maxHistory>${maxHistory:-10}</maxHistory>
+            <maxFileSize>${maxFileSize:-10MB}</maxFileSize>
+            <totalSizeCap>${totalSizeCap:-100GB}</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
