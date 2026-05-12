@@ -1,0 +1,356 @@
+= Custom Widgets e Wrappers con Dueuno Elements (Grails Fields Port)
+:toc:
+:sectnums:
+
+== Introduzione
+
+Questa guida re-implementa il tutorial ufficiale:
+
+"Grails Fields Custom Widgets and Wrappers"
+
+utilizzando architettura Dueuno:
+
+- Domain (GORM)
+- Service (logica + query + CRUD)
+- Controller (UI con Dueuno Elements)
+
+Il focus non è più sui GSP e `<f:field>`, ma su una UI dichiarativa basata su controller DSL.
+
+== Domain Model (dal tutorial originale)
+
+Il modello è composto da 4 classi:
+
+=== Author
+
+[source,groovy]
+----
+class Author {
+    String name
+    String email
+    String bio
+    String website
+
+    static hasOne = [contactInfo: ContactInfo]
+    static hasMany = [books: Book]
+}
+----
+
+=== Book
+
+[source,groovy]
+----
+class Book {
+    String title
+    String isbn
+    String description
+    Date publishedDate
+
+    static belongsTo = [author: Author]
+    static hasMany = [tags: Tag]
+}
+----
+
+=== ContactInfo
+
+[source,groovy]
+----
+class ContactInfo {
+    String address
+    String city
+    String phone
+}
+----
+
+=== Tag
+
+[source,groovy]
+----
+class Tag {
+    String name
+
+    static belongsTo = Book
+}
+----
+
+== Service Layer (pattern Dueuno)
+
+Ogni dominio ha un service con:
+
+- query dinamiche
+- fetch strategy
+- CRUD centralizzato
+
+=== Esempio BookService
+
+[source,groovy]
+----
+@CurrentTenant
+class BookService {
+
+    DetachedCriteria<Book> buildQuery(Map params) {
+        def q = Book.where {}
+
+        if (params.authorId)
+            q = q.where { author.id == params.authorId }
+
+        if (params.find) {
+            String s = params.find.replaceAll('\\*', '%')
+            q = q.where {
+                title =~ "%${s}%" ||
+                isbn =~ "%${s}%"
+            }
+        }
+
+        return q
+    }
+
+    List<Book> list(Map filterParams = [:], Map fetchParams = [:]) {
+        return buildQuery(filterParams).list(fetchParams)
+    }
+
+    Book get(Serializable id) {
+        return Book.get(id)
+    }
+
+    Book create(Map args) {
+        def obj = new Book(args)
+        obj.save(flush: true)
+        return obj
+    }
+
+    Book update(Map args) {
+        def obj = Book.get(args.id)
+        obj.properties = args
+        obj.save(flush: true)
+        return obj
+    }
+
+    void delete(Serializable id) {
+        Book.get(id).delete(flush: true)
+    }
+}
+----
+
+== Controller Layer (UI Dueuno Elements)
+
+Il controller sostituisce completamente:
+- GSP `<f:field>`
+- widget.gsp
+- wrapper.gsp
+
+UI = codice dichiarativo.
+
+== Books Controller
+
+=== Lista (Table View)
+
+[source,groovy]
+----
+class BookController implements ElementsController {
+
+    BookService bookService
+
+    def index() {
+        def c = createContent(ContentTable)
+
+        c.table.with {
+
+            filters.with {
+                addField(class: TextField, id: 'find', label: 'Search')
+            }
+
+            columns = [
+                'title',
+                'isbn',
+                'author.name',
+                'publishedDate'
+            ]
+        }
+
+        c.table.body = bookService.list(c.table.filterParams, c.table.fetchParams)
+
+        display content: c
+    }
+}
+----
+
+== Create/Edit Form
+
+=== Form Book
+
+[source,groovy]
+----
+private buildForm(Book obj = null) {
+
+    def c = obj
+        ? createContent(ContentEdit)
+        : createContent(ContentCreate)
+
+    c.form.with {
+
+        validate = Book
+
+        addField(class: TextField, id: 'title', cols: 12)
+
+        addField(class: TextField, id: 'isbn', cols: 6)
+        addField(class: DateField, id: 'publishedDate', cols: 6)
+
+        addField(class: TextArea, id: 'description', cols: 12)
+
+        addField(class: SelectField, id: 'author', cols: 12)
+
+        addField(class: MultiSelectField, id: 'tags', cols: 12)
+    }
+
+    if (obj) c.form.values = obj
+
+    return c
+}
+----
+
+== Mappatura concetto Grails Fields → Dueuno
+
+=== 1. Widget system
+
+Grails:
+- `_widget.gsp`
+- `widget: 'textarea'`
+- type-based rendering
+
+Dueuno:
+
+[source,groovy]
+----
+addField(class: TextArea, id: 'description')
+addField(class: SelectField, id: 'author')
+----
+
+✔ Widget = classe UI
+
+---
+
+=== 2. Wrapper system
+
+Grails:
+- `_wrapper.gsp`
+- label + error + layout HTML
+
+Dueuno:
+
+Gestito automaticamente da:
+
+- `ContentCreate`
+- `ContentEdit`
+- `cols` layout system
+
+Esempio:
+
+[source,groovy]
+----
+addField(class: TextField, id: 'title', cols: 12)
+----
+
+✔ Wrapper = layout engine del form
+
+---
+
+=== 3. Per-property override (equivalente `_widget.gsp`)
+
+Esempio ISBN custom behavior:
+
+[source,groovy]
+----
+addField(class: TextField, id: 'isbn') {
+    it.attributes = [
+        pattern: "[0-9-]+",
+        placeholder: "ISBN-13"
+    ]
+}
+----
+
+---
+
+=== 4. Association Widgets (punto centrale del tutorial Grails)
+
+==== Author → Book (hasMany)
+
+UI:
+
+[source,groovy]
+----
+addField(class: MultiSelectField, id: 'books')
+----
+
+==== Book → Author (belongsTo)
+
+[source,groovy]
+----
+addField(class: SelectField, id: 'author')
+----
+
+==== Book → Tag (many-to-many)
+
+[source,groovy]
+----
+addField(class: MultiSelectField, id: 'tags')
+----
+
+==== Author → ContactInfo (hasOne)
+
+[source,groovy]
+----
+addField(class: EmbeddedForm, id: 'contactInfo')
+----
+
+== Display (equivalente `<f:display>`)
+
+[source,groovy]
+----
+def show() {
+    def c = createContent(ContentShow)
+
+    c.display.with {
+        addField(class: TextValue, id: 'title')
+        addField(class: TextValue, id: 'isbn')
+        addField(class: TextValue, id: 'author.name')
+    }
+
+    c.values = bookService.get(params.id)
+
+    display content: c
+}
+----
+
+== Tabella (equivalente `<f:table>`)
+
+[source,groovy]
+----
+c.table.columns = [
+    'title',
+    'author.name',
+    'publishedDate'
+]
+----
+
+== Differenza concettuale rispetto a Grails Fields Plugin
+
+| Concetto Grails Fields | Dueuno Elements |
+|------------------------|-----------------|
+| `_widget.gsp` | `Field class:` |
+| `_displayWidget.gsp` | `TextValue / Display component` |
+| `_wrapper.gsp` | `ContentCreate/Edit layout` |
+| `<f:field>` | `addField()` |
+| `<f:table>` | `ContentTable` |
+| association widget templates | SelectField / MultiSelectField |
+
+== Conclusione
+
+Il porting del tutorial Grails Fields in Dueuno porta a:
+
+- eliminazione totale dei GSP per UI
+- widget come classi (non template)
+- wrapper gestiti dal layout engine
+- controller completamente dichiarativi
+- domain e service completamente puliti
+
+Il risultato è una architettura più coerente e centralizzata, dove la UI non è più distribuita nei template ma nel controller DSL.

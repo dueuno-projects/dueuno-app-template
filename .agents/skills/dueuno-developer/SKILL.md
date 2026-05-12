@@ -1,342 +1,248 @@
-<!--
-SPDX-License-Identifier: Apache-2.0
--->
-
 ---
-
 name: dueuno-developer
-description: Strict conventions and patterns for building UI controllers with Dueuno, including content structure, forms, tables, and interaction handling
-license: Apache-2.0
-compatibility: opencode, claude, grok, gemini, copilot, cursor, windsurf
-metadata:
-audience: developers
-frameworks: dueuno
----------------------------
+description: |
+  Expert knowledge for developing Dueuno full-stack applications using Groovy and Grails.
+  Covers architecture, UI (Dueuno), business logic, security, and advanced features.
+  Use this skill when building or modifying Dueuno applications, UI components, services, or system configuration.
+version: 1.0.0
+tags:
+  - groovy
+  - grails
+  - dueuno
+  - fullstack
+  - enterprise
+  - backend
+  - low-code
+---
 
-## What I Do
+# Dueuno Developer Skill
 
-* Provide strict conventions for building UI controllers using Dueuno.
-* Enforce consistent patterns for tables, forms, and modal interactions.
-* Guide the correct use of `createContent`, `display`, and UI components.
-* Ensure controllers remain clean, declarative, and UI-focused.
-* Standardize naming, structure, and interaction flows.
+## When to use this skill
+Use this skill when the task involves:
+- Building or modifying a Dueuno application
+- Designing UI with Dueuno Elements (ContentTable, ContentForm, etc.)
+- Implementing business logic with GORM / Grails services
+- Managing multi-tenant architecture
+- Configuring security (Spring Security / roles / permissions)
+- Customizing application UI or behavior
 
 ---
 
-## When to Use Me
+## Core Knowledge
 
-Activate this skill when working with Dueuno, including:
+### Create/Initialize a new Dueuno application
 
-* Building UI controllers using `ElementsController`
-* Creating tables, filters, and paginated views
-* Implementing create/edit/delete flows
-* Defining forms using Dueuno components
-* Handling modal interactions and UI state
+Verify that the following dependency is present in `build.gradle`: implementation "org.apache.grails:grails-core". If not, alter the user and stop here.
 
----
-
-## Controller Architecture
-
-Controllers represent the **presentation layer**.
-
-They MUST:
-
-* be concise
-* be declarative
-* contain NO business logic
-* delegate all operations to services
-
----
-
-## Controller Requirements
-
-### Base Structure
+Latest Dueuno version: 3.1.0
 
 ```groovy
-import dueuno.elements.ElementsController
-import groovy.util.logging.Slf4j
-import grails.plugin.springsecurity.annotation.Secured
-
-@Slf4j
-@Secured(['ROLE_USER'])
-class CompanyController implements ElementsController {
-
-    CompanyService companyService
+dependencies {
+    ...
+    implementation "org.dueuno:dueuno-core:${latestDueunoVersion}"
 }
 ```
 
----
-
-## Action Conventions
-
-Controllers MUST define:
-
-* `index`
-* `create` / `onCreate`
-* `edit` / `onEdit`
-* `onDelete`
-
-Naming MUST NOT change.
-
----
-
-## Content Creation
-
-UI MUST be created using:
+Add the following code to initialize the application:
 
 ```groovy
-def c = createContent(ContentTable)
-```
+class BootStrap {
 
-Allowed content types:
+    ServletContext servletContext
+    ApplicationService applicationService
 
-* `ContentTable`
-* `ContentCreate`
-* `ContentEdit`
+    def init = {
 
----
-
-## Table Pattern
-
-```groovy
-def index() {
-    def c = createContent(ContentTable)
-
-    c.table.with {
-
-        filters.with {
-            addField(
-                class: TextField,
-                id: 'find',
-            )
+        applicationService.onInit {
+            // no-op // <1>
         }
 
-        sortable = [
-            name: 'asc',
-        ]
-
-        columns = [
-            'name',
-            'isActive',
-        ]
-
-        body.eachRow { TableRow row, Map values ->
-            // UI-only logic (MUST be lightweight)
-        }
-    }
-
-    c.table.body = companyService.list(c.table.filterParams, c.table.fetchParams)
-    c.table.paginate = companyService.count(c.table.filterParams)
-
-    display content: c
-}
-```
-
----
-
-## Form Pattern
-
-### Mandatory Method
-
-```groovy
-private buildForm(Company obj = null, Boolean readonly = false)
-```
-
----
-
-### Form Implementation
-
-```groovy
-private buildForm(Company obj = null, Boolean readonly = false) {
-
-    def c = obj
-        ? createContent(ContentEdit)
-        : createContent(ContentCreate)
-
-    if (readonly) {
-        c.header.removeNextButton()
-        c.form.readonly = true
-    }
-
-    c.form.with {
-        validate = Company
-
-        addField(
-            class: TextField,
-            id: 'name',
-            cols: 12,
-        )
-
-        addField(
-            class: Checkbox,
-            id: 'isActive',
-            cols: 4,
-        )
-    }
-
-    if (obj) {
-        c.form.values = obj
-    }
-
-    return c
-}
-```
-
----
-
-## CRUD Actions
-
-### Create
-
-```groovy
-def create() {
-    def c = buildForm()
-    display content: c, modal: true
-}
-```
-
-```groovy
-def onCreate() {
-    def obj = companyService.create(params)
-    if (obj.hasErrors()) {
-        display errors: obj
-        return
-    }
-
-    display action: 'index'
-}
-```
-
----
-
-### Edit
-
-```groovy
-def edit() {
-    def obj = companyService.get(params.id)
-    def c = buildForm(obj)
-
-    display content: c, modal: true
-}
-```
-
-```groovy
-def onEdit() {
-    def obj = companyService.update(params)
-    if (obj.hasErrors()) {
-        display errors: obj
-        return
-    }
-
-    display action: 'index'
-}
-```
-
----
-
-### Delete
-
-```groovy
-def onDelete() {
-    try {
-        companyService.delete(params.id)
-        display action: 'index'
-
-    } catch (Exception e) {
-        display exception: e
     }
 }
 ```
 
----
+Delete the file `grails-app/controllers/**/UrlMappings.groovy`
 
-## Error Handling
+Delete all files in:
+- `grails-app/assets/javascripts/`
+- `grails-app/assets/stylesheets/`
+- `grails-app/assets/images/`
+- `grails-app/views/`
+
+Replace `grails-app/init/BootStrap.groovy` with `BootStrap.groovy` from assets. 
+
+Replace `grails-app/conf/logback-spring.xml` with `logback-spring.xml` from assets.
+
+Add the following into `application.yml` replacing ${project-name} with the project name:
+```yml
+---
+server:
+  tomcat:
+    basedir: ${project-name}/tomcat
+  servlet:
+    session:
+      persistent: true
+      store-dir: ${project-name}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+
+---
+javamelody:
+  init-parameters:
+    log: true
+    storage-directory: ${user.dir}/${project-name}/java-melody
+
+---
+grails:
+  plugin:
+    springsecurity:
+      debug:
+        useFilter: true
+  controllers:
+    upload:
+      maxFileSize: 20000000
+      maxRequestSize: 20000000
+
+---
+logs:
+  cleanHistoryOnStart: true
+  maxHistory: 10
+  maxFileSize: 100MB
+  totalSizeCap: 1GB
+```
+
+Set the H2 database url to `jdbc:h2:./project-name/project-name;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE`.
+
+Set the `dbCreate` property to `update` for the development environment.
+
+Add the line `/project-name/` to the `.gitignore` in the root of the project.
+
+
+## Create a CRUD
+
+If the project is not a Grails project, stop here.
+
+If the project is not a Dueuno project (does not depend on `org.dueuno:dueuno-core`) create a Dueuno project first, then proced.
+
+To create a CRUD, create the following:
+
+- Create a Domain Class
+- Create a Service
+- Create a Controller
+
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
+
+## Create a Domain Class
+
+Dueuno domain classes have the following characteristics:
+
+- Are located in `grails-app/domain/`
+- Are prefixed with the letter `T` (eg. `TCompany`)
+- Have a corresponding `grails-app/services/` service class. If not present, create one for the domain class.
+- They all implement the following classes and fields:
 
 ```groovy
-def handleException(Exception e) {
-    log.error e.message, e
-    display exception: e
+import java.time.LocalDateTime
+
+@GrailsCompileStatic
+class TCompany implements GormEntity, MultiTenant<TCompany> {
+
+  Long id
+  LocalDateTime dateCreated
+  LocalDateTime lastUpdated
+  
 }
 ```
 
----
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
-## Code Generation Bias (CRITICAL)
 
-The following rules MUST be followed when generating code.
+## Create a Service
 
-### Variable Naming
+Ask the user the name of the Domain class to create a service for, if not specified in the prompt.
 
-* content variable MUST be named:
+Use the template found in `assets` to create a new service.
 
-```groovy
-def c = createContent(...)
-```
+The service name is not prefixed with `T`.
 
-* domain instance MUST be named:
+Implement the filters for each field in the specified domain class.
 
-```groovy
-def obj = ...
-```
+Define the `fetch` properties for each relationship in the domain class.
 
-* request data MUST be accessed via:
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
-```groovy
-params
-```
 
----
+## Create a Controller
 
-### Structural Bias
+To create a controller, a Domain class and a Service must exist in the project. If not ask the user to create them.
 
-* ALWAYS use `with {}` blocks for:
+Use the template found in `assets` to create a new controller.
 
-    * `c.table`
-    * `c.form`
-    * `filters`
+The controller name is not prefixed with `T`.
 
-* ALWAYS structure methods in this order:
+Implement the related feature in `BootStrap.groovy`. For the first controller of the application set the `favourite` parameter to `true`.'
 
-1. create content
-2. configure UI
-3. call service
-4. call `display`
+Dueuno provides the following component types: `Content`, `Component`, `Controller`.
+Implement the controller using the available Dueuno components.
 
----
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
-### Method Patterns
+### Contents
 
-* `index()` MUST:
+See the reference documentation for the available contents.
 
-    * configure table
-    * call `list` and `count`
-    * call `display`
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
-* `create()` and `edit()` MUST:
 
-    * call `buildForm`
-    * use `modal: true`
+### Components
 
-* `onCreate()` / `onEdit()` MUST:
+See the reference documentation for the available components.
 
-    * call service
-    * check `hasErrors()`
-    * use `display errors`
-    * redirect with `display action`
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
----
 
-### UI Consistency
+### Controls
 
-* Field IDs SHOULD follow domain property names:
+See the reference documentation for the available controls.
 
-    * `name`
-    * `isActive`
-    * `dateCreated`
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
-* Columns MUST match field IDs
+
+### Actions
+
+See the reference documentation for the available actions.
+
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
+
+
+### Features
+
+See the reference documentation for the available features.
+
+IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
 ---
+
+## Code Style
+
+* Prefere the `for` construct every time you can
+
+## Compliance Checklist
+
+Verify each one of the following steps before proceeding.
+
+* [ ] Implements `ElementsController`
+* [ ] Uses `@Slf4j` and `@Secured`
+* [ ] Service injected with explicit type
+* [ ] Uses `createContent(...)`
+* [ ] Defines all required actions
+* [ ] Uses `display` for responses
+* [ ] Forms defined in `buildForm`
+* [ ] No business logic in controllers
+* [ ] UI built only with Dueuno APIs
+
+IMPORTANT: The `applicationService.onInit()` method MUST be called after `onInstall`, `onTenantInstall` and `onDevInstall` closures otherwise the installation will not be executed.
 
 ### Forbidden Deviations
 
@@ -348,8 +254,6 @@ Generated code MUST NOT:
 * introduce business logic
 * bypass `display`
 
----
-
 ## Forbidden Practices
 
 * business logic inside controllers
@@ -358,17 +262,3 @@ Generated code MUST NOT:
 * building UI outside Dueuno APIs
 * defining forms outside `buildForm`
 * heavy logic inside `eachRow`
-
----
-
-## Compliance Checklist
-
-* [ ] Implements `ElementsController`
-* [ ] Uses `@Slf4j` and `@Secured`
-* [ ] Service injected with explicit type
-* [ ] Uses `createContent(...)`
-* [ ] Defines all required actions
-* [ ] Uses `display` for responses
-* [ ] Forms defined in `buildForm`
-* [ ] No business logic in controller
-* [ ] UI built only with Dueuno APIs
