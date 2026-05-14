@@ -74,13 +74,6 @@ grails:
       maxRequestSize: 20MB
 
 ---
-logs:
-  cleanHistoryOnStart: true
-  maxHistory: 10
-  maxFileSize: 100MB
-  totalSizeCap: 1GB
-
----
 info:
   app:
     name: '@info.app.name@'
