@@ -32,18 +32,9 @@ Use this skill when the task involves:
 
 ### Create/Initialize a new Dueuno application
 
-Verify that the following dependency is present in `build.gradle`: implementation "org.apache.grails:grails-core". If not, alter the user and stop here.
-
-Latest Dueuno version: 3.1.0
-
-```groovy
-dependencies {
-    ...
-    implementation "org.dueuno:dueuno-core:${latestDueunoVersion}"
-}
-```
-
-Add the following code to initialize the application:
+- [ ] Verify that the following dependency is present in `build.gradle`: `implementation "org.apache.grails:grails-core"`. If not, alter the user that this is not a Grails project and stop here.
+- [ ] Add the following dependency in `build.gradle`: `implementation "org.dueuno:dueuno-core:3.1.0"`
+- [ ] Add the following code to initialize the application:
 
 ```groovy
 class BootStrap {
@@ -61,19 +52,23 @@ class BootStrap {
 }
 ```
 
-Delete the file `grails-app/controllers/**/UrlMappings.groovy`
+- [ ] Delete the file `grails-app/controllers/**/UrlMappings.groovy`
 
-Delete all files in:
-- `grails-app/assets/javascripts/`
-- `grails-app/assets/stylesheets/`
-- `grails-app/assets/images/`
-- `grails-app/views/`
+- [ ] Delete all files in:
+  - `grails-app/assets/javascripts/`
+  - `grails-app/assets/stylesheets/`
+  - `grails-app/assets/images/`
+  - `grails-app/views/` 
 
-Replace `grails-app/init/BootStrap.groovy` with `BootStrap.groovy` from assets. 
+- [ ] Create the following files:
+  - `grails-app/assets/javascripts/application.js`
+  - `grails-app/assets/stylesheets/application.css`
 
-Replace `grails-app/conf/logback-spring.xml` with `logback-spring.xml` from assets.
+- [ ] Replace `grails-app/init/BootStrap.groovy` with `BootStrap.groovy` from assets. 
 
-Add the following into `application.yml` replacing ${project-name} with the project name:
+- [ ] Replace `grails-app/conf/logback-spring.xml` with `logback-spring.xml` from assets.
+
+- [ ] Add the following into `application.yml` replacing ${project-name} with the project name:
 ```yml
 ---
 server:
@@ -103,33 +98,26 @@ grails:
     upload:
       maxFileSize: 20000000
       maxRequestSize: 20000000
-
----
-logs:
-  cleanHistoryOnStart: true
-  maxHistory: 10
-  maxFileSize: 100MB
-  totalSizeCap: 1GB
 ```
 
-Set the H2 database url to `jdbc:h2:./project-name/project-name;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE`.
+- [ ] Set the H2 database url to `jdbc:h2:./project-name/project-name;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE`.
 
-Set the `dbCreate` property to `update` for the development environment.
+- [ ] Set the `dbCreate` property to `update` for the development environment.
 
-Add the line `/project-name/` to the `.gitignore` in the root of the project.
+- [ ] Add the line `/project-name/` to the `.gitignore` in the root of the project.
 
+- [ ] Copy the `messages.properties` file from the assets to `grails-app/i18n/messages.properties`.
 
 ## Create a CRUD
 
-If the project is not a Grails project, stop here.
-
-If the project is not a Dueuno project (does not depend on `org.dueuno:dueuno-core`) create a Dueuno project first, then proced.
+- [ ] If the project is not a Grails project, stop here.
+- [ ] If the project is not a Dueuno project (does not depend on `org.dueuno:dueuno-core`) create a Dueuno project first, then proced.
 
 To create a CRUD, create the following:
 
-- Create a Domain Class
-- Create a Service
-- Create a Controller
+- [ ] Create a Domain Class
+- [ ] Create a Service
+- [ ] Create a Controller
 
 IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
@@ -137,10 +125,11 @@ IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
 Dueuno domain classes have the following characteristics:
 
-- Are located in `grails-app/domain/`
-- Are prefixed with the letter `T` (eg. `TCompany`)
-- Have a corresponding `grails-app/services/` service class. If not present, create one for the domain class.
-- They all implement the following classes and fields:
+- [ ] Are located in `grails-app/domain/`
+- [ ] Are prefixed with the letter `T` (eg. `TCompany`)
+- [ ] Use the template found in `assets` to create a new domain class.
+- [ ] Have a corresponding `grails-app/services/` service class. If not present, create one for the domain class.
+- [ ] They all implement the following classes and fields:
 
 ```groovy
 import java.time.LocalDateTime
@@ -155,36 +144,31 @@ class TCompany implements GormEntity, MultiTenant<TCompany> {
 }
 ```
 
+- [ ] Register a pretty printer for the class in the `applicationService.onInit` method.
+
 IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
 
 ## Create a Service
 
-Ask the user the name of the Domain class to create a service for, if not specified in the prompt.
-
-Use the template found in `assets` to create a new service.
-
-The service name is not prefixed with `T`.
-
-Implement the filters for each field in the specified domain class.
-
-Define the `fetch` properties for each relationship in the domain class.
+- [ ] Ask the user the name of the Domain class to create a service for, if not specified in the prompt.
+- [ ] Use the template found in `assets` to create a new service.
+- [ ] The service name is not prefixed with `T`.
+- [ ] Implement the filters for each field in the specified domain class.
+- [ ] Define the `fetch` properties for each relationship in the domain class.
 
 IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
 
 ## Create a Controller
 
-To create a controller, a Domain class and a Service must exist in the project. If not ask the user to create them.
-
-Use the template found in `assets` to create a new controller.
-
-The controller name is not prefixed with `T`.
-
-Implement the related feature in `BootStrap.groovy`. For the first controller of the application set the `favourite` parameter to `true`.'
-
-Dueuno provides the following component types: `Content`, `Component`, `Controller`.
-Implement the controller using the available Dueuno components.
+- [ ] To create a controller, a Domain class and a Service must exist in the project. If not ask the user to create them.
+- [ ] Use the template found in `assets` to create a new controller.
+- [ ] The controller name is not prefixed with `T`.
+- [ ] Implement the related feature in `BootStrap.groovy`. For the first controller of the application set the `favourite` parameter to `true`.'
+- [ ] Dueuno provides the following component types: `Content`, `Component`, `Controller`.
+- [ ] Implement the controller using the available Dueuno components.
+- [ ] Update the `messages.properties` file according to the new controller.
 
 IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
@@ -226,21 +210,22 @@ IMPORTANT: Verify with the Compliance Checklist and correct if needed
 
 ## Code Style
 
-* Prefere the `for` construct every time you can
+- Prefere the `for` construct every time you can
+- Always use `return` in methods, except in controllers
 
 ## Compliance Checklist
 
 Verify each one of the following steps before proceeding.
 
-* [ ] Implements `ElementsController`
-* [ ] Uses `@Slf4j` and `@Secured`
-* [ ] Service injected with explicit type
-* [ ] Uses `createContent(...)`
-* [ ] Defines all required actions
-* [ ] Uses `display` for responses
-* [ ] Forms defined in `buildForm`
-* [ ] No business logic in controllers
-* [ ] UI built only with Dueuno APIs
+- [ ] Implements `ElementsController`
+- [ ] Uses `@Slf4j` and `@Secured`
+- [ ] Service injected with explicit type
+- [ ] Uses `createContent(...)`
+- [ ] Defines all required actions
+- [ ] Uses `display` for responses
+- [ ] Forms defined in `buildForm`
+- [ ] No business logic in controllers
+- [ ] UI built only with Dueuno APIs
 
 IMPORTANT: The `applicationService.onInit()` method MUST be called after `onInstall`, `onTenantInstall` and `onDevInstall` closures otherwise the installation will not be executed.
 
@@ -248,17 +233,17 @@ IMPORTANT: The `applicationService.onInit()` method MUST be called after `onInst
 
 Generated code MUST NOT:
 
-* rename `c`, `obj`, or `params`
-* inline form definitions
-* skip `with {}` blocks
-* introduce business logic
-* bypass `display`
+- rename `c`, `obj`, or `params`
+- inline form definitions
+- skip `with {}` blocks
+- introduce business logic
+- bypass `display`
 
 ## Forbidden Practices
 
-* business logic inside controllers
-* direct persistence access
-* bypassing `createContent`
-* building UI outside Dueuno APIs
-* defining forms outside `buildForm`
-* heavy logic inside `eachRow`
+- business logic inside controllers
+- direct persistence access
+- bypassing `createContent`
+- building UI outside Dueuno APIs
+- defining forms outside `buildForm`
+- heavy logic inside `eachRow`
