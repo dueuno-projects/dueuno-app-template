@@ -26,7 +26,7 @@ class TplOrderItemService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TTplOrderItem> buildQuery(Map filterParams) {
+    private DetachedCriteria<TTplOrderItem> buildQuery(Map filterParams, Boolean readOnly = false) {
         def query = TTplOrderItem.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
@@ -42,6 +42,7 @@ class TplOrderItemService {
 
         // Add additional filters here
 
+        query.readOnly(readOnly)
         return query
     }
 

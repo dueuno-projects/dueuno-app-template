@@ -24,7 +24,7 @@ class TplCompanyService {
     }
 
     @CompileDynamic
-    private DetachedCriteria<TTplCompany> buildQuery(Map filterParams) {
+    private DetachedCriteria<TTplCompany> buildQuery(Map filterParams, Boolean readOnly = false) {
         def query = TTplCompany.where {}
 
         if (filterParams.containsKey('id')) query = query.where { id == filterParams.id }
@@ -41,6 +41,7 @@ class TplCompanyService {
 
         // Add additional filters here
 
+        query.readOnly(readOnly)
         return query
     }
 
