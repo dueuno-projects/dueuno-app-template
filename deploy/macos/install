@@ -5,25 +5,12 @@
 ROOT_USER="jenkins"
 APP_USER="dueunoapp"
 APP_NAME="dueunoapp"
+DOMAIN="com.mydomain"
 APP_HOME="/Users/${APP_USER}"
-PLIST_NAME="com.mydomain.${APP_NAME}"
+PLIST_NAME="${DOMAIN}.${APP_NAME}"
 
 # Check if the user exists
-if id "${APP_USER}" >/dev/null 2>&1; then
-  echo "User '${APP_USER}' found."
-else
-  echo "Creating system user '${APP_USER}'..."
-#  sudo dscl . -create /Users/${APP_USER}
-#  sudo dscl . -create /Users/${APP_USER} UserShell /usr/bin/false
-#  sudo dscl . -create /Users/${APP_USER} RealName "${APP_NAME} Service"
-#  sudo dscl . -create /Users/${APP_USER} PrimaryGroupID 20
-#  sudo dscl . -create /Users/${APP_USER} NFSHomeDirectory /Users/${APP_USER}
-#  sudo dscl . -passwd /Users/${APP_USER} "" # No password
-  # Create home directory
-#  sudo mkdir -p /Users/${APP_USER}
-#  sudo chown ${APP_USER}:staff /Users/${APP_USER}
-#  sudo chmod 700 /Users/${APP_USER}
-fi
+sudo zsh "/Users/${ROOT_USER}/${APP_NAME}/create_user.sh"
 
 echo "Installing '${APP_NAME}' application..."
 # Move application files from root to the user's home
@@ -40,6 +27,6 @@ sudo chmod 644 /Library/LaunchDaemons/${PLIST_NAME}.plist
 echo "Loading and starting '${APP_NAME}' service..."
 sudo launchctl bootout system /Library/LaunchDaemons/${PLIST_NAME}.plist 2>/dev/null || true
 sudo launchctl bootstrap system /Library/LaunchDaemons/${PLIST_NAME}.plist
-sudo launchctl kickstart -k system/${PLIST_NAME}
+#  sudo launchctl kickstart -k system/${PLIST_NAME}
 
 echo "'${APP_NAME}' installed and started successfully."
