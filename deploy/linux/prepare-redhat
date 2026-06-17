@@ -4,7 +4,7 @@
 echo "Preparing Fedora/RHEL/CentOS host..."
 
 echo "Installing Java..."
-sudo dnf -y install java-17-openjdk
+sudo dnf -y install java-25-openjdk
 
 echo "Configuring iptables..."
 sudo systemctl disable firewalld

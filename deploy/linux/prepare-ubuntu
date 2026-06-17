@@ -4,7 +4,7 @@
 echo "Preparing Debian/Ubuntu host..."
 
 echo "Installing Java..."
-sudo apt -y install openjdk-17-jre
+sudo apt -y install openjdk-25-jre
 
 echo "Configuring iptables..."
 sudo systemctl disable ufw
