@@ -70,8 +70,8 @@ grails:
         useFilter: true
   controllers:
     upload:
-      maxFileSize: 20MB
-      maxRequestSize: 20MB
+      maxFileSize: 20_000_000
+      maxRequestSize: 20_000_000
 
 ---
 info:
