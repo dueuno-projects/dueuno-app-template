@@ -33,10 +33,10 @@ class TplOrderService {
             String search = filterParams.find.replaceAll('\\*', '%')
             query = query.where {
                 true
-            || ref =~ "%${search}%"
-            || subject =~ "%${search}%"
-            || supplier.name =~ "%${search}%"
-            || client.name =~ "%${search}%"
+                        || ref =~ "%${search}%"
+                        || subject =~ "%${search}%"
+                        || supplier.name =~ "%${search}%"
+                        || client.name =~ "%${search}%"
             }
         }
 
@@ -49,7 +49,7 @@ class TplOrderService {
     private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
         return [
-                'relationshipName': 'join',
+                'relationshipName'   : 'join',
 
                 // hasMany relationships
                 'hasManyRelationship': 'join',
