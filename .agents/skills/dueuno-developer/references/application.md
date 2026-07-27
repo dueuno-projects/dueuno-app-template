@@ -1,10 +1,10 @@
 # Application
 
-`ApplicationService` is the main component in charge of the application setup, mainly used in `BootStrap.groovy`.
+`ApplicationService` is the main entry point for application setup. It is usually configured in `BootStrap.groovy`.
 
 ## onInstall()
 
-Gets executed only the first time the application is run.
+Runs only the first time the application starts.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -26,7 +26,7 @@ class BootStrap {
 
 ## onTenantInstall()
 
-Installs the tenant. This closure gets called only once when the application is run for the first time. It is executed for the DEFAULT tenant and when a new tenant is created from the super admin GUI.
+Installs tenant-specific data. This closure runs once for the `DEFAULT` tenant during the first application startup, and again each time a new tenant is created from the super admin GUI.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -46,13 +46,13 @@ class BootStrap {
 }
 ```
 
-1. The `tenantId` tells what tenant is being installed
+1. `tenantId` identifies the tenant being installed.
 
 ## onDevInstall()
 
-Gets executed only once if the application is run from the IDE (only when the development environment is active). You can use this to preload data to test the application.
+Runs only once when the application starts from the IDE and the development environment is active. Use it to preload data for local testing.
 
-This closure will NOT be executed when the application is run as JAR, WAR or when the test environment is active.
+This closure is not executed when the application runs as a JAR, as a WAR, or in the test environment.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -74,9 +74,9 @@ class BootStrap {
 
 ## onUpdate()
 
-On application releases, may you need to update the database or any other component, you can programmatically do it adding an `onUpdate` closure.
+Use `onUpdate` to run versioned upgrade logic during application releases, such as database updates or other one-time migration tasks.
 
-These closures get executed only once when the application starts up. The execution order is defined by the argument, in alphabetical order.
+Each closure runs only once at startup. Execution order is determined alphabetically by the version string passed as the first argument.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -107,13 +107,13 @@ class BootStrap {
 }
 ```
 
-1. The closures will be executed in the following order based on the specified version string: `2021-01-02`, `2021-01-03`, `2021-01-04`, `2021-01-05`.
+1. The closures run in the following order, based on the specified version string: `2021-01-02`, `2021-01-03`, `2021-01-04`, `2021-01-05`.
 
 ## onInit()
 
-Initializes the application. This closure gets called each time the application is executed.
+Initializes the application. This closure runs every time the application starts.
 
-IMPORTANT: The `onInit` closure must be defined after the `onInstall`, `onTenantInstall` and `onDevInstall` closures otherwise they will not be executed.
+IMPORTANT: Define the `onInit` closure after `onInstall`, `onTenantInstall`, and `onDevInstall`; otherwise those installation closures will not run.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -133,12 +133,12 @@ class BootStrap {
 }
 ```
 
-1. Injects an instance of the `ApplicationService`
-2. The `onInit { ... }` closure is executed each time the application starts up
+1. Injects an instance of `ApplicationService`.
+2. The `onInit { ... }` closure runs every time the application starts.
 
 ## afterLogin()
 
-Gets executed after the user logged in. The session is active, you can set session variables from here.
+Runs after a user logs in. The session is active, so session variables can be set here.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -158,11 +158,11 @@ class BootStrap {
 }
 ```
 
-1. Injects an instance of the `SecurityService`
+1. Injects an instance of `SecurityService`.
 
 ## afterLogout()
 
-Gets executed after the user logged in. The session is NOT active, you can NOT manage session variables from here.
+Runs after a user logs out. The session is not active, so session variables cannot be managed here.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -182,11 +182,13 @@ class BootStrap {
 }
 ```
 
-1. Injects an instance of the `SecurityService`
+1. Injects an instance of `SecurityService`.
 
-## Initialize the database with mockup data
+## Initialize the database with sample data
 
-Use `onTenantInstall` (data is created only once during the first application run) or `onDevInstall` (data is created only in development environment) to create records that are useful while developing the application. Since the closure is executed only once in the development environment, it is a good place to initialize lookup tables, sample records, and realistic data for manual testing.
+Use `onTenantInstall` when data must be created once during tenant installation. Use `onDevInstall` when data is only needed in the development environment.
+
+Because `onDevInstall` runs only once in development, it is a good place to initialize lookup tables, sample records, and realistic data for manual testing.
 
 Inject the service that owns the business logic and use its `create()` method instead of creating domain objects directly.
 
@@ -237,11 +239,11 @@ class BootStrap {
 }
 ```
 
-The `tenantId` argument identifies the tenant being initialized. When the application is multi-tenant, use it only if the mockup data must change depending on the tenant.
+The `tenantId` argument identifies the tenant being initialized. In multi-tenant applications, use it only when the sample data must change depending on the tenant.
 
 # URL Path
 
-We can set up our application to be accessible from a specific URL path. For example `http://localhost:8080/admin`.
+You can make the application available under a specific URL path, for example `http://localhost:8080/admin`.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -264,10 +266,10 @@ class BootStrap {
 }
 ```
 
-1. After the user logs in the shell will redirect to this path
-2. When the user logs out the shell will redirect to this path
+1. After login, the shell redirects to this path.
+2. After logout, the shell redirects to this path.
 
-We also need to configure the URL mappings to match the new configuration. For example if the main controller of our website is `WebsiteController.groovy` we can create the following file:
+The URL mappings must also match the new configuration. For example, if the main website controller is `WebsiteController.groovy`, create the following file:
 
 `grails-app/controllers/WebsiteUrlMappings.groovy`
 
@@ -283,4 +285,3 @@ class WebsiteUrlMappings {
 ```
 
 1. The configured path must match the value of the `SHELL_URL_MAPPING` tenant property.
-

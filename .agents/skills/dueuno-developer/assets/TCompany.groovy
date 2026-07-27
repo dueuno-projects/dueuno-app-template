@@ -9,6 +9,9 @@ class TCompany implements GormEntity, MultiTenant<TCompany> {
 
     Long id
     LocalDateTime dateCreated
+    LocalDateTime lastUpdated
+    String usernameCreated
+    String usernameUpdated
 
     String name
     String vat

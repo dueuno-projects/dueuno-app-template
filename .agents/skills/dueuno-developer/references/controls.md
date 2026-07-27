@@ -1,6 +1,6 @@
 # Controls
 
-Controls are Components that can hold a value. Controls are the main way to interact with the application. We mainly use controls in forms to easily submit their values.
+Controls are components that can hold a value. They are the main way users interact with the application, and they are usually placed in forms so their values can be submitted.
 
 ## TextField
 
@@ -19,13 +19,13 @@ c.form.addField(
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `icon` | `String` |  | An icon to display within the control, you can choose one from [Font Awesome](https://fontawesome.com/) |
-| `prefix` | `String` |  | A text to display before the edit area of the control |
-| `maxSize` | `Integer` |  | Max number of characters the user can input |
-| `placeholder` | `String` |  | A text to display when the text area is empty |
+| `icon` | `String` |  | An icon to display inside the control. Choose one from [Font Awesome](https://fontawesome.com/). |
+| `prefix` | `String` |  | Text to display before the editable area of the control. |
+| `maxSize` | `Integer` |  | Maximum number of characters the user can enter. |
+| `placeholder` | `String` |  | Text to display when the control is empty. |
 | `textTransform` | `TextTransform` |  | Transforms the input while typing. |
 | `textStyle` | `TextStyle` |  | Determines the text style. |
-| `pattern` | `String` |  | A RegEx pattern to accept only specific input (Eg. `'^[0-9\\.\\,]*$'` will accept only numbers, dots and columns) |
+| `pattern` | `String` |  | A regular expression used to accept only specific input. For example, `'^[0-9\\.\\,]*$'` accepts only numbers, dots, and commas. |
 
 `textTransform` values:
 
@@ -52,8 +52,8 @@ c.form.addField(
 
 | Event | Description |
 | --- | --- |
-| `load` | Triggered once the content is loaded |
-| `change` | Triggered when the value changes |
+| `load` | Triggered once the content is loaded. |
+| `change` | Triggered when the value changes. |
 
 ## Select
 
@@ -63,22 +63,22 @@ Displays a list of options to choose from.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `optionsFromRecordset` | `List<Map>` or `List<Object>` or `GORM Recordset` |  | Options will be set from the recordset |
-| `optionsFromList` | `List` |  | Options will be set from the List items. The key of each item will match the value of the item itself. |
-| `optionsFromEnum` | `Enum` |  | Options will be set from the Enum. The key of each item will match the value of the item itself. |
-| `options` | `Map` |  | Options will be set from the Map items (key/value) |
-| `keys` | `List<String>` | `['id']` | List of column names to submit as the key for the selected option |
+| `optionsFromRecordset` | `List<Map>` or `List<Object>` or `GORM Recordset` |  | Sets options from a recordset. |
+| `optionsFromList` | `List` |  | Sets options from list items. The key of each item matches the item value. |
+| `optionsFromEnum` | `Enum` |  | Sets options from an enum. The key of each item matches the item value. |
+| `options` | `Map` |  | Sets options from map entries using key/value pairs. |
+| `keys` | `List<String>` | `['id']` | Column names to submit as the key for the selected option. |
 | `prettyPrinter` | `Class` or `String` |  | Use the specified pretty printer to display the options. See `registerPrettyPrinter()`. If the registered pretty printer `Class` matches the item class, the pretty printer will be automatically applied. |
-| `transformer` | `String` |  | Name of the transformer to use to display the options. See `registerTransformer()` |
+| `transformer` | `String` |  | Name of the transformer used to display the options. See `registerTransformer()`. |
 | `textStyle` | `TextStyle` |  | Determines the text style. |
-| `textPrefix` | `String` |  | Prefix to add to each item so it can be referred in `message.properties` files to localise it |
-| `renderTextPrefix` | `Boolean` | `true` | Whether to display the `textPrefix` or not |
-| `placeholder` | `String` |  | Displays a text when no option is selected |
-| `allowClear` | `Boolean` |  | If `true` the selection can be cleared |
-| `autoSelect` | `Boolean` | `true` | When there is only one available option in the list it will be automatically selected |
-| `multiple` | `Boolean` | `false` | Enables multiple selections |
-| `search` | `Boolean` |  | Displays a search box to filter the available options. It works on the client side, to search on the server we need to user the `search` event. |
-| `searchMinInputLength` | `Integer` | `0` | Minimum number of characters to input before the search on the server can start. Works in combination with the `search` event. |
+| `textPrefix` | `String` |  | Prefix added to each item so it can be localized through `message.properties`. |
+| `renderTextPrefix` | `Boolean` | `true` | Whether to display `textPrefix`. |
+| `placeholder` | `String` |  | Text to display when no option is selected. |
+| `allowClear` | `Boolean` |  | If `true`, the selection can be cleared. |
+| `autoSelect` | `Boolean` | `true` | When only one option is available, it is automatically selected. |
+| `multiple` | `Boolean` | `false` | Enables multiple selection. |
+| `search` | `Boolean` |  | Displays a search box to filter the available options. Client-side search is used by default. Use the `search` event for server-side search. |
+| `searchMinInputLength` | `Integer` | `0` | Minimum number of characters required before server-side search can start. Works with the `search` event. |
 
 `textStyle` values:
 
@@ -93,22 +93,22 @@ Displays a list of options to choose from.
 
 | Method | Description |
 | --- | --- |
-| `Select.optionsFromRecordset(recordset: ...)` | Returns a `Map` of options to be used in a transition. See [search on server](#search-on-server). Accepts a `Map`, you can set the following arguments: `keys`, `keysSeparator`, `prettyPrinter`, `transformer`, `textPrefix`, `renderTextPrefix`, `locale`. |
-| `Select.optionsFromList(list: ...)` | Returns a `Map` of options to be used in a transition. See [search on server](#search-on-server). Accepts a `Map`, you can set the above arguments. |
-| `Select.optionsFromEnum(enum: ...)` | Returns a `Map` of options to be used in a transition. See [search on server](#search-on-server). Accepts a `Map`, you can set the above arguments. |
-| `Select.options(options: ...)` | Returns a `Map` of options to be used in a transition. See [search on server](#search-on-server). Accepts a `Map`, you can set the above arguments. |
+| `Select.optionsFromRecordset(recordset: ...)` | Returns a `Map` of options to use in a transition. See [search on server](#search-on-server). Accepts a `Map` with the following arguments: `keys`, `keysSeparator`, `prettyPrinter`, `transformer`, `textPrefix`, `renderTextPrefix`, `locale`. |
+| `Select.optionsFromList(list: ...)` | Returns a `Map` of options to use in a transition. See [search on server](#search-on-server). Accepts a `Map` with the arguments listed above. |
+| `Select.optionsFromEnum(enum: ...)` | Returns a `Map` of options to use in a transition. See [search on server](#search-on-server). Accepts a `Map` with the arguments listed above. |
+| `Select.options(options: ...)` | Returns a `Map` of options to use in a transition. See [search on server](#search-on-server). Accepts a `Map` with the arguments listed above. |
 
 ### Events
 
 | Event | Description |
 | --- | --- |
-| `load` | Triggered once the content is loaded |
-| `change` | Triggered when the value changes |
-| `search` | Triggered when `searchMinInputLength` is reached |
+| `load` | Triggered once the content is loaded. |
+| `change` | Triggered when the value changes. |
+| `search` | Triggered when `searchMinInputLength` is reached. |
 
 ### Search on Server
 
-Example of setting up a server search.
+The following example configures server-side search.
 
 ```groovy
 c.form.with {
@@ -125,11 +125,11 @@ c.form.with {
 }
 ```
 
-- `<1>` The `load` event must return a single option to display
-- `<2>` The `search` event will return a list of matching options
-- `<3>` If `0` then the `search` event will be triggered as soon as the user clicks on the control to open the options list.
+- `<1>` The `load` event must return the selected option to display.
+- `<2>` The `search` event returns the list of matching options.
+- `<3>` If set to `0`, the `search` event is triggered as soon as the user opens the options list.
 
-We need to create the following actions.
+Create the following actions.
 
 ```groovy
 ActivityService activityService
@@ -157,8 +157,8 @@ def onActivitySearch() {
 }
 ```
 
-- `<1>` `params.activity` will hold the selected id
-- `<2>` `params.activity` will hold the search string
+- `<1>` `params.activity` contains the selected ID.
+- `<2>` `params.activity` contains the search string.
 
 ## Checkbox
 
@@ -179,21 +179,21 @@ c.form.with {
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `text` | `String` |  | The text to display |
+| `text` | `String` |  | The text to display. |
 
 ### Events
 
 | Event | Description |
 | --- | --- |
-| `click` | Not implemented yet |
+| `click` | Not implemented yet. |
 
 ## MultipleCheckbox
 
-Manage multiple checkboxes as it was a Select control with many options. See [Select](#select).
+Manages multiple checkboxes as if they were a `Select` control with many options. See [Select](#select).
 
 ## Textarea
 
-A text area who can span multiple lines of a form.
+A text area that can span multiple lines in a form.
 
 ```groovy
 c.form.with {
@@ -211,13 +211,13 @@ c.form.with {
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `maxSize` | `Integer` |  | Max number of characters the user can input |
+| `maxSize` | `Integer` |  | Maximum number of characters the user can enter. |
 
 ### Events
 
 | Event | Description |
 | --- | --- |
-| `change` | Triggered when the value changes |
+| `change` | Triggered when the value changes. |
 
 ## QuantityField
 
@@ -238,17 +238,17 @@ c.form.with {
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `decimals` | `Integer` | `2` | Allowed decimal digits |
-| `negative` | `Boolean` | `false` | If negative values are allowed |
-| `unitOptions` | `List` |  | A list of units to select from |
-| `defaultUnit` | `QuantityUnit` |  | The default unit to display |
+| `decimals` | `Integer` | `2` | Allowed decimal digits. |
+| `negative` | `Boolean` | `false` | Whether negative values are allowed. |
+| `unitOptions` | `List` |  | A list of units to select from. |
+| `defaultUnit` | `QuantityUnit` |  | The default unit to display. |
 
 ### Events
 
 | Event | Description |
 | --- | --- |
-| `load` | Triggered once the content is loaded |
-| `change` | Triggered when the value changes |
+| `load` | Triggered once the content is loaded. |
+| `change` | Triggered when the value changes. |
 
 ## MoneyField
 
@@ -268,19 +268,19 @@ c.form.with {
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `decimals` | `Integer` | `2` | Allowed decimal digits |
-| `negative` | `Boolean` | `false` | If negative values are allowed |
+| `decimals` | `Integer` | `2` | Allowed decimal digits. |
+| `negative` | `Boolean` | `false` | Whether negative values are allowed. |
 
 ### Events
 
 | Event | Description |
 | --- | --- |
-| `load` | Triggered once the content is loaded |
-| `change` | Triggered when the value changes |
+| `load` | Triggered once the content is loaded. |
+| `change` | Triggered when the value changes. |
 
 ## NumberField
 
-A text field to manage number values.
+A text field used to enter numeric values.
 
 ```groovy
 c.form.with {
@@ -297,7 +297,7 @@ c.form.with {
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `decimals` | `Integer` | `2` | Allowed decimal digits |
-| `negative` | `Boolean` | `false` | If negative values are allowed |
-| `min` | `Integer` |  | Minimum number the user can input |
-| `max` | `Integer` |  | Maximum number the user can input |
+| `decimals` | `Integer` | `2` | Allowed decimal digits. |
+| `negative` | `Boolean` | `false` | Whether negative values are allowed. |
+| `min` | `Integer` |  | Minimum number the user can enter. |
+| `max` | `Integer` |  | Maximum number the user can enter. |

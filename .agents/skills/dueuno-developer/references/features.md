@@ -1,12 +1,12 @@
 # Features
 
-A _Dueuno_ application is a container for a finite set of features that you want to expose to the users. Features are defined in the `init` closure. The main menu on the right side of the GUI lists all the features accessible by a user depending on its privileges.
+A _Dueuno_ application exposes a finite set of features to its users. Features are defined in the `init` closure. The main menu on the right side of the GUI lists the features available to the current user based on their privileges.
 
-Once defined, features are than implemented in [controllers](#controllers).
+After registration, features are implemented by their controllers.
 
 ## registerFeature()
 
-Registers a Feature.
+Registers a feature.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -49,36 +49,36 @@ class BootStrap {
 }
 ```
 
-- `<1>` Name of the controller that implements the feature
-- `<2>` Name of the action to execute when the feature is clicked (default: `index`)
-- `<3>` Menu item icon, you can choose one from [Font Awesome](https://fontawesome.com/)
-- `<4>` The feature will be displayed only to the users configured with the roles in the list (default: `ROLE_USER`)
-- `<5>` A feature with just a controller can be created to group features. This will become the parent feature.
-- `<6>` Tells the feature which one is its parent
+- `<1>` The controller that implements the feature.
+- `<2>` The action to execute when the feature is clicked. The default is `index`.
+- `<3>` The menu item icon. Choose one from [Font Awesome](https://fontawesome.com/).
+- `<4>` The feature is displayed only to users with one of the listed roles. The default is `ROLE_USER`.
+- `<5>` A feature with only a controller can group other features and act as their parent.
+- `<6>` Assigns the feature to its parent.
 
-> **IMPORTANT:** The controller class must be annotated with `@Secured(['ROLE_CAN_EDIT_BOOKS'])` to actually block all users without that authority from accessing the feature. See: [controllers](#controllers)
+> **IMPORTANT:** To block users without the required authority, the controller class must also be annotated with `@Secured(['ROLE_CAN_EDIT_BOOKS'])`.
 
 Available options:
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `controller` | `String` | `controllerName` | The name of the controller that implements the feature. If not specified it is automatically set to the current controller name. |
-| `action` | `String` | `'index'` | _(OPTIONAL)_ The name of the action to execute |
-| `params` | `Map<String, Object>` |  | _(OPTIONAL)_ Parameters to add when calling the `action` or `url` |
-| `submit` | `List<String>` |  | _(OPTIONAL)_ List of the component names that will be processed to retrieve the values to be passed when calling the `action` or `url` |
-| `icon` | `String` |  | _(OPTIONAL)_ Menu item icon, you can choose one from [Font Awesome](https://fontawesome.com/) |
-| `authorities` | `List<String>` | `['ROLE_USER']` | _(OPTIONAL)_ The feature will be displayed only to the users configured with the roles in the list |
-| `favourite` | `Boolean` |  | _(OPTIONAL)_ If `true` the feature will be displayed on the bookmark page as well (accessible clicking the home menu) |
-| `url` | `String` |  | _(OPTIONAL)_ An absolute URL. When specified it takes precedence so `controller` and `action` won't be taken into account |
-| `direct` | `Boolean` |  | _(OPTIONAL)_ Menu items are URLs managed by _Dueuno_. When set to `true` the URL gets managed directly by the browser without any processing |
-| `target` | `String` |  | _(OPTIONAL)_ The feature will be displayed in a new browser tab with the provided name |
-| `targetNew` | `String` |  | _(OPTIONAL)_ The feature will be displayed in a new browser tab (`_blank`) |
-| `confirmMessage` | `String` |  | _(OPTIONAL)_ Message to display before the feature is displayed giving the option to cancel or confirm the operation |
-| `infoMessage` | `String` |  | _(OPTIONAL)_ If set, the message will be displayed instead of the feature |
+| `controller` | `String` | `controllerName` | The controller that implements the feature. If omitted, it is set to the current controller name. |
+| `action` | `String` | `'index'` | The action to execute. |
+| `params` | `Map<String, Object>` |  | Parameters to pass when calling `action` or `url`. |
+| `submit` | `List<String>` |  | Component names to process when collecting values to pass to `action` or `url`. |
+| `icon` | `String` |  | The menu item icon. Choose one from [Font Awesome](https://fontawesome.com/). |
+| `authorities` | `List<String>` | `['ROLE_USER']` | The feature is displayed only to users with one of the listed roles. |
+| `favourite` | `Boolean` |  | If `true`, the feature is also displayed on the bookmark page, accessible from the home menu. |
+| `url` | `String` |  | An absolute URL. When specified, it takes precedence over `controller` and `action`. |
+| `direct` | `Boolean` |  | Menu items are URLs managed by _Dueuno_. When `true`, the browser handles the URL directly without additional processing. |
+| `target` | `String` |  | Displays the feature in a new browser tab with the provided name. |
+| `targetNew` | `String` |  | Displays the feature in a new browser tab using `_blank`. |
+| `confirmMessage` | `String` |  | A confirmation message displayed before opening the feature. The user can cancel or confirm the operation. |
+| `infoMessage` | `String` |  | If set, this message is displayed instead of the feature. |
 
 ## registerUserFeature()
 
-Registers a Feature in the _User Menu_. For the available options see: [registerFeature()](#registerfeature)
+Registers a feature in the _User Menu_. It accepts the same options as [registerFeature()](#registerfeature).
 
 `grails-app/init/BootStrap.groovy`
 
@@ -104,7 +104,7 @@ class BootStrap {
 
 ## registerPrettyPrinter()
 
-Registers a string template to render an instance of a specific _Class_. A pretty printer can be registered with just a name, in this case it must be explicitly assigned to a Control when defining it.
+Registers a string template used to render an instance of a specific class. A pretty printer can also be registered by name only; in that case, it must be explicitly assigned to a control when the control is defined.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -125,46 +125,46 @@ class BootStrap {
 }
 ```
 
-- `<1>` Registers a pretty printer for the `TProject` domain class. The `it` variable will refer to an instance of a `TProject` in this case we will display the `name` property
-- `<2>` Registers a pretty printer called `PROJECT_ID`. Since we know that the project id is going to be a `String` we can call the `padLeft()` method on it
+- `<1>` Registers a pretty printer for the `TProject` domain class. The `it` variable refers to a `TProject` instance, and this example displays its `name` property.
+- `<2>` Registers a pretty printer named `PROJECT_ID`. Because the project ID is a `String`, the template can call `padLeft()` on it.
 
 ### PrettyPrinterProperties
 
-Every value in _Dueuno_ gets displayed by the `PrettyPrinter` subsystem. [Components](components.md) and [controls](controls.md) can be configured to override the user settings and the system settings. Refer to the documentation of each component to see how those settings can be configured.
+Every value in _Dueuno_ is displayed through the `PrettyPrinter` subsystem. [Components](components.md) and [controls](controls.md) can override user and system settings. See the documentation for each component to learn which settings are supported.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `prettyPrinter` | `Object` |  | `Class` or `String` name of the pretty printer |
-| `transformer` | `String` |  | Transformer name |
+| `prettyPrinter` | `Object` |  | `Class` or `String` name of the pretty printer. |
+| `transformer` | `String` |  | Transformer name. |
 | `locale` | `Locale` |  | - |
-| `renderTextPrefix` | `Boolean` |  | Default: `false`, set to `true` to translate the value into `message.properties` files |
-| `textPrefix` | `String` |  | Add or change the message prefix |
-| `textArgs` | `List` |  | Add args for the i18n message |
-| `renderBoolean` | `Boolean` | `true` | If `false` renders the text `true/false` otherwise renders a check symbol when `true` and nothing when `false` |
-| `highlightNegative` | `Boolean` | `false` | If the value is `< 0` the text will be highlighted in red |
-| `renderZero` | `String` |  | If the value is 0 render the specified string instead |
-| `renderDate` | `Boolean` |  | For `LocalDateTime` values, whether to render the DATE part or not |
-| `renderDatePattern` | `String` |  | Change the way the date is rendered. See [DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html). |
-| `renderTime` | `Boolean` |  | For `LocalDateTime` values, whether to render the TIME part or not |
-| `renderSeconds` | `Boolean` |  | For `LocalTime` values, whether to display the seconds or not |
-| `renderDelimiter` | `String` | `', '` | For `Map` and `List` values, use this delimiter to list the items |
-| `decimals` | `Integer` |  | For `Number` values, how many decimals digits to display |
+| `renderTextPrefix` | `Boolean` |  | Default: `false`. Set to `true` to translate the value through `message.properties`. |
+| `textPrefix` | `String` |  | Adds or changes the message prefix. |
+| `textArgs` | `List` |  | Arguments for the i18n message. |
+| `renderBoolean` | `Boolean` | `true` | If `false`, renders the text `true` or `false`. Otherwise, renders a check symbol when the value is `true` and nothing when it is `false`. |
+| `highlightNegative` | `Boolean` | `false` | If the value is `< 0`, highlights the text in red. |
+| `renderZero` | `String` |  | If the value is `0`, renders the specified string instead. |
+| `renderDate` | `Boolean` |  | For `LocalDateTime` values, whether to render the date part. |
+| `renderDatePattern` | `String` |  | Changes how the date is rendered. See [DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html). |
+| `renderTime` | `Boolean` |  | For `LocalDateTime` values, whether to render the time part. |
+| `renderSeconds` | `Boolean` |  | For `LocalTime` values, whether to display seconds. |
+| `renderDelimiter` | `String` | `', '` | For `Map` and `List` values, uses this delimiter to list the items. |
+| `decimals` | `Integer` |  | For `Number` values, how many decimal digits to display. |
 | `decimalFormat` | `String` | `ISO_COM` | For `Number` values, which decimal separator to use. It can be `ISO_COM` (,) or `ISO_DOT` (.). |
-| `prefixedUnit` | `Boolean` | `false` | For `Quantity` and `Money` values, whether to display the unit of measure before or after the value |
-| `symbolicCurrency` | `Boolean` | `true` | For `Money` values, whether to display the currency with a symbolic or ISO code |
-| `symbolicQuantity` | `Boolean` | `true` | For `Quantity` values, whether to display the unit of measure with a symbolic or SI code |
-| `invertedMonth` | `Boolean` | `false` | For `Date` values, whether to display month/day/year (`true`) or day/month/year (`false`) |
-| `twelveHours` | `Boolean` | `false` | For `Time` values, whether to display 12H (`true`, uses AM/PM) or 24H (`false`) |
-| `firstDaySunday` | `Boolean` | `false` | Whether to display Sunday as the first day of the week (`true`) or not |
+| `prefixedUnit` | `Boolean` | `false` | For `Quantity` and `Money` values, whether to display the unit of measure before the value. |
+| `symbolicCurrency` | `Boolean` | `true` | For `Money` values, whether to display the currency as a symbol or an ISO code. |
+| `symbolicQuantity` | `Boolean` | `true` | For `Quantity` values, whether to display the unit of measure as a symbol or an SI code. |
+| `invertedMonth` | `Boolean` | `false` | For `Date` values, whether to display month/day/year (`true`) or day/month/year (`false`). |
+| `twelveHours` | `Boolean` | `false` | For `Time` values, whether to display 12-hour time (`true`, with AM/PM) or 24-hour time (`false`). |
+| `firstDaySunday` | `Boolean` | `false` | Whether to display Sunday as the first day of the week. |
 
 
 ## registerTransformer()
 
-Registers a callback used to render an instance of a specific _Class_. To make it work it must be explicitly assigned to a Control when defining it.
+Registers a callback used to render an instance of a specific class. To use a transformer, explicitly assign it to a control when defining the control.
 
-> **NOTE:** The closure will receive the value that is being transformed and must return a _String_.
+> **NOTE:** The closure receives the value being transformed and must return a `String`.
 
-> **IMPORTANT:** Be careful when using transformers since it may impact performances when the closure takes long time to execute.
+> **IMPORTANT:** Use transformers carefully. Slow closures can affect rendering performance.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -189,7 +189,7 @@ class BootStrap {
 
 ## registerCredits()
 
-Registers a role along with the people who took that role during the development of the project. When a credit reference is registered a new menu item will appear in the _User Menu_.
+Registers a role and the people who held that role during project development. When credits are registered, a new menu item appears in the _User Menu_.
 
 `grails-app/init/BootStrap.groovy`
 

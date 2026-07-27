@@ -1,8 +1,8 @@
 # Events
 
-Each `Component` can trigger one or more events. Please see [components](components.md) and [controls](controls.md) to see what events each specific component can trigger.
+Each `Component` can trigger one or more events. See [components](components.md) and [controls](controls.md) for the events supported by each component and control.
 
-Each available event has a lowercase name. We can configure the event directly when creating a component as follows.
+Event names are lowercase. You can configure an event directly when creating a component by using the `on<EventName>` property, where `<EventName>` is the capitalized event name.
 
 ```groovy
 c.form.with {
@@ -15,9 +15,9 @@ c.form.with {
 }
 ```
 
-`<1>` The parameter name is composed by `on` followed by the capitalized name of the event (the event `change` in this case). The parameter value is the name of the action to be called.
+`<1>` The `onChange` property binds the `change` event to the `onChangeBook` action.
 
-Multiple events can be configured as follows.
+To configure multiple events on the same component, get a reference to the component and call `on(...)` once for each event.
 
 ```groovy
 c.form.with {
@@ -40,29 +40,31 @@ c.form.with {
 }
 ```
 
-- `<1>` We reference the component hold by the `FormField`, not the form field itself
-- `<2>` Configuring the `load` event
-- `<3>` Configuring the `change` event
+- `<1>` Reference the component held by the `FormField`, not the form field itself.
+- `<2>` Configure the `load` event.
+- `<3>` Configure the `change` event.
 
-The following properties can be specified when configuring an event on a component.
+The following properties are available when configuring an event.
 
 ## Properties
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `controller` | `String` |  | The name of the controller to redirect to. If no `action` is specified the `index` action will be displayed |
-| `action` | `String` |  | The name of the action to redirect to. If no `controller` is specified and we are in the context of a web request (Eg. it's a user triggered event) the current controller will be used. If we are configuring the event outside of a web request (Eg. sending an event from a job) a `controller` must be specified. |
-| `params` | `Map<String, Object>` |  | The params to pass when redirecting to a `controller` or `action` |
-| `submit` | `List<String>` |  | Name list of the components whose values we want to submit. Each component is responsible to define the data structure for the values it contains. The default behaviour will send the values of all the controls contained within the component. |
+| `controller` | `String` |  | The controller to redirect to. If `action` is not specified, the `index` action is displayed. |
+| `action` | `String` |  | The action to redirect to. If `controller` is not specified and the event runs in the context of a web request, such as a user-triggered event, the current controller is used. If the event is configured outside a web request, such as from a job, `controller` is required. |
+| `params` | `Map<String, Object>` |  | The parameters to pass when redirecting to a `controller` or `action`. |
+| `submit` | `List<String>` |  | The list of components whose values must be submitted with the event. Each component defines the data structure for the values it contains. By default, Dueuno submits the values of all controls contained in the component. |
 
 
 # Transitions
 
-A Transition is a set of instructions sent from the server to the client (browser) to alter the currently displayed content. For instance, when selecting a book from a list we want a text field to be populated with its description. To implement such behaviors, we use transitions.
+A `Transition` is a set of instructions sent from the server to the browser to update the content currently displayed on the page.
 
-> **NOTE:** Please refer to [controls](controls.md) and [components](components.md) to see what events are available to each component.
+For example, when the user selects a book from a list, the application can populate a text field with the selected book description. This kind of UI update is implemented with a transition.
 
-> **NOTE:** Refer to [websockets](#websockets) to understand how to trigger events programmatically from sources other than the user input.
+> **NOTE:** See [controls](controls.md) and [components](components.md) for the events available on each component.
+
+> **NOTE:** Events can also be triggered programmatically, for example from background jobs or server-side processes.
 
 `grails-app/controllers/ReadController.groovy`
 
@@ -109,13 +111,13 @@ class ReadController implements ElementsController {
 }
 ```
 
-- `<1>` We tell the `Select` field which action to execute when the `change` event occurs. See [events](#events).
-- `<2>` We create a new Transition
-- `<3>` The `set` method sets the value of the `description` field
-- `<4>` We also set the `Textarea` to a `readonly` state
+- `<1>` Configure the `Select` field to execute `onChangeBook` when the `change` event occurs.
+- `<2>` Create a new `Transition`.
+- `<3>` Set the value of the `description` field.
+- `<4>` Set the `Textarea` to `readonly`.
 
 
-To finish it up we register a Pretty Printer for the book record and tell the `Select` control to use it to display the items.
+To complete the example, register a pretty printer for book records and configure the `Select` control to use it when displaying the available items.
 
 `grails-app/init/BootStrap.groovy`
 
@@ -135,7 +137,7 @@ class BootStrap {
 }
 ```
 
-`<1>` A pretty printer called `BOOK` will display each book by title and author. The `it` variable refers to an instance of the book record (a `Map` in this case).
+`<1>` Register a `BOOK` pretty printer that displays each book by title and author. The `it` variable refers to the current book record, which is a `Map` in this example.
 
 `grails-app/controllers/ReadController.groovy`
 
@@ -155,27 +157,28 @@ class ReadController implements ElementsController {
 }
 ```
 
-`<1>` We configure the `Select` control to use the `BOOK` pretty printer to format the books.
+`<1>` Configure the `Select` control to use the `BOOK` pretty printer.
 
 
 ## display()
 
-The most relevant feature of _Dueuno_ is the `display` method. It renders the GUI on the server and sends is to the browser.
+The `display` method is one of the main features of _Dueuno_. It renders the GUI on the server and sends it to the browser.
 
-You can call `display` with one or more of the following parameters:
+You can call `display` with one or more of the following parameters.
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `controller` | `String` |  | The name of the controller to redirect to. If no `action` is specified the `index` action will be displayed |
-| `action` | `String` |  | The name of the action to redirect to. If no `controller` is specified the current controller will be used |
-| `params` | `Map<String, Object>` |  | The params to pass when redirecting to a `controller` or `action` |
-| `content` | `PageContent` |  | The content to display. See [contents](#contents). |
-| `transition` | `Transition` |  | The transition to display. See [transitions](#transitions). |
-| `modal` | `Boolean` |  | Whether to display the content in a modal dialog or not |
-| `wide` | `Boolean` |  | When displaying the content as `modal` the dialog will be wider. |
-| `fullscreen` | `Boolean` |  | When displaying the content as `modal` the dialog will fit the whole browser window size. |
-| `closeButton` | `Boolean` | `true` | When displaying the content as `modal` the dialog will present a close button on the top-left side to let the user close the dialog cancelling the operation. |
-| `errors` | `org.springframework.validation.Errors` |  | Validation errors to display. See [validation](#validation). |
-| `errorMessage` | `String` |  | Message to display in a message box to the user |
-| `exception` | `Exception` |  | Exception to display in a message box to the user |
-| `message` | `String` |  | Message to display in a message box to the user |
+| Name           | Type | Default | Description |
+|----------------| --- | --- |-------------|
+| `controller`   | `String` |  | The controller to redirect to. If `action` is not specified, the `index` action is displayed. |
+| `action`       | `String` |  | The action to redirect to. If `controller` is not specified, the current controller is used. |
+| `params`       | `Map<String, Object>` |  | The parameters to pass when redirecting to a `controller` or `action`. |
+| `content`      | `PageContent` |  | The content to display. See [contents](contents.md). |
+| `transition`   | `Transition` |  | The transition to display. See [transitions](#transitions). |
+| `modal`        | `Boolean` |  | Whether to display the content in a modal dialog. |
+| `small`        | `Boolean` |  | When `modal` is enabled, displays a tighter dialog. |
+| `large`        | `Boolean` |  | When `modal` is enabled, displays a wider dialog. |
+| `fullscreen`   | `Boolean` |  | When `modal` is enabled, makes the dialog fill the browser window. |
+| `closeButton`  | `Boolean` | `true` | When `modal` is enabled, displays a close button in the top-left corner so the user can close the dialog and cancel the operation. |
+| `errors`       | `org.springframework.validation.Errors` |  | Validation errors to display. |
+| `errorMessage` | `String` |  | An error message to display to the user. |
+| `exception`    | `Exception` |  | An exception to display to the user. |
+| `message`      | `String` |  | A message to display to the user. |
