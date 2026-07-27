@@ -217,7 +217,7 @@ class TplOrderController implements ElementsController {
     def edit() {
         def obj = tplOrderService.get(params.id)
         def c = buildForm(obj)
-        display content: c, modal: true, wide: true, closeButton: false
+        display content: c, modal: true, large: true, closeButton: false
     }
 
     def onEdit() {
