@@ -36,7 +36,7 @@ class TplOrderItemService {
             String search = filterParams.find.replaceAll('\\*', '%')
             query = query.where {
                 true
-                        || product.name =~ "%${search}%"
+                    || product.name =~ "%${search}%"
             }
         }
 
@@ -49,10 +49,10 @@ class TplOrderItemService {
     private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
         return [
-                'relationshipName': 'join',
+            'relationshipName'   : 'join',
 
-                // hasMany relationships
-                'hasManyRelationship': 'join',
+            // hasMany relationships
+            'hasManyRelationship': 'join',
         ]
     }
 
@@ -60,7 +60,7 @@ class TplOrderItemService {
         // Add only single-sided relationships here (Eg. references to other Domain Objects)
         // DO NOT add hasMany relationships, you are going to have troubles with pagination
         return [
-                'relationshipName': 'join',
+            'relationshipName': 'join',
         ]
     }
 
@@ -99,8 +99,8 @@ class TplOrderItemService {
         }
 
         tplOrderService.update(
-                id: obj.order.id,
-                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
+            id: obj.order.id,
+            total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
         )
 
         return obj
@@ -122,8 +122,8 @@ class TplOrderItemService {
         }
 
         tplOrderService.update(
-                id: obj.order.id,
-                total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
+            id: obj.order.id,
+            total: obj.order.items ? obj.order.items*.price.sum() : obj.price,
         )
 
         return obj

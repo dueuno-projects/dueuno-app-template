@@ -18,12 +18,12 @@ class TTplOrder implements GormEntity, MultiTenant<TTplOrder> {
     Money total
 
     static embedded = [
-            'total',
+        'total',
     ]
 
     Set<TTplOrderItem> items
     static hasMany = [
-            items: TTplOrderItem,
+        items: TTplOrderItem,
     ]
 
     static constraints = {

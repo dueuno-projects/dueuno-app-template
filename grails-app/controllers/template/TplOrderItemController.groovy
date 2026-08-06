@@ -39,21 +39,21 @@ class TplOrderItemController implements ElementsController {
         c.table.with {
             filters.with {
                 addField(
-                        class: TextField,
-                        id: 'find',
-                        label: TextDefault.FIND,
-                        cols: 12,
+                    class: TextField,
+                    id: 'find',
+                    label: TextDefault.FIND,
+                    cols: 12,
                 )
             }
             sortable = [
-                    dateCreated: 'desc',
+                dateCreated: 'desc',
             ]
             columns = [
-                    'supplier',
-                    'client',
-                    'ref',
-                    'subject',
-                    'total',
+                'supplier',
+                'client',
+                'ref',
+                'subject',
+                'total',
             ]
 
             body.eachRow { TableRow row, Map values ->
@@ -69,14 +69,14 @@ class TplOrderItemController implements ElementsController {
 
     private buildForm(TTplOrderItem obj = null, Boolean readonly = false) {
         def c = obj
-                ? createContent(ContentEdit)
-                : createContent(ContentCreate)
+            ? createContent(ContentEdit)
+            : createContent(ContentCreate)
 
         if (params.embeddedController) {
             c.header.addCancelButton(
-                    controller: params.embeddedController ?: controllerName,
-                    action: params.embeddedAction ?: 'index',
-                    params: [id: params.embeddedId],
+                controller: params.embeddedController ?: controllerName,
+                action: params.embeddedAction ?: 'index',
+                params: [id: params.embeddedId],
             )
         }
 
@@ -91,21 +91,21 @@ class TplOrderItemController implements ElementsController {
             addKeyField('embeddedAction')
             addKeyField('embeddedId')
             addField(
-                    class: Select,
-                    id: 'product',
-                    optionsFromRecordset: tplProductService.list(),
-                    cols: 6,
+                class: Select,
+                id: 'product',
+                optionsFromRecordset: tplProductService.list(),
+                cols: 6,
             )
             addField(
-                    class: QuantityField,
-                    id: 'quantity',
-                    defaultUnit: QuantityUnit.PCS,
-                    cols: 3,
+                class: QuantityField,
+                id: 'quantity',
+                defaultUnit: QuantityUnit.PCS,
+                cols: 3,
             )
             addField(
-                    class: MoneyField,
-                    id: 'unitPrice',
-                    cols: 3,
+                class: MoneyField,
+                id: 'unitPrice',
+                cols: 3,
             )
         }
 

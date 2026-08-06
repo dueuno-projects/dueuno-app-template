@@ -72,24 +72,24 @@ class BootStrap {
 
             // Main application features
             applicationService.registerFeature(
-                    controller: 'tplOrder',
-                    icon: 'fa-flag',
-                    favourite: true,
+                controller: 'tplOrder',
+                icon: 'fa-flag',
+                favourite: true,
             )
 
             // Template features as an example
             applicationService.registerFeature(
-                    controller: 'tplTemplate',
+                controller: 'tplTemplate',
             )
             applicationService.registerFeature(
-                    parent: 'tplTemplate',
-                    controller: 'tplCompany',
-                    icon: 'fa-house-flag',
+                parent: 'tplTemplate',
+                controller: 'tplCompany',
+                icon: 'fa-house-flag',
             )
             applicationService.registerFeature(
-                    parent: 'tplTemplate',
-                    controller: 'tplProduct',
-                    icon: 'fa-heart',
+                parent: 'tplTemplate',
+                controller: 'tplProduct',
+                icon: 'fa-heart',
             )
         }
 

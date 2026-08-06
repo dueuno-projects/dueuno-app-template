@@ -42,21 +42,21 @@ class TplOrderController implements ElementsController {
         c.table.with {
             filters.with {
                 addField(
-                        class: TextField,
-                        id: 'find',
-                        label: TextDefault.FIND,
-                        cols: 12,
+                    class: TextField,
+                    id: 'find',
+                    label: TextDefault.FIND,
+                    cols: 12,
                 )
             }
             sortable = [
-                    dateCreated: 'desc',
+                dateCreated: 'desc',
             ]
             columns = [
-                    'ref',
-                    'subject',
-                    'supplier',
-                    'client',
-                    'total',
+                'ref',
+                'subject',
+                'supplier',
+                'client',
+                'total',
             ]
 
             body.eachRow { TableRow row, Map values ->
@@ -72,8 +72,8 @@ class TplOrderController implements ElementsController {
 
     private buildForm(TTplOrder obj = null, Boolean readonly = false) {
         def c = obj
-                ? createContent(ContentEdit)
-                : createContent(ContentCreate)
+            ? createContent(ContentEdit)
+            : createContent(ContentCreate)
 
         if (obj) {
             c.header.addBackButton(action: 'index', icon: 'fa-times', text: '')
@@ -87,26 +87,26 @@ class TplOrderController implements ElementsController {
         c.form.with {
             validate = TTplOrder
             addField(
-                    class: Select,
-                    id: 'supplier',
-                    optionsFromRecordset: tplCompanyService.list(isOwned: true),
-                    cols: 6,
+                class: Select,
+                id: 'supplier',
+                optionsFromRecordset: tplCompanyService.list(isOwned: true),
+                cols: 6,
             )
             addField(
-                    class: Select,
-                    id: 'client',
-                    optionsFromRecordset: tplCompanyService.list(isClient: true),
-                    cols: 6,
+                class: Select,
+                id: 'client',
+                optionsFromRecordset: tplCompanyService.list(isClient: true),
+                cols: 6,
             )
             addField(
-                    class: TextField,
-                    id: 'ref',
-                    cols: 3,
+                class: TextField,
+                id: 'ref',
+                cols: 3,
             )
             addField(
-                    class: TextField,
-                    id: 'subject',
-                    cols: 9,
+                class: TextField,
+                id: 'subject',
+                cols: 9,
             )
         }
 
@@ -116,50 +116,50 @@ class TplOrderController implements ElementsController {
                 validate = TTplOrderItem
                 addKeyField('order', obj.id)
                 addField(
-                        class: Separator,
-                        id: 'items',
-                        icon: 'fa-cart-shopping',
-                        squeeze: true,
-                        cols: 12,
+                    class: Separator,
+                    id: 'items',
+                    icon: 'fa-cart-shopping',
+                    squeeze: true,
+                    cols: 12,
                 )
                 addField(
-                        class: Select,
-                        id: 'product',
-                        optionsFromRecordset: tplProductService.list(),
-                        cols: 6,
+                    class: Select,
+                    id: 'product',
+                    optionsFromRecordset: tplProductService.list(),
+                    cols: 6,
                 )
                 addField(
-                        class: QuantityField,
-                        id: 'quantity',
-                        defaultUnit: QuantityUnit.PCS,
-                        cols: 2,
+                    class: QuantityField,
+                    id: 'quantity',
+                    defaultUnit: QuantityUnit.PCS,
+                    cols: 2,
                 )
                 addField(
-                        class: MoneyField,
-                        id: 'unitPrice',
-                        cols: 2,
+                    class: MoneyField,
+                    id: 'unitPrice',
+                    cols: 2,
                 )
                 addField(
-                        class: Button,
-                        id: 'btnAddItem',
-                        action: 'onAddItem',
-                        params: [id: obj.id],
-                        submit: ['itemForm'],
-                        icon: 'fa-plus',
-                        cols: 2,
+                    class: Button,
+                    id: 'btnAddItem',
+                    action: 'onAddItem',
+                    params: [id: obj.id],
+                    submit: ['itemForm'],
+                    icon: 'fa-plus',
+                    cols: 2,
                 )
             }
 
             def table = c.addComponent(Table)
             table.with {
                 sortable = [
-                        dateCreated: 'asc',
+                    dateCreated: 'asc',
                 ]
                 columns = [
-                        'product',
-                        'unitPrice',
-                        'quantity',
-                        'price',
+                    'product',
+                    'unitPrice',
+                    'quantity',
+                    'price',
                 ]
 
                 actions.defaultAction.controller = 'tplOrderItem'
@@ -178,7 +178,7 @@ class TplOrderController implements ElementsController {
                 filters.order = obj.id
                 body = tplOrderItemService.list(filters)
                 footer = [
-                        [price: obj.total],
+                    [price: obj.total],
                 ]
                 paginate = tplOrderItemService.count(filters)
             }

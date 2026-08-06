@@ -18,14 +18,14 @@ class TTplOrderItem implements GormEntity, MultiTenant<TTplOrderItem> {
     Money price
 
     static embedded = [
-            'unitPrice',
-            'quantity',
-            'price',
+        'unitPrice',
+        'quantity',
+        'price',
     ]
 
     TTplOrder order
     static belongsTo = [
-            order: TTplOrder,
+        order: TTplOrder,
     ]
 
     static constraints = {
