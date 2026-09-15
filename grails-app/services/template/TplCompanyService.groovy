@@ -1,7 +1,7 @@
 package template
 
-import dueuno.audit.AuditOperation
-import dueuno.audit.AuditService
+import dueuno.tenant.AuditOperation
+import dueuno.tenant.AuditService
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.transactions.Transactional
@@ -47,10 +47,7 @@ class TplCompanyService {
 
     private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
-        return [
-            'relationshipName'   : 'join',
-
-            // hasMany relationships
+        return fetch + [
             'hasManyRelationship': 'join',
         ]
     }
