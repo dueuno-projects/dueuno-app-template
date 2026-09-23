@@ -48,10 +48,7 @@ class TplOrderItemService {
 
     private Map getFetchAll() {
         // Add any relationship here (Eg. references to other DomainObjects or hasMany)
-        return [
-            'relationshipName'   : 'join',
-
-            // hasMany relationships
+        return fetch + [
             'hasManyRelationship': 'join',
         ]
     }
