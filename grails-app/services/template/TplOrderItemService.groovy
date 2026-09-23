@@ -1,7 +1,7 @@
 package template
 
-import dueuno.audit.AuditOperation
-import dueuno.audit.AuditService
+import dueuno.tenant.AuditOperation
+import dueuno.tenant.AuditService
 import dueuno.types.Money
 import grails.gorm.DetachedCriteria
 import grails.gorm.multitenancy.CurrentTenant

@@ -1,6 +1,6 @@
 package template
 
-import dueuno.tenants.TenantService
+import dueuno.tenant.TenantService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.quartz.JobExecutionContext

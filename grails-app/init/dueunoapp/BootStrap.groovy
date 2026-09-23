@@ -1,8 +1,8 @@
 package dueunoapp
 
-import dueuno.core.ApplicationService
-import dueuno.properties.TenantPropertyService
+import dueuno.application.ApplicationService
 import dueuno.security.SecurityService
+import dueuno.tenant.TenantPropertyService
 import dueuno.types.Money
 import dueuno.types.Quantity
 import dueuno.types.QuantityService
